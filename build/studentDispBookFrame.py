@@ -3,7 +3,7 @@ from tkinter import ttk
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 
 OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / "assets" / "StudentFrame"
+ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -213,6 +213,12 @@ button_5.place(
     width=173.0,
     height=20.0
 )
+
+image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
+image_6 = canvas.create_image(250.0, 599.0, image=image_image_6)
+# Move the image to the bottom of the stacking order
+canvas.lower(image_6)
+
 window.resizable(False, False)
 window.mainloop()
 
