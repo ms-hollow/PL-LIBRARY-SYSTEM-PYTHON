@@ -138,7 +138,7 @@ manageTransation = Button(
     image=manageTransactionIcon,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    #command=gotoTransaction,
     relief="flat",
     bg="white"
 )
@@ -154,7 +154,7 @@ manageStudent = Button(
     image=manageStudentIcon,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    #command=gotoStudent,
     relief="flat",
     bg="white"
 )
