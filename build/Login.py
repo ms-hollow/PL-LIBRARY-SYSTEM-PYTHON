@@ -22,14 +22,14 @@ def login():
     '''#
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "StudentDisplayBook.py")
     subprocess.run(["python", script_path])#'''
 
 
 def gotoRegister():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "registerGUI.py")
+    script_path = os.path.join(current_directory, "Register.py")
     subprocess.run(["python", script_path])
 
 

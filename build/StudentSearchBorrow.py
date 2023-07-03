@@ -15,7 +15,7 @@ def relative_to_assets(path: str) -> Path:
 def gotoDisplayBooks():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "StudentDisplayBook.py")
     subprocess.run(["python", script_path])
 
 def searchBook():

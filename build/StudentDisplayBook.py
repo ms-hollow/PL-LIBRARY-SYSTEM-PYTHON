@@ -10,17 +10,10 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
-
-def gotoDisplayBooks():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-
 def gotoSearchBook():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "searchBookFrame.py")
+    script_path = os.path.join(current_directory, "StudentSearchBorrow.py")
     subprocess.run(["python", script_path])
 
 '''#
@@ -121,7 +114,7 @@ button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=gotoDisplayBooks,
+    #command=gotoDisplayBooks,
     relief="flat",
     bg = "white"
 )
