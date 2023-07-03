@@ -3,6 +3,7 @@ import subprocess
 from pathlib import Path
 from tkinter import ttk
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
+from PIL import Image, ImageTk
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
@@ -10,6 +11,49 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def gotoDisplayBooks():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+
+def gotoSearchBook():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "searchBookFrame.py")
+    subprocess.run(["python", script_path])
+
+'''#
+def gotoBorrowBook():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
+
+'''#
+def gotoNotif():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
+
+'''#
+def gotoHome():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
+
+'''#
+def gotoLogout():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
 
 window = Tk()
 
@@ -32,12 +76,6 @@ canvas = Canvas(window, bg = "#FFFFFF", height = 670, width = 1125, bd = 0, high
 canvas.place(x = 0, y = 0)
 
 #DISPLAY ALL BOOKS
-def gotoDisplayBooks():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
 button_1 = Button(
@@ -51,13 +89,6 @@ button_1 = Button(
 button_1.place(x=20.0,y=145.0,width=160.0,height=32.0)
 
 #SEARCH BOOK
-
-def gotoSearchBook():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "searchBookFrame.py")
-    subprocess.run(["python", script_path])
-
 button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 button_2 = Button(
     image=button_image_2,
@@ -70,13 +101,6 @@ button_2 = Button(
 button_2.place(x=20.0, y=199.0, width=160.0, height=32.0)
 
 #BORROW BOOK
-'''#
-def gotoBorrowBook():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
 button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
 button_3 = Button(
     image=button_image_3,
@@ -88,25 +112,17 @@ button_3 = Button(
 )
 button_3.place(x=20.0, y=253.0, width=160.0, height=32.0)
 
-image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
-image_1 = canvas.create_image(99.0, 59.0, image=image_image_1)
+image_1_path = relative_to_assets("image_1.png")
+image_1 = Image.open(image_1_path)
+max_width = 182
+max_height = 112
+image_1.thumbnail((max_width, max_height), Image.LANCZOS)
+resizedlogo = ImageTk.PhotoImage(image_1)
+image_1 = canvas.create_image(120.0, 59.0, image=resizedlogo)
 
-canvas.create_text(
-    219.0,
-    17.0,
-    anchor="nw",
-    text="BOOK",
-    fill="#4B0000",
-    font= font.Font(family="Poppins", size=40, weight="bold")
-)
+canvas.create_text(219.0, 17.0, anchor="nw", text="BOOK", fill="#4B0000", font= font.Font(family="Poppins", size=40, weight="bold"))
 
-'''#
-def gotoNotif():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
+#NOTIFICATION/BELL BUTTON
 notifButton = PhotoImage(file=relative_to_assets("image_2.png"))
 image_2 = Button(
     image=notifButton,
@@ -118,13 +134,7 @@ image_2 = Button(
 )
 image_2.place(x=993.0,y=30.0,width=38.0,height=43.0)
 
-'''#
-def gotoHome():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
+#HOME BUTTON
 homeImage = PhotoImage(
     file=relative_to_assets("image_3.png"))
 image_3 = Button(
@@ -137,13 +147,7 @@ image_3 = Button(
 )
 image_3.place(x=924.0, y=31.0, width=42.0, height=42.0)
 
-'''#
-def gotoLogout():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
+#LOGOUT BUTTON
 logoutImage = PhotoImage(file=relative_to_assets("image_4.png"))
 image_4 = Button(
     image=logoutImage,
@@ -173,15 +177,11 @@ entry_1.place(
 
 image_image_5 = PhotoImage(
     file=relative_to_assets("image_5.png"))
-image_5 = canvas.create_image(
-    640.0,
-    380.0,
-    image=image_image_5
-)
+image_5 = canvas.create_image(640.0, 380.0, image=image_image_5)
 
+#BOOK TABLE
 sub_frame = ttk.Frame(window, width=600, height=350.0)
 sub_frame.place(x=220, y=150)
-
 # treeview
 table = ttk.Treeview(sub_frame,
                      columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',

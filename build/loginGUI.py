@@ -11,6 +11,52 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+def login():
+
+    tupidval = tupid.get()
+    passval = password.get()
+
+    print("Name:", tupidval)
+    print("TUP ID:", passval)
+
+    '''#
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])#'''
+
+
+def gotoRegister():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "registerGUI.py")
+    subprocess.run(["python", script_path])
+
+
+'''#
+def gotoHome():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
+
+'''#
+def gotoAboutus():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
+
+'''#
+def gotoContactus():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
+
 window = Tk()
 window.geometry("1125x670")
 
@@ -60,6 +106,7 @@ image_1 = canvas.create_image(170, 396, image=image_image_1)
 
 image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
 image_2 = canvas.create_image(900.0, 480.0, image=image_image_2)
+image_2 = canvas.create_image(900.0, 480.0, image=image_image_2)
 
 canvas.create_text(457.0, 146.0, anchor="nw", text="WELCOME ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=30, weight="bold"))
@@ -68,33 +115,24 @@ canvas.create_text(372.0, 234.0, anchor="nw", text="Username ", fill="#4B0000",
 
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(552.0, 296.0, image=entry_image_1)
-entry_1 = Entry(bd=0, bg="#FFFDFD", fg="#000716", highlightthickness=0,
-                font=font.Font(family="Poppins", size=13, weight="normal"))
-entry_1.place(x=383.0, y=276.0, width=338.0, height=35.0)
+tupid = Entry(bd=0, bg="#FFFDFD", fg="#000716", highlightthickness=0, font=font.Font(family="Poppins", size=13, weight="normal"))
+tupid.place(x=383.0, y=276.0, width=338.0, height=35.0)
 
 entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(552.0, 403.0, image=entry_image_2)
-entry_2 = Entry(bd=0, bg="#FFFDFD", fg="#000716", highlightthickness=0,
-                font=font.Font(family="Poppins", size=13, weight="bold"), show="*")
-entry_2.place(x=383.0, y=383.0, width=338.0, height=35.0)
+password = Entry(bd=0, bg="#FFFDFD", fg="#000716", highlightthickness=0, font=font.Font(family="Poppins", size=13, weight="bold"), show="*")
+password.place(x=383.0, y=383.0, width=338.0, height=35.0)
 
 canvas.create_text(372.0, 341.0, anchor="nw", text="Password", fill="#4B0000",
                    font=font.Font(family="Poppins", size=20, weight="bold"))
 
 # SIGN UP
-'''#
-def gotoSignup():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
 button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=gotoRegister,
     relief="flat",
     bg = "white"
 )
@@ -106,13 +144,6 @@ button_1.place(
 )
 
 # Home Button
-'''#
-def gotoHome():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
 button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 button_2 = Button(image=button_image_2,
                   borderwidth=0,
@@ -125,13 +156,6 @@ button_2 = Button(image=button_image_2,
 button_2.place(x=432.0, y=22.0, width=77.0, height=32.0)
 
 # Contact Us
-'''#
-def gotoContactus():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
 button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
 button_3 = Button(
     image=button_image_3,
@@ -144,13 +168,6 @@ button_3 = Button(
 button_3.place(x=746.0, y=22.0, width=162.0, height=29.0)
 
 # About Us Button
-'''#
-def gotoAboutus():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
 button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
 button_4 = Button(
     image=button_image_4,
@@ -163,24 +180,24 @@ button_4 = Button(
 button_4.place(x=560.0, y=22.0, width=143.0, height=32.0)
 
 # LOGIN BUTTON
-def gotoStudentPortal():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-
 button_image_5 = PhotoImage(file=relative_to_assets("button_5.png"))
 button_5 = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=gotoStudentPortal,
+    command=login,
     relief="flat"
 )
 button_5.place(x=487.0, y=481.0, width=150.0, height=44.0)
 
-image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
-image_3 = canvas.create_image(101.0, 56.0, image=image_image_3)
+image_3_path = relative_to_assets("image_3.png")
+image_3 = Image.open(image_3_path)
+max_width = 182
+max_height = 112
+image_3.thumbnail((max_width, max_height), Image.LANCZOS)
+resizedlogo = ImageTk.PhotoImage(image_3)
+image_3 = canvas.create_image(120.0, 59.0, image=resizedlogo)
+
 window.resizable(False, False)
 window.mainloop()
 
