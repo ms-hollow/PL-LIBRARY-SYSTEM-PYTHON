@@ -55,18 +55,11 @@ photo = ImageTk.PhotoImage(image)
 # Create the image on the canvas
 image_4 = canvas.create_image(563.0, 345.0, image=photo)
 
-
-
 image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
 image_1 = canvas.create_image(170, 396, image=image_image_1)
 
-def notifAction(event):
-    print("Image clicked")
-
 image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
-button = Button(canvas, image=image, command=notifAction, borderwidth=0, highlightthickness=0)
-button.pack()
-
+image_2 = canvas.create_image(900.0, 480.0, image=image_image_2)
 
 canvas.create_text(457.0, 146.0, anchor="nw", text="WELCOME ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=30, weight="bold"))
@@ -76,13 +69,13 @@ canvas.create_text(372.0, 234.0, anchor="nw", text="Username ", fill="#4B0000",
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(552.0, 296.0, image=entry_image_1)
 entry_1 = Entry(bd=0, bg="#FFFDFD", fg="#000716", highlightthickness=0,
-                font=font.Font(family="Poppins", size=15, weight="normal"))
+                font=font.Font(family="Poppins", size=13, weight="normal"))
 entry_1.place(x=383.0, y=276.0, width=338.0, height=35.0)
 
 entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(552.0, 403.0, image=entry_image_2)
 entry_2 = Entry(bd=0, bg="#FFFDFD", fg="#000716", highlightthickness=0,
-                font=font.Font(family="Poppins", size=18, weight="bold"), show="*")
+                font=font.Font(family="Poppins", size=13, weight="bold"), show="*")
 entry_2.place(x=383.0, y=383.0, width=338.0, height=35.0)
 
 canvas.create_text(372.0, 341.0, anchor="nw", text="Password", fill="#4B0000",
@@ -102,7 +95,8 @@ button_1 = Button(
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_1 clicked"),
-    relief="flat"
+    relief="flat",
+    bg = "white"
 )
 button_1.place(
     x=959.0,
@@ -124,7 +118,8 @@ button_2 = Button(image=button_image_2,
                   borderwidth=0,
                   highlightthickness=0,
                   command=lambda: print("button_2 clicked"),
-                  relief="flat"
+                  relief="flat",
+                  bg = "white"
                   )
 
 button_2.place(x=432.0, y=22.0, width=77.0, height=32.0)
@@ -143,7 +138,8 @@ button_3 = Button(
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_3 clicked"),
-    relief="flat"
+    relief="flat",
+    bg = "white"
 )
 button_3.place(x=746.0, y=22.0, width=162.0, height=29.0)
 
@@ -161,7 +157,8 @@ button_4 = Button(
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_4 clicked"),
-    relief="flat"
+    relief="flat",
+    bg = "white"
 )
 button_4.place(x=560.0, y=22.0, width=143.0, height=32.0)
 
@@ -178,7 +175,7 @@ button_5 = Button(
     borderwidth=0,
     highlightthickness=0,
     command=gotoStudentPortal,
-    relief="flat",
+    relief="flat"
 )
 button_5.place(x=487.0, y=481.0, width=150.0, height=44.0)
 
