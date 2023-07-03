@@ -55,11 +55,18 @@ photo = ImageTk.PhotoImage(image)
 # Create the image on the canvas
 image_4 = canvas.create_image(563.0, 345.0, image=photo)
 
+
+
 image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
 image_1 = canvas.create_image(170, 396, image=image_image_1)
 
+def notifAction(event):
+    print("Image clicked")
+
 image_image_2 = PhotoImage(file=relative_to_assets("image_2.png"))
-image_2 = canvas.create_image(900.0, 480.0, image=image_image_2)
+button = Button(canvas, image=image, command=notifAction, borderwidth=0, highlightthickness=0)
+button.pack()
+
 
 canvas.create_text(457.0, 146.0, anchor="nw", text="WELCOME ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=30, weight="bold"))

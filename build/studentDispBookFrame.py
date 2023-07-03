@@ -1,3 +1,5 @@
+import os
+import subprocess
 from pathlib import Path
 from tkinter import ttk
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
@@ -7,6 +9,7 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
+
 
 window = Tk()
 
@@ -27,33 +30,42 @@ window.geometry(f"+{x}+{y}")
 canvas = Canvas(window, bg = "#FFFFFF", height = 670, width = 1125, bd = 0, highlightthickness = 0, relief = "ridge")
 
 canvas.place(x = 0, y = 0)
+
 #DISPLAY ALL BOOKS
+def gotoDisplayBooks():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+
 button_image_1 = PhotoImage(
     file=relative_to_assets("button_1.png"))
 button_1 = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
-    relief="flat"
+    command=gotoDisplayBooks,
+    relief="flat",
+    bg = "white"
 )
 button_1.place(x=20.0,y=145.0,width=160.0,height=32.0)
 
 #SEARCH BOOK
-'''#
+
 def gotoSearchBook():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "searchBookFrame.py")
     subprocess.run(["python", script_path])
-'''
+
 button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 button_2 = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
-    relief="flat"
+    command=gotoSearchBook,
+    relief="flat",
+    bg = "white"
 )
 button_2.place(x=20.0, y=199.0, width=160.0, height=32.0)
 
@@ -71,7 +83,8 @@ button_3 = Button(
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_3 clicked"),
-    relief="flat"
+    relief="flat",
+    bg = "white"
 )
 button_3.place(x=20.0, y=253.0, width=160.0, height=32.0)
 
@@ -87,12 +100,23 @@ canvas.create_text(
     font= font.Font(family="Poppins", size=40, weight="bold")
 )
 
+'''#
+def gotoNotif():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    subprocess.run(["python", script_path])
+'''
 notifButton = PhotoImage(file=relative_to_assets("image_2.png"))
-image_2 = canvas.create_image(
-    1012.0,
-    51.0,
-    image=notifButton
+image_2 = Button(
+    image=notifButton,
+    borderwidth=1,
+    highlightthickness=0,
+    #command=gotoNotif,
+    relief="flat",
+    bg = "white"
 )
+image_2.place(x=993.0,y=30.0,width=38.0,height=43.0)
 
 '''#
 def gotoHome():
@@ -103,11 +127,15 @@ def gotoHome():
 '''
 homeImage = PhotoImage(
     file=relative_to_assets("image_3.png"))
-image_3 = canvas.create_image(
-    945.0,
-    52.0,
-    image=homeImage
+image_3 = Button(
+    image=homeImage,
+    borderwidth=1,
+    highlightthickness=0,
+    #command=gotoHome,
+    relief="flat",
+    bg = "white"
 )
+image_3.place(x=924.0, y=31.0, width=42.0, height=42.0)
 
 '''#
 def gotoLogout():
@@ -117,23 +145,15 @@ def gotoLogout():
     subprocess.run(["python", script_path])
 '''
 logoutImage = PhotoImage(file=relative_to_assets("image_4.png"))
-image_4 = canvas.create_image(1075.0, 51.0, image=logoutImage)
-
-button_image_4 = PhotoImage(
-    file=relative_to_assets("button_4.png"))
-button_4 = Button(
-    image=button_image_4,
-    borderwidth=0,
+image_4 = Button(
+    image=logoutImage,
+    borderwidth=1,
     highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
-    relief="flat"
+    #command=gotoLogout,
+    relief="flat",
+    bg = "white"
 )
-button_4.place(
-    x=759.0,
-    y=38.0,
-    width=80.0,
-    height=37.0
-)
+image_4.place(x=1054.0, y=30.0, width=43.0, height=43.0)
 
 #TEXTBOX
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
@@ -205,7 +225,7 @@ button_5 = Button(
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_5 clicked"),
-    relief="flat"
+    relief="flat",
 )
 button_5.place(
     x=907.0,
@@ -213,6 +233,18 @@ button_5.place(
     width=173.0,
     height=20.0
 )
+
+#search book button
+button_image_4 = PhotoImage(
+    file=relative_to_assets("button_4.png"))
+button_4 = Button(
+    image=button_image_4,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: print("button_4 clicked"),
+    relief="flat"
+)
+button_4.place(x=758.0, y=40.0, width=80.0, height=35.0)
 
 image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
 image_6 = canvas.create_image(250.0, 599.0, image=image_image_6)
