@@ -55,6 +55,45 @@ def gotoLogout():
     subprocess.run(["python", script_path])
 '''
 
+def bookTable():
+    #BOOK TABLE
+    sub_frame = ttk.Frame(window, width=600, height=350.0)
+    sub_frame.place(x=220, y=150)
+    # treeview
+    table = ttk.Treeview(sub_frame,
+                         columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
+                                  'Material', 'Category', 'Shelf No.', 'Total Stock',
+                                  'No. of Borrowers'), show='headings')
+    table.heading('Title', text='Title')
+    table.heading('Edition', text='Edition')
+    table.heading('Author', text='Author')
+    table.heading('Year', text='Year')
+    table.heading('ISBN', text='ISBN')
+    table.heading('Material', text='Material')
+    table.heading('Category', text='Category')
+    table.heading('Shelf No.', text='Shelf No.')
+    table.heading('Total Stock', text='Total Stock')
+    table.heading('No. of Borrowers', text='No. of Borrowers')
+
+    table.column('Title', width=150)
+    table.column('Edition', width=50)
+    table.column('Author', width=120)
+    table.column('Year', width=50)
+    table.column('ISBN', width=100)
+    table.column('Material', width=100)
+    table.column('Category', width=120)
+    table.column('Shelf No.', width=50)
+    table.column('Total Stock', width=50)
+    table.column('No. of Borrowers', width=50)
+
+    table.pack(side='left', fill='y')
+
+    '''
+    # adding data to the table
+    for i in range(len(titles)):
+        table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
+    '''
+
 window = Tk()
 
 window.geometry("1125x670")
@@ -178,56 +217,19 @@ entry_1.place(
 image_image_5 = PhotoImage(
     file=relative_to_assets("image_5.png"))
 image_5 = canvas.create_image(640.0, 380.0, image=image_image_5)
-
-#BOOK TABLE
-sub_frame = ttk.Frame(window, width=600, height=350.0)
-sub_frame.place(x=220, y=150)
-# treeview
-table = ttk.Treeview(sub_frame,
-                     columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                              'Material', 'Category', 'Shelf No.', 'Total Stock',
-                              'No. of Borrowers'), show='headings')
-table.heading('Title', text='Title')
-table.heading('Edition', text='Edition')
-table.heading('Author', text='Author')
-table.heading('Year', text='Year')
-table.heading('ISBN', text='ISBN')
-table.heading('Material', text='Material')
-table.heading('Category', text='Category')
-table.heading('Shelf No.', text='Shelf No.')
-table.heading('Total Stock', text='Total Stock')
-table.heading('No. of Borrowers', text='No. of Borrowers')
-
-table.column('Title', width=150)
-table.column('Edition', width=50)
-table.column('Author', width=120)
-table.column('Year', width=50)
-table.column('ISBN', width=100)
-table.column('Material', width=100)
-table.column('Category', width=120)
-table.column('Shelf No.', width=50)
-table.column('Total Stock', width=50)
-table.column('No. of Borrowers', width=50)
-
-table.pack(side='left', fill='y')
-
-'''
-# adding data to the table
-for i in range(len(titles)):
-    table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
-'''
+bookTable()
 
 #CATEGORY DROPDOWN
 button_image_5 = PhotoImage(
     file=relative_to_assets("button_5.png"))
-button_5 = Button(
+categoryBtn = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_5 clicked"),
     relief="flat",
 )
-button_5.place(
+categoryBtn.place(
     x=907.0,
     y=100.0,
     width=173.0,
