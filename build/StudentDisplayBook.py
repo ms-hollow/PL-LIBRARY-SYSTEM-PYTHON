@@ -16,6 +16,12 @@ def gotoSearchBook():
     script_path = os.path.join(current_directory, "StudentSearchBorrow.py")
     subprocess.run(["python", script_path])
 
+def gotoHome():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "HomePage.py")
+    subprocess.run(["python", script_path])
+
 '''#
 def gotoBorrowBook():
     window.destroy()
@@ -26,14 +32,6 @@ def gotoBorrowBook():
 
 '''#
 def gotoNotif():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
-
-'''#
-def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "studentDispBookFrame.py")
@@ -173,7 +171,7 @@ image_3 = Button(
     image=homeImage,
     borderwidth=1,
     highlightthickness=0,
-    #command=gotoHome,
+    command=gotoHome,
     relief="flat",
     bg = "white"
 )

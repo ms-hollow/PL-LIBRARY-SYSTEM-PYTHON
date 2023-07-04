@@ -188,9 +188,9 @@ title = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 title.place(x=230.0, y=445.0, width=241.0, height=24.0)
-title.configure(state="readonly")
 
 canvas.create_text(220.0, 415.0, anchor="nw", text="Title", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
 
 entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(280.0, 575.0, image=entry_image_2)
@@ -202,9 +202,9 @@ edition = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 edition.place(x=230.0, y=565.0, width=100.0, height=24.0)
-edition.configure(state="readonly")
 
-entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
+entry_image_3 = PhotoImage(
+    file=relative_to_assets("entry_3.png"))
 entry_bg_3 = canvas.create_image(425.0, 575.0, image=entry_image_3)
 
 year = Entry(
@@ -215,7 +215,6 @@ year = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 year.place(x=375.0, y=565.0, width=100.0, height=24.0)
-year.configure(state="readonly")
 
 canvas.create_text(220.0, 535.0, anchor="nw", text="Edition", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -231,7 +230,6 @@ author = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 author.place(x=230.0, y=505.0, width=241.0, height=24.0)
-author.configure(state="readonly")
 
 canvas.create_text(220.0, 475.0, anchor="nw", text="Author", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -245,7 +243,6 @@ shelf = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 shelf.place(x=809.0, y=445.0, width=241.0, height=24.0)
-shelf.configure(state="readonly")
 
 entry_image_6 = PhotoImage(file=relative_to_assets("entry_6.png"))
 entry_bg_6 = canvas.create_image(859.0, 575.0, image=entry_image_6)
@@ -257,7 +254,6 @@ currentStocks = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 currentStocks.place(x=809.0, y=565.0, width=100.0, height=24.0)
-currentStocks.configure(state="readonly")
 
 entry_image_7 = PhotoImage(file=relative_to_assets("entry_7.png"))
 entry_bg_7 = canvas.create_image(999.0, 575.0, image=entry_image_7)
@@ -269,7 +265,6 @@ noBorrowers= Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 noBorrowers.place(x=949.0, y=565.0, width=100.0, height=24.0)
-noBorrowers.configure(state="readonly")
 
 canvas.create_text(804.0, 535.0, anchor="nw", text="Current Stocks", fill="#4B0000", font=font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -282,10 +277,9 @@ totalStocks = Entry(
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="bold")
+    font=font.Font(family="Poppins", size=9, weight="normal")
 )
 totalStocks.place(x=809.0, y=505.0, width=241.0, height=24.0)
-totalStocks.configure(state="readonly")
 
 canvas.create_text(799.0, 475.0, anchor="nw", text="Total Stocks", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -301,7 +295,6 @@ isbn= Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 isbn.place(x=520.0, y=445.0, width=241.0, height=24.0)
-isbn.configure(state="readonly")
 
 canvas.create_text(510.0, 415.0, anchor="nw", text="ISBN", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -315,8 +308,7 @@ material = Entry(
     highlightthickness=0,
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
-material.place(x=520.0, y=501.0, width=241.0, height=24.0)
-material.configure(state="readonly")
+material.place(x=520.0, y=505.0, width=241.0, height=24.0)
 
 canvas.create_text(510.0, 475.0, anchor="nw", text="Material", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -331,7 +323,6 @@ genre = Entry(
     font=font.Font(family="Poppins", size=9, weight="normal")
 )
 genre.place(x=520.0, y=565.0, width=241.0, height=24.0)
-genre.configure(state="readonly")
 
 canvas.create_text(515.0, 535.0, anchor="nw", text="Genre", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -355,7 +346,8 @@ categoryBtn = Button(
     borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_3 clicked"),
-    relief="flat"
+    relief="flat",
+    bg = "white",
 )
 categoryBtn.place(x=908.0, y=99.0, width=173.0, height=20.0)
 

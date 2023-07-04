@@ -25,37 +25,28 @@ def login():
     script_path = os.path.join(current_directory, "StudentDisplayBook.py")
     subprocess.run(["python", script_path])#'''
 
+def gotoAboutUs():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "AboutUS.py")
+    subprocess.run(["python", script_path])
 
+def gotoHome():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "HomePage.py")
+    subprocess.run(["python", script_path])
+
+def gotoContactUs():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "ContactUs.py")
+    subprocess.run(["python", script_path])
 def gotoRegister():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "Register.py")
     subprocess.run(["python", script_path])
-
-
-'''#
-def gotoHome():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
-
-'''#
-def gotoAboutus():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
-
-'''#
-def gotoContactus():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
 
 window = Tk()
 window.geometry("1125x670")
@@ -148,7 +139,7 @@ button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 button_2 = Button(image=button_image_2,
                   borderwidth=0,
                   highlightthickness=0,
-                  command=lambda: print("button_2 clicked"),
+                  command=gotoHome,
                   relief="flat",
                   bg = "white"
                   )
@@ -161,7 +152,7 @@ button_3 = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=gotoContactUs,
     relief="flat",
     bg = "white"
 )
@@ -173,7 +164,7 @@ button_4 = Button(
     image=button_image_4,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
+    command=gotoAboutUs,
     relief="flat",
     bg = "white"
 )
@@ -185,8 +176,8 @@ button_5 = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=login,
-    relief="flat"
+    relief="flat",
+    #command
 )
 button_5.place(x=487.0, y=481.0, width=150.0, height=44.0)
 
