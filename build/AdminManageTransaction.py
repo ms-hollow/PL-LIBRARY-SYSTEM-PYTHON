@@ -12,13 +12,13 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-'''
+
 def gotoStudent():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "AdminManageStudent.py")
     subprocess.run(["python", script_path])
-'''
+
 
 def gotoBook():
     window.destroy()
@@ -127,8 +127,7 @@ canvas = Canvas(window, bg="#FFFFFF", height=670, width=1125, bd=0, highlightthi
 
 canvas.place(x=0, y=0)
 
-manageBookIcon = PhotoImage(
-    file=relative_to_assets("manageBook_transac.png"))
+manageBookIcon = PhotoImage(file=relative_to_assets("manageBook_transac.png"))
 manageBook = Button(
     image=manageBookIcon,
     borderwidth=0,
@@ -145,8 +144,7 @@ manageBook.place(
     height=40.0
 )
 
-manageTransactionIcon = PhotoImage(
-    file=relative_to_assets("manageTransaction.png"))
+manageTransactionIcon = PhotoImage(file=relative_to_assets("manageTransaction.png"))
 manageTransaction = Button(
     image=manageTransactionIcon,
     borderwidth=0,
@@ -167,7 +165,7 @@ manageStudent = Button(
     image=manageStudentIcon,
     borderwidth=0,
     highlightthickness=0,
-    #command=gotoStudent,
+    command=gotoStudent,
     relief="flat",
     bg="white"
 )

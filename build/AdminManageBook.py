@@ -10,19 +10,19 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
-'''
+
 def gotoTransaction():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "AdminManageTransaction.py")
     subprocess.run(["python", script_path])
     
 def gotoStudent():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "AdminManageStudent.py")
     subprocess.run(["python", script_path])
-'''
+
 def searchBook():
     print("Search Book")
 
@@ -127,7 +127,7 @@ manageBook = Button(
     image=manageBookIcon,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    #command=lambda: print("button_1 clicked"),
     relief="flat",
     bg = "white"
 )
@@ -138,7 +138,7 @@ manageTransation = Button(
     image=manageTransactionIcon,
     borderwidth=0,
     highlightthickness=0,
-    #command=gotoTransaction,
+    command=gotoTransaction,
     relief="flat",
     bg="white"
 )
@@ -154,7 +154,7 @@ manageStudent = Button(
     image=manageStudentIcon,
     borderwidth=0,
     highlightthickness=0,
-    #command=gotoStudent,
+    command=gotoStudent,
     relief="flat",
     bg="white"
 )
