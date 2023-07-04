@@ -13,10 +13,11 @@ def relative_to_assets(path: str) -> Path:
 
 def register():
 
+    CBorrower.retrieveBorrower()
     name = nameEntry.get()
     TUP_ID = tupidEntry.get()
     password = passwordEntry.get()
-    yearSection = "BSCS"
+    yearSection = "BSCS" #insert yearSection
     repassword = reenterpassEntry.get()
     contactNum = contactnumEntry.get()
     email = emailEntry.get()
@@ -42,10 +43,10 @@ def register():
             CBorrower.saveBorrower()
             messagebox.showinfo("REGISTRATION", "YOUR ACCOUNT IS SUCCESSFULLY REGISTERED!")
 
-        window.destroy()
-        current_directory = os.path.dirname(os.path.abspath(__file__))
-        script_path = os.path.join(current_directory, "Login.py")
-        subprocess.run(["python", script_path])
+            window.destroy() #destroy current window and lipat sa login window
+            current_directory = os.path.dirname(os.path.abspath(__file__))
+            script_path = os.path.join(current_directory, "Login.py")
+            subprocess.run(["python", script_path])
 
 window = Tk()
 window.geometry("1125x670")
