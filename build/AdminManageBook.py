@@ -171,7 +171,7 @@ image_2.thumbnail((max_width, max_height), Image.LANCZOS)
 resizedlogo = ImageTk.PhotoImage(image_2)
 image_2 = canvas.create_image(120.0, 59.0, image=resizedlogo)
 
-canvas.create_text(218.0, 18.0, anchor="nw", text="SEARCH", fill="#4B0000", font= font.Font(family="Poppins", size=40, weight="bold"))
+canvas.create_text(250.0, 17.0, anchor="nw", text="BOOK", fill="#4B0000", font= font.Font(family="Poppins", size=40, weight="bold"))
 
 notifButton = PhotoImage(file=relative_to_assets("image_3.png"))
 image_3 = Button(

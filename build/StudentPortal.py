@@ -222,7 +222,6 @@ class ChangePassword(ttk.Frame):
         # Add your borrow book frame code here
 
 
-
 class StudentMainFrame(tk.Tk):
     def __init__(self):
         super().__init__()

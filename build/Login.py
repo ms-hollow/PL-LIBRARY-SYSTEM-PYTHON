@@ -1,8 +1,9 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
+import CBorrower
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -11,20 +12,56 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+tries = 3
+exit = False
 def login():
 
-    tupidval = tupid.get()
-    passval = password.get()
+    #Insert here lahat ng retrieve
+    CBorrower.retrieveBorrower()
 
-    print("Name:", tupidval)
-    print("TUP ID:", passval)
+    enteredID = tupid.get()
+    enteredPass = password.get()
 
-    '''#
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "StudentDisplayBook.py")
-    subprocess.run(["python", script_path])#'''
+    index = CBorrower.locateBorrower(enteredID)
 
+    if index >= 0 and enteredPass == CBorrower.borrowerList[index].password:
+        messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
+        CBorrower.saveBorrower()
+        global loggedInAccount  # accessing global variable
+        loggedInAccount = index  # modifying global variable
+
+        #Punta sa student frame
+        window.destroy()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_directory, "StudentDisplayBook.py")
+        subprocess.run(["python", script_path])
+
+    elif enteredID == "ADMIN" and enteredPass == "1234":
+        messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
+
+        #Punta sa admin frame
+        window.destroy()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_directory, "AdminManageBook.py")
+        subprocess.run(["python", script_path])
+
+    elif index < 0:
+        messagebox.showerror("LOG IN", "YOUR TUP ID IS NOT YET REGISTERED")
+
+    else:
+        messagebox.showerror("LOG IN", "INCORRECT TUP ID OR PASSWORD")
+        global tries
+        tries -= 1
+        print("YOU HAVE", tries, "TRIES LEFT.")
+
+    if tries == 0:
+        messagebox.showerror("LOG IN", "YOU HAVE REACHED THE MAXIMUM NUMBER OF ATTEMPTS.\nTRY AGAIN LATER")
+
+        #Punta sa home
+        window.destroy()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_directory, "Register.py")
+        subprocess.run(["python", script_path])
 
 def gotoRegister():
     window.destroy()
