@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
-import CBorrower, CBook
+import CBorrower
 
 
 OUTPUT_PATH = Path(__file__).parent

@@ -1,10 +1,11 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, Menu, END
+from tkinter import ttk, Menu, END, messagebox
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 import CBook
+from CBook import bookList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
@@ -28,10 +29,6 @@ def gotoStudent():
 def searchBook():
     print("Search Book")
 
-def refreshPage():
-    print("refresh")
-    # insert code here (POPUP)
-
 def addBook():
 
     title = titleEntry.get()
@@ -45,13 +42,73 @@ def addBook():
     totalStocks = totalStocksEntry.get()
     noOfBorrower = noBorrowersEntry.get()
 
-    CBook.getInfoBook(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks, noOfBorrower)
-    bookTable()
-    #clearFields()
+    if CBook.locateBook(ISBN) >= 0:  # if existing na sa bookList
+        messagebox.showerror("ADD BOOK", "THE BOOK ALREADY EXISTS IN THE RECORD")
+    elif not CBook.checkBookFields(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks):  # if di complete fields
+        messagebox.showerror("ADD BOOK", "PLEASE FILL IN ALL FIELDS")
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="ADD BOOK",
+            message="ARE YOU SURE TO ADD THIS BOOK IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:  # if yes
+            book = CBook.CBook(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks, noOfBorrower)
+            CBook.addBook(book)
+            CBook.saveBook()
+            messagebox.showinfo("ADD BOOK", "BOOK ADDED SUCCESSFULLY")
+            clearFields()
+            bookTable()
+
+def updateBook():
+
+    title = titleEntry.get()
+    author = authorEntry.get()
+    ISBN = isbnEntry.get()
+    edition = editionEntry.get()
+    yearPublished = yearEntry.get()
+    material = materialEntry.get()
+    category = genreEntry.get()
+    shelfNo = shelfEntry.get()
+    totalStocks = totalStocksEntry.get()
+    noOfBorrower = noBorrowersEntry.get()
+
+#IF PININDOT UPDATE BOOK:
+    index = CBook.locateBook(ISBN)
+
+    if index <0:
+        messagebox.showerror("UPDATE BOOK", "THE ISBN DOES NOT FOUND A MATCH")
+    elif not CBook.checkBookFields(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks):
+        messagebox.showerror("UPDATE BOOK", "PLEASE FILL IN ALL FIELDS")
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="UPDATE BOOK",
+            message="ARE YOU SURE TO UPDATE THIS BOOK IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:  # if yes, salin new info
+            bookList[index].title = title
+            bookList[index].author = author
+            bookList[index].ISBN = ISBN
+            bookList[index].edition = edition
+            bookList[index].yearPublished = yearPublished
+            bookList[index].material = material
+            bookList[index].category = category
+            bookList[index].shelfNo = shelfNo
+            bookList[index].totalStocks = totalStocks
+            bookList[index].noOfBorrower = noOfBorrower
+
+            messagebox.showinfo("UPDATE BOOK", "BOOK UPDATED SUCCESSFULLY! ")
+            CBook.saveBook()
+            bookTable()
+            clearFields()
 
 def deleteBook():
-    print("delete")
-    # insert code here (POPUP)
+
+    ISBN = isbnEntry.get()
+    CBook.deleteBook(ISBN)
+    bookTable()
+    clearFields()
 
 def gotoLogout():
     window.destroy()
@@ -100,15 +157,19 @@ def on_table_select(table):
     if values:  # Check if values exist (a row is selected)
         clearFields()
         titleEntry.insert(0, values[0])
-        editionEntry.insert(0, values[1])
-        yearEntry.insert(0, values[2])
-        authorEntry.insert(0, values[3])
-        shelfEntry.insert(0, values[4])
-        noBorrowersEntry.insert(0, values[5])
-        totalStocksEntry.insert(0, values[6])
-        isbnEntry.insert(0, values[7])
-        materialEntry.insert(0, values[8])
-        genreEntry.insert(0, values[9])
+        authorEntry.insert(0, values[1])
+        isbnEntry.insert(0, values[2])
+        editionEntry.insert(0, values[3])
+        yearEntry.insert(0, values[4])
+        materialEntry.insert(0, values[5])
+        genreEntry.insert(0, values[6])
+        shelfEntry.insert(0, values[7])
+
+        index = CBook.locateBook(isbnEntry.get())
+        totalStocksEntry.insert(0, bookList[index].totalStocks)
+        noBorrowersEntry.insert(0, bookList[index].noOfBorrower)
+        currentStock = str(int(bookList[index].totalStocks) - int(bookList[index].noOfBorrower))
+        currentStocksEntry.insert(0, currentStock)
         #INSERT HERE SA CURRENT STOCKS
         #currentStocksEntry.put()
 
@@ -121,8 +182,7 @@ def bookTable():
     # treeview
     table = ttk.Treeview(sub_frame,
                          columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                                  'Material', 'Category', 'Shelf No.', 'Total Stock',
-                                  'No. of Borrowers'), show='headings')
+                                  'Material', 'Category', 'Shelf No.'), show='headings')
     table.heading('Title', text='Title')
     table.heading('Edition', text='Edition')
     table.heading('Author', text='Author')
@@ -131,29 +191,24 @@ def bookTable():
     table.heading('Material', text='Material')
     table.heading('Category', text='Category')
     table.heading('Shelf No.', text='Shelf No.')
-    table.heading('Total Stock', text='Total Stock')
-    table.heading('No. of Borrowers', text='No. of Borrowers')
 
     table.column('Title', width=150)
-    table.column('Edition', width=50)
+    table.column('Edition', width=80)
     table.column('Author', width=120)
-    table.column('Year', width=50)
+    table.column('Year', width=90)
     table.column('ISBN', width=100)
     table.column('Material', width=100)
     table.column('Category', width=120)
-    table.column('Shelf No.', width=50)
-    table.column('Total Stock', width=50)
-    table.column('No. of Borrowers', width=50)
+    table.column('Shelf No.', width=80)
 
     table.pack(side='left', fill='y')
     # Bind the function to the table's selection event
     table.bind("<<TreeviewSelect>>", lambda event: on_table_select(table))
 
     # Add retrieved books to the table
-    for book in CBook.bookList:
+    for book in bookList:
         table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
-                                        book.material, book.category, book.shelfNo, book.totalStocks,
-                                        book.noOfBorrower))
+                                        book.material, book.category, book.shelfNo))
 
 
 def clearFields():
@@ -348,7 +403,6 @@ currentStocksEntry = Entry(
     font=font.Font(family="Poppins", size=10, weight="normal")
 )
 currentStocksEntry.place(x=809.0, y=565.0, width=100.0, height=24.0)
-currentStocksEntry.configure(state="readonly")
 
 entry_image_7 = PhotoImage(file=relative_to_assets("entry_7.png"))
 entry_bg_7 = canvas.create_image(999.0, 575.0, image=entry_image_7)
@@ -450,7 +504,7 @@ refreshBtn = Button(
     image=refreshBtnImage,
     borderwidth=0,
     highlightthickness=0,
-    command=refreshPage,
+    command=updateBook,
     relief="flat",
     bg="white"
 )
