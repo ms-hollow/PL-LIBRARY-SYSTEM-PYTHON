@@ -287,14 +287,14 @@ entry_bg_2 = canvas.create_image(
     455.0,
     image=entry_image_2
 )
-title = Entry(
+titleEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font = font.Font(family="Poppins", size=11, weight="normal")
 )
-title.place(x=230.0, y=444.0, width=241.0, height=23.0)
+titleEntry.place(x=230.0, y=444.0, width=241.0, height=23.0)
 
 canvas.create_text(
     220.0,
@@ -311,14 +311,14 @@ entry_bg_3 = canvas.create_image(
     575.0,
     image=entry_image_3
 )
-dateborrowed = Entry(
+dateborrowedEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-dateborrowed.place(x=230.0, y=564.0, width=106.0, height=23.0)
+dateborrowedEntry.place(x=230.0, y=564.0, width=106.0, height=23.0)
 
 entry_image_4 = PhotoImage(file=relative_to_assets("dateReturnEntry.png"))
 entry_bg_4 = canvas.create_image(
@@ -326,14 +326,14 @@ entry_bg_4 = canvas.create_image(
     575.0,
     image=entry_image_4
 )
-dateReturn= Entry(
+dateReturnEntry= Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-dateReturn.place(x=370.0, y=564.0, width=100.0, height=23.0)
+dateReturnEntry.place(x=370.0, y=564.0, width=100.0, height=23.0)
 
 canvas.create_text(
     225.0,
@@ -359,14 +359,14 @@ entry_bg_5 = canvas.create_image(
     515.0,
     image=entry_image_5
 )
-author = Entry(
+authorEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-author.place(x=230.0, y=504.0, width=241.0, height=23.0)
+authorEntry.place(x=230.0, y=504.0, width=241.0, height=23.0)
 
 canvas.create_text(
     220.0,
@@ -383,14 +383,14 @@ entry_bg_7 = canvas.create_image(
     575.0,
     image=entry_image_7
 )
-remainingDays = Entry(
+remainingDaysEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-remainingDays.place(x=809.0, y=564.0, width=115.0, height=23.0)
+remainingDaysEntry.place(x=809.0, y=564.0, width=115.0, height=23.0)
 
 statusIcon = PhotoImage(file=relative_to_assets("statusdropdown.png"))
 status = Button(
@@ -418,14 +418,14 @@ entry_bg_9 = canvas.create_image(
     515.0,
     image=entry_image_9
 )
-librarian = Entry(
+librarianEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font = font.Font(family="Poppins", size=11, weight="normal")
 )
-librarian.place(x=809.0, y=504.0, width=241.0, height=23.0)
+librarianEntry.place(x=809.0, y=504.0, width=241.0, height=23.0)
 
 canvas.create_text(
     799.0,
@@ -438,14 +438,14 @@ canvas.create_text(
 
 entry_image_10 = PhotoImage(file=relative_to_assets("isbnEntry.png"))
 entry_bg_10 = canvas.create_image(640.5, 455.0, image=entry_image_10)
-isbn = Entry(
+isbnEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-isbn.place(x=520.0, y=444.0, width=241.0, height=23.0)
+isbnEntry.place(x=520.0, y=444.0, width=241.0, height=23.0)
 
 canvas.create_text(
     510.0,
@@ -458,14 +458,14 @@ canvas.create_text(
 
 entry_image_11 = PhotoImage(file=relative_to_assets("tupidEntry.png"))
 entry_bg_11 = canvas.create_image(640.5, 515.0, image=entry_image_11)
-tupid = Entry(
+tupidEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-tupid.place(x=520.0, y=504.0, width=241.0, height=23.0)
+tupidEntry.place(x=520.0, y=504.0, width=241.0, height=23.0)
 
 canvas.create_text(
     510.0,
@@ -478,14 +478,14 @@ canvas.create_text(
 
 entry_image_12 = PhotoImage(file=relative_to_assets("borrowerEntry.png"))
 entry_bg_12 = canvas.create_image(640.5, 575.0, image=entry_image_12)
-borrower = Entry(
+borrowerEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-borrower.place(x=520.0, y=564.0, width=241.0, height=23.0)
+borrowerEntry.place(x=520.0, y=564.0, width=241.0, height=23.0)
 
 canvas.create_text(
     515.0,
@@ -522,28 +522,28 @@ entry_bg_1 = canvas.create_image(
     455.0,
     image=referenceIcon
 )
-referenceNum = Entry(
+referenceNumEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-referenceNum.place(x=809.0, y=441.0, width=130.0, height=28.0)
+referenceNumEntry.place(x=809.0, y=441.0, width=130.0, height=28.0)
 
 canvas.create_text(799.0, 415.0, anchor="nw", text="Reference Number", fill="#4B0000", font=font_style)
 
 fineIcon = PhotoImage(file=relative_to_assets("fineEntry.png"))
 entry_bg_2 = canvas.create_image(1015.0, 455.0, image=fineIcon)
 
-fine = Entry(
+fineEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=11, weight="normal")
 )
-fine.place(x=980.0, y=441.0, width=70.0, height=28.0)
+fineEntry.place(x=980.0, y=441.0, width=70.0, height=28.0)
 
 canvas.create_text(970.0, 415.0, anchor="nw", text="Fine", fill="#4B0000", font=font_style)
 

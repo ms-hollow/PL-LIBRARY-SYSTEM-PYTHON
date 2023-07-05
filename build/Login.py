@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
-import CBorrower
+import CBorrower, CBook
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -18,6 +18,7 @@ def login():
 
     #Insert here lahat ng retrieve
     CBorrower.retrieveBorrower()
+    #CBook.retrieveBook()
 
     enteredID = tupid.get()
     enteredPass = password.get()
@@ -70,29 +71,24 @@ def gotoRegister():
     subprocess.run(["python", script_path])
 
 
-'''#
 def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
-'''
 
-'''#
+
 def gotoAboutus():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "AboutUS.py")
     subprocess.run(["python", script_path])
-'''
 
-'''#
 def gotoContactus():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "ContactUs.py")
     subprocess.run(["python", script_path])
-'''
 
 window = Tk()
 window.geometry("1125x670")
@@ -185,7 +181,7 @@ button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
 button_2 = Button(image=button_image_2,
                   borderwidth=0,
                   highlightthickness=0,
-                  command=lambda: print("button_2 clicked"),
+                  command=gotoHome,
                   relief="flat",
                   bg = "white"
                   )
@@ -198,7 +194,7 @@ button_3 = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=gotoContactus,
     relief="flat",
     bg = "white"
 )
@@ -210,7 +206,7 @@ button_4 = Button(
     image=button_image_4,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
+    command=gotoAboutus,
     relief="flat",
     bg = "white"
 )

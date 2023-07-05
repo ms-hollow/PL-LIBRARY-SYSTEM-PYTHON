@@ -32,7 +32,6 @@ def gotoNotif():
     subprocess.run(["python", script_path])
 '''
 
-
 def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))

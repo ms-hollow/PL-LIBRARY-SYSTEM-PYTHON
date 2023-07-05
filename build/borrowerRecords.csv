@@ -1,5 +1,4 @@
 Name,TUP_ID,Password,Year and Section,Contact Number,Email,No. of Borrowed Books,Borrowed Book(s)
-N,NOPQRO,N,N,N,N,M
 N,NOPQRS,N,_p`p,NN,N,M
 N,NOPQRS,N,_p`p,NN,N,M
 N,NOPQRS,N,_p`p,NN,N,M
@@ -159,6 +158,7 @@ N,NOPQRS,N,_p`p,NN,N,M
 N,NOPQRS,N,_p`p,NN,N,M
 N,NOPQRS,N,_p`p,NN,N,M
 N,NOPQRS,N,_p`p,NN,N,M
+N,NOPQRO,N,N,N,N,M
 NP,NOPQRT,N,NP,N,N,M
 NP,NOPQRT,N,NP,N,N,M
 NP,NOPQRT,N,NP,N,N,M

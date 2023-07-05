@@ -1,12 +1,14 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, Menu
+from tkinter import ttk, Menu, END
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CBook
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
+
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -16,7 +18,7 @@ def gotoTransaction():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "AdminManageTransaction.py")
     subprocess.run(["python", script_path])
-    
+
 def gotoStudent():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -31,14 +33,25 @@ def refreshPage():
     # insert code here (POPUP)
 
 def addBook():
-    print("add")
-    # this function will search the book, display the table and diplay lahat ng info ng book sa entry.
-    #insert code here para sa search book
+
+    title = titleEntry.get()
+    author = authorEntry.get()
+    ISBN = isbnEntry.get()
+    edition = editionEntry.get()
+    yearPublished = yearEntry.get()
+    material = materialEntry.get()
+    category = genreEntry.get()
+    shelfNo = shelfEntry.get()
+    totalStocks = totalStocksEntry.get()
+    noOfBorrower = noBorrowersEntry.get()
+
+    CBook.getInfoBook(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks, noOfBorrower)
+    bookTable()
+    #clearFields()
 
 def deleteBook():
     print("delete")
     # insert code here (POPUP)
-
 
 def gotoLogout():
     window.destroy()
@@ -61,7 +74,6 @@ def gotoHome():
     script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
 
-
 def dropdownMenu():
     # Create a dropdown menu
     dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
@@ -81,6 +93,25 @@ def dropdownMenu():
 
     # Display the dropdown menu under the category button
     dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
+
+def on_table_select(table):
+    selected_item = table.focus()  # Get the selected item (row) in the table
+    values = table.item(selected_item)["values"]  # Get the values of the selected item
+    if values:  # Check if values exist (a row is selected)
+        clearFields()
+        titleEntry.insert(0, values[0])
+        editionEntry.insert(0, values[1])
+        yearEntry.insert(0, values[2])
+        authorEntry.insert(0, values[3])
+        shelfEntry.insert(0, values[4])
+        noBorrowersEntry.insert(0, values[5])
+        totalStocksEntry.insert(0, values[6])
+        isbnEntry.insert(0, values[7])
+        materialEntry.insert(0, values[8])
+        genreEntry.insert(0, values[9])
+        #INSERT HERE SA CURRENT STOCKS
+        #currentStocksEntry.put()
+
 
 def bookTable():
     # TABLE SEARCH BOOK
@@ -115,13 +146,30 @@ def bookTable():
     table.column('No. of Borrowers', width=50)
 
     table.pack(side='left', fill='y')
+    # Bind the function to the table's selection event
+    table.bind("<<TreeviewSelect>>", lambda event: on_table_select(table))
 
-    '''
-    # adding data to the table
-    for i in range(len(titles)):
-        table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
-    '''
+    # Add retrieved books to the table
+    for book in CBook.bookList:
+        table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
+                                        book.material, book.category, book.shelfNo, book.totalStocks,
+                                        book.noOfBorrower))
 
+
+def clearFields():
+    titleEntry.delete(0, END)  # Clear the contents of the Entry widget
+    editionEntry.delete(0, END)
+    yearEntry.delete(0, END)
+    authorEntry.delete(0, END)
+    shelfEntry.delete(0, END)
+    currentStocksEntry.delete(0, END)
+    noBorrowersEntry.delete(0, END)
+    totalStocksEntry.delete(0, END)
+    isbnEntry.delete(0, END)
+    materialEntry.delete(0, END)
+    genreEntry.delete(0, END)
+
+CBook.retrieveBook()
 window = Tk()
 
 window.geometry("1125x670")
@@ -227,40 +275,40 @@ bookTable()
 
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(350.5, 455.0, image=entry_image_1)
-title = Entry(
+titleEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-title.place(x=230.0, y=445.0, width=241.0, height=24.0)
+titleEntry.place(x=230.0, y=445.0, width=241.0, height=24.0)
 
 canvas.create_text(220.0, 415.0, anchor="nw", text="Title", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
 entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(280.0, 575.0, image=entry_image_2)
-edition = Entry(
+editionEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-edition.place(x=230.0, y=565.0, width=100.0, height=24.0)
+editionEntry.place(x=230.0, y=565.0, width=100.0, height=24.0)
 
 entry_image_3 = PhotoImage(
     file=relative_to_assets("entry_3.png"))
 entry_bg_3 = canvas.create_image(425.0, 575.0, image=entry_image_3)
 
-year = Entry(
+yearEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-year.place(x=375.0, y=565.0, width=100.0, height=24.0)
+yearEntry.place(x=375.0, y=565.0, width=100.0, height=24.0)
 
 canvas.create_text(220.0, 535.0, anchor="nw", text="Edition", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -268,49 +316,50 @@ canvas.create_text(365.0, 535.0, anchor="nw", text="Year Published", fill="#4B00
 
 entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
 entry_bg_4 = canvas.create_image(350.5, 515.0, image=entry_image_4)
-author = Entry(
+authorEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-author.place(x=230.0, y=505.0, width=241.0, height=24.0)
+authorEntry.place(x=230.0, y=505.0, width=241.0, height=24.0)
 
 canvas.create_text(220.0, 475.0, anchor="nw", text="Author", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
 entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
 entry_bg_5 = canvas.create_image(929.5, 455.0, image=entry_image_5)
-shelf = Entry(
+shelfEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-shelf.place(x=809.0, y=445.0, width=241.0, height=24.0)
+shelfEntry.place(x=809.0, y=445.0, width=241.0, height=24.0)
 
 entry_image_6 = PhotoImage(file=relative_to_assets("entry_6.png"))
 entry_bg_6 = canvas.create_image(859.0, 575.0, image=entry_image_6)
-currentStocks = Entry(
+currentStocksEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-currentStocks.place(x=809.0, y=565.0, width=100.0, height=24.0)
+currentStocksEntry.place(x=809.0, y=565.0, width=100.0, height=24.0)
+currentStocksEntry.configure(state="readonly")
 
 entry_image_7 = PhotoImage(file=relative_to_assets("entry_7.png"))
 entry_bg_7 = canvas.create_image(999.0, 575.0, image=entry_image_7)
-noBorrowers= Entry(
+noBorrowersEntry= Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-noBorrowers.place(x=949.0, y=565.0, width=100.0, height=24.0)
+noBorrowersEntry.place(x=949.0, y=565.0, width=100.0, height=24.0)
 
 canvas.create_text(804.0, 535.0, anchor="nw", text="Current Stocks", fill="#4B0000", font=font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -318,14 +367,14 @@ canvas.create_text(944.0, 535.0, anchor="nw", text="No. of Borrowers", fill="#4B
 
 entry_image_8 = PhotoImage(file=relative_to_assets("entry_8.png"))
 entry_bg_8 = canvas.create_image(929.5, 515.0, image=entry_image_8)
-totalStocks = Entry(
+totalStocksEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-totalStocks.place(x=809.0, y=505.0, width=241.0, height=24.0)
+totalStocksEntry.place(x=809.0, y=505.0, width=241.0, height=24.0)
 
 canvas.create_text(799.0, 475.0, anchor="nw", text="Total Stocks", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -333,42 +382,42 @@ canvas.create_text(804.0, 415.0, anchor="nw", text="Shelf Number", fill="#4B0000
 
 entry_image_9 = PhotoImage(file=relative_to_assets("entry_9.png"))
 entry_bg_9 = canvas.create_image(640.5, 455.0, image=entry_image_9)
-isbn= Entry(
+isbnEntry= Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-isbn.place(x=520.0, y=445.0, width=241.0, height=24.0)
+isbnEntry.place(x=520.0, y=445.0, width=241.0, height=24.0)
 
 canvas.create_text(510.0, 415.0, anchor="nw", text="ISBN", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
 entry_image_10 = PhotoImage(file=relative_to_assets("entry_10.png"))
 entry_bg_10 = canvas.create_image(640.5, 515.0,image=entry_image_10)
 
-material = Entry(
+materialEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-material.place(x=520.0, y=505.0, width=241.0, height=24.0)
+materialEntry.place(x=520.0, y=505.0, width=241.0, height=24.0)
 
 canvas.create_text(510.0, 475.0, anchor="nw", text="Material", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
 entry_image_11 = PhotoImage(file=relative_to_assets("entry_11.png"))
 entry_bg_11 = canvas.create_image(640.5, 575.0, image=entry_image_11)
 
-genre = Entry(
+genreEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
-genre.place(x=520.0, y=565.0, width=241.0, height=24.0)
+genreEntry.place(x=520.0, y=565.0, width=241.0, height=24.0)
 
 canvas.create_text(515.0, 535.0, anchor="nw", text="Genre", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
 
@@ -382,7 +431,7 @@ searchEntry = Entry(
     bg="#FFFDFD",
     fg="#000716",
     highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
+    font=font.Font(family="Poppins", size=10, weight="normal")
 )
 searchEntry.place(x=460.0, y=43.0, width=290.0, height=30.0)
 
