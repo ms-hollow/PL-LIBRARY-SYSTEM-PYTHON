@@ -1,7 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk
+from tkinter import ttk, Menu
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 
@@ -39,13 +39,13 @@ def deleteBook():
     print("delete")
     # insert code here (POPUP)
 
-'''#
+
 def gotoLogout():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "Login.py")
     subprocess.run(["python", script_path])
-'''
+
 
 '''#
 def gotoNotif():
@@ -55,14 +55,32 @@ def gotoNotif():
     subprocess.run(["python", script_path])
 '''
 
-'''#
 def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
-'''
 
+
+def dropdownMenu():
+    # Create a dropdown menu
+    dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
+    dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
+
+    # List of options for the dropdown menu
+    options = ["Title", "Author", "Year", "Material", "Genre                       "]  # Add your options here
+
+    # Function to be executed when an option is selected from the dropdown
+    def on_option_selected(option):
+        print("Selected Option:", option)
+
+    # Add options to the dropdown menu
+    for option in options:
+        dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
+
+
+    # Display the dropdown menu under the category button
+    dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
 
 def bookTable():
     # TABLE SEARCH BOOK
@@ -189,7 +207,7 @@ image_4 = Button(
     image=homeImage,
     borderwidth=1,
     highlightthickness=0,
-    #command=gotoHome,
+    command=gotoHome,
     relief="flat",
     bg = "white"
 )
@@ -200,7 +218,7 @@ image_5 = Button(
     image=logoutImage,
     borderwidth=1,
     highlightthickness=0,
-    #command=gotoLogout,
+    command=gotoLogout,
     relief="flat",
     bg = "white"
 )
@@ -373,7 +391,7 @@ categoryBtn = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
+    command=dropdownMenu,
     relief="flat"
 )
 categoryBtn.place(x=908.0, y=99.0, width=173.0, height=20.0)

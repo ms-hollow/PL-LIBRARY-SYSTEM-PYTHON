@@ -40,14 +40,12 @@ def deleteBook():
     print("delete")
     # insert code here (POPUP)
 
-
-'''#
 def gotoLogout():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "Login.py")
     subprocess.run(["python", script_path])
-'''
+
 
 '''#
 def gotoNotif():
@@ -56,15 +54,11 @@ def gotoNotif():
     script_path = os.path.join(current_directory, "studentDispBookFrame.py")
     subprocess.run(["python", script_path])
 '''
-
-'''#
 def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
+    script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
-'''
-
 
 def bookTable():
     # TABLE SEARCH BOOK
@@ -187,7 +181,7 @@ image_4 = Button(
     image=homeImage,
     borderwidth=1,
     highlightthickness=0,
-    # command=gotoHome,
+    command=gotoHome,
     relief="flat",
     bg="white"
 )
@@ -198,7 +192,7 @@ image_5 = Button(
     image=logoutImage,
     borderwidth=1,
     highlightthickness=0,
-    # command=gotoLogout,
+    command=gotoLogout,
     relief="flat",
     bg="white"
 )
