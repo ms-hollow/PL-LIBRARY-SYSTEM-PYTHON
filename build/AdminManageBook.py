@@ -10,7 +10,7 @@ from CBook import bookList
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
-
+option_value = ""
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -25,9 +25,6 @@ def gotoStudent():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "AdminManageStudent.py")
     subprocess.run(["python", script_path])
-
-def searchBook():
-    print("Search Book")
 
 def addBook():
 
@@ -142,6 +139,8 @@ def dropdownMenu():
     # Function to be executed when an option is selected from the dropdown
     def on_option_selected(option):
         print("Selected Option:", option)
+        global option_value
+        option_value = option
 
     # Add options to the dropdown menu
     for option in options:
@@ -173,11 +172,34 @@ def on_table_select(table):
         #INSERT HERE SA CURRENT STOCKS
         #currentStocksEntry.put()
 
+def getSearchEntry():
+    search_value = searchEntry.get()
+    return search_value
 
 def bookTable():
     # TABLE SEARCH BOOK
     sub_frame = ttk.Frame(window, width=600, height=350.0)
     sub_frame.place(x=220, y=150)
+
+    global option_value
+    choice = option_value
+    keyword = str(getSearchEntry())
+
+    foundMatch = False
+    for book in bookList:
+        attributeValue = ""
+        if choice == "Title":
+            attributeValue = book.title
+        elif choice == "Author":
+            attributeValue = book.author
+        elif choice == "Year":
+            attributeValue = book.yearPublished
+        elif choice == "Material":
+            attributeValue = book.material
+        elif choice == "Genre":
+            attributeValue = book.category
+        else:
+            attributeValue = book.title
 
     # treeview
     table = ttk.Treeview(sub_frame,
@@ -207,9 +229,12 @@ def bookTable():
 
     # Add retrieved books to the table
     for book in bookList:
-        table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
-                                        book.material, book.category, book.shelfNo))
+        if keyword.lower() in attributeValue.lower():
+            table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
+                                            book.material, book.category, book.shelfNo))
 
+    if not foundMatch:
+        messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
 
 def clearFields():
     titleEntry.delete(0, END)  # Clear the contents of the Entry widget
@@ -325,6 +350,18 @@ image_5 = Button(
     relief="flat",
     bg = "white"
 )
+
+entry_image_12 = PhotoImage(file=relative_to_assets("entry_12.png"))
+entry_bg_12 = canvas.create_image(606.0, 56.5, image=entry_image_12)
+searchEntry = Entry(
+    bd=0,
+    bg="#FFFDFD",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=10, weight="normal")
+)
+searchEntry.place(x=460.0, y=43.0, width=290.0, height=30.0)
+
 image_5.place(x=1054.0, y=30.0, width=43.0, height=43.0)
 bookTable()
 
@@ -478,17 +515,6 @@ canvas.create_text(515.0, 535.0, anchor="nw", text="Genre", fill="#4B0000", font
 image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
 image_6 = canvas.create_image(641.0, 264.0, image=image_image_6)
 
-entry_image_12 = PhotoImage(file=relative_to_assets("entry_12.png"))
-entry_bg_12 = canvas.create_image(606.0, 56.5, image=entry_image_12)
-searchEntry = Entry(
-    bd=0,
-    bg="#FFFDFD",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=10, weight="normal")
-)
-searchEntry.place(x=460.0, y=43.0, width=290.0, height=30.0)
-
 button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
 categoryBtn = Button(
     image=button_image_3,
@@ -536,7 +562,7 @@ searchBtn = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=searchBook,
+    command=bookTable,
     relief="flat",
     bg="white"
 )
