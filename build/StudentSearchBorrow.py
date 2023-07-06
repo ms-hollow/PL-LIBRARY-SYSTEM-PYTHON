@@ -1,13 +1,21 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, Menu
+from tkinter import ttk, Menu, END, messagebox, OptionMenu, StringVar
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CBook, CTransaction, CBorrower
+from CBook import bookList
+from CTransaction import transactionList
+from CBorrower import borrowerList
+import BorrowBook
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
+option_value = ""
+indexBook = 0
+indexBorrower = 0
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -18,14 +26,26 @@ def gotoDisplayBooks():
     script_path = os.path.join(current_directory, "StudentDisplayBook.py")
     subprocess.run(["python", script_path])
 
-def searchBook():
-    print("SearchBook")
-    # this function will search the book, display the table and diplay lahat ng info ng book sa entry.
-    #insert code here para sa search book
-
 def borrowBook():
-    print("Borrow Book")
-    # insert code here (POPUP)
+    '''
+    global indexBook
+    global indexBorrower
+
+    ISBN = isbnEntry.get()
+    indexBook = CBook.locateBook(ISBN)  # kinuha index ng book na hihiramin
+    title = bookList[indexBook].title
+    author = bookList[indexBook].author
+
+    indexBorrower = CBorrower.loggedInAccount  # kinuha index ng currently account logged in.
+    TUP_ID = borrowerList[indexBorrower].TUP_ID
+    borrower = borrowerList[indexBorrower].name
+    yearSection = borrowerList[indexBorrower].yearSection
+
+    borrower = borrowerList[indexBorrower].name
+    '''
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "BorrowBook.py")
+    subprocess.run(["python", script_path])
 
 def gotoLogin():
     window.destroy()
@@ -53,26 +73,6 @@ def gotoChangePass():
     script_path = os.path.join(current_directory, "ChangePassword.py")
     subprocess.run(["python", script_path])
 
-def dropdownMenu():
-    # Create a dropdown menu
-    dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
-    dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
-
-    # List of options for the dropdown menu
-    options = ["Title", "Author", "Year", "Material", "Genre                       "]  # Add your options here
-
-    # Function to be executed when an option is selected from the dropdown
-    def on_option_selected(option):
-        print("Selected Option:", option)
-
-    # Add options to the dropdown menu
-    for option in options:
-        dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
-
-    # Display the dropdown menu under the category button
-    dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
-
-
 def Student_dropdownMenu():
     # Create a dropdown menu
     dropdown_menu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
@@ -97,46 +97,139 @@ def Student_dropdownMenu():
     # Display the dropdown menu under the image_5 button
     dropdown_menu.post(image_4.winfo_rootx(), image_4.winfo_rooty() + image_4.winfo_height())
 
-def bookTable():
-    # TABLE SEARCH BOOK
-    sub_frame = ttk.Frame(window, width=600, height=350.0)
-    sub_frame.place(x=220, y=150)
 
-    # treeview
-    table = ttk.Treeview(sub_frame,
-                         columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                                  'Material', 'Category', 'Shelf No.', 'Total Stock',
-                                  'No. of Borrowers'), show='headings')
-    table.heading('Title', text='Title')
-    table.heading('Edition', text='Edition')
-    table.heading('Author', text='Author')
-    table.heading('Year', text='Year')
-    table.heading('ISBN', text='ISBN')
-    table.heading('Material', text='Material')
-    table.heading('Category', text='Category')
-    table.heading('Shelf No.', text='Shelf No.')
-    table.heading('Total Stock', text='Total Stock')
-    table.heading('No. of Borrowers', text='No. of Borrowers')
+class DisplayTable:
 
-    table.column('Title', width=150)
-    table.column('Edition', width=50)
-    table.column('Author', width=120)
-    table.column('Year', width=50)
-    table.column('ISBN', width=100)
-    table.column('Material', width=100)
-    table.column('Category', width=120)
-    table.column('Shelf No.', width=50)
-    table.column('Total Stock', width=50)
-    table.column('No. of Borrowers', width=50)
+    def __init__(self):
+        self.choice = 0  # Initialize the instance variable
 
-    table.pack(side='left', fill='y')
+    def dropdownMenu(self):
+        # Create a dropdown menu
+        dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
+        dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
 
-    '''
-    # adding data to the table
-    for i in range(len(titles)):
-        table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
-    '''
+        # List of options for the dropdown menu
+        options = ["Title", "Author", "Year", "Material", "Genre"]  # Add your options here
 
+        # Create a StringVar outside the function to store the selected option
+        clicked = StringVar()
+
+        # Function to be executed when an option is selected from the dropdown
+        def on_option_selected(option):
+            self.choice = options.index(option) + 1
+            print(option)  # Print the selected option
+            global option_value
+            option_value = option
+
+        # Add options to the dropdown menu
+        for option in options:
+            dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
+
+        # Display the dropdown menu under the category button
+        dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
+
+        # Return the StringVar 'clicked' so that it can be accessed outside the method
+        return clicked
+
+    def on_table_select(self, table):
+        selected_item = table.focus()  # Get the selected item (row) in the table
+        values = table.item(selected_item)["values"]  # Get the values of the selected item
+        if values:  # Check if values exist (a row is selected)
+            clearFields()
+            titleEntry.insert(0, values[0])
+            authorEntry.insert(0, values[1])
+            isbnEntry.insert(0, values[2])
+            editionEntry.insert(0, values[3])
+            yearEntry.insert(0, values[4])
+            materialEntry.insert(0, values[5])
+            genreEntry.insert(0, values[6])
+            shelfEntry.insert(0, values[7])
+
+            index = CBook.locateBook(isbnEntry.get())
+            totalStocksEntry.insert(0, bookList[index].totalStocks)
+            noBorrowersEntry.insert(0, bookList[index].noOfBorrower)
+            currentStock = str(int(bookList[index].totalStocks) - int(bookList[index].noOfBorrower))
+            currentStocksEntry.insert(0, currentStock)
+
+    def bookTable(self):
+        # TABLE SEARCH BOOK
+        sub_frame = ttk.Frame(window, width=600, height=350.0)
+        sub_frame.place(x=220, y=150)
+
+        # Create the table outside the loop
+        table = ttk.Treeview(sub_frame,
+                             columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
+                                      'Material', 'Category', 'Shelf No.'), show='headings')
+
+        table.heading('Title', text='Title')
+        table.heading('Edition', text='Edition')
+        table.heading('Author', text='Author')
+        table.heading('Year', text='Year')
+        table.heading('ISBN', text='ISBN')
+        table.heading('Material', text='Material')
+        table.heading('Category', text='Category')
+        table.heading('Shelf No.', text='Shelf No.')
+
+        table.column('Title', width=150)
+        table.column('Edition', width=80)
+        table.column('Author', width=120)
+        table.column('Year', width=90)
+        table.column('ISBN', width=100)
+        table.column('Material', width=100)
+        table.column('Category', width=120)
+        table.column('Shelf No.', width=80)
+
+        table.pack(side='left', fill='y')
+        # Bind the function to the table's selection event
+        table.bind("<<TreeviewSelect>>", lambda event: self.on_table_select(table))
+
+        # Clear the table before populating it with new search results
+        table.delete(*table.get_children())
+
+        keyword = searchEntry.get()
+        global option_value
+        print(option_value)
+
+        foundMatch = False
+        for book in bookList:
+            if option_value == "Title":
+                attributeValue = book.title
+            elif option_value == "Author":
+                attributeValue = book.author
+            elif option_value == "Year":
+                attributeValue = book.yearPublished
+            elif option_value == "Material":
+                attributeValue = book.material
+            elif option_value == "Genre":
+                attributeValue = book.category
+            else:
+                attributeValue = book.title
+
+            if keyword.lower() in attributeValue.lower():
+                table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
+                                                book.material, book.category, book.shelfNo))
+                foundMatch = True
+
+        if not foundMatch:
+           messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+
+
+# Create an instance of DisplayTable class
+displayTable = DisplayTable()
+def clearFields():
+    titleEntry.delete(0, END)  # Clear the contents of the Entry widget
+    editionEntry.delete(0, END)
+    yearEntry.delete(0, END)
+    authorEntry.delete(0, END)
+    shelfEntry.delete(0, END)
+    currentStocksEntry.delete(0, END)
+    noBorrowersEntry.delete(0, END)
+    totalStocksEntry.delete(0, END)
+    isbnEntry.delete(0, END)
+    materialEntry.delete(0, END)
+    genreEntry.delete(0, END)
+
+CBook.retrieveBook()
 window = Tk()
 
 window.geometry("1125x670")
@@ -170,7 +263,7 @@ searchBooks = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
+    command=displayTable.bookTable,
     relief="flat",
     bg="white"
 )
@@ -220,168 +313,6 @@ image_5 = Button(
     relief="flat",
     bg = "white"
 )
-image_5.place(x=1054.0, y=30.0, width=43.0, height=43.0)
-bookTable()
-
-entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-entry_bg_1 = canvas.create_image(350.5, 455.0, image=entry_image_1)
-title = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-title.place(x=230.0, y=445.0, width=241.0, height=24.0)
-title.configure(state="readonly")
-
-canvas.create_text(220.0, 415.0, anchor="nw", text="Title", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-entry_bg_2 = canvas.create_image(280.0, 575.0, image=entry_image_2)
-edition = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-edition.place(x=230.0, y=565.0, width=100.0, height=24.0)
-edition.configure(state="readonly")
-
-entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
-entry_bg_3 = canvas.create_image(425.0, 575.0, image=entry_image_3)
-
-year = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-year.place(x=375.0, y=565.0, width=100.0, height=24.0)
-year.configure(state="readonly")
-
-canvas.create_text(220.0, 535.0, anchor="nw", text="Edition", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-canvas.create_text(365.0, 535.0, anchor="nw", text="Year Published", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-entry_bg_4 = canvas.create_image(350.5, 515.0, image=entry_image_4)
-author = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-author.place(x=230.0, y=505.0, width=241.0, height=24.0)
-author.configure(state="readonly")
-
-canvas.create_text(220.0, 475.0, anchor="nw", text="Author", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
-entry_bg_5 = canvas.create_image(929.5, 455.0, image=entry_image_5)
-shelf = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-shelf.place(x=809.0, y=445.0, width=241.0, height=24.0)
-shelf.configure(state="readonly")
-
-entry_image_6 = PhotoImage(file=relative_to_assets("entry_6.png"))
-entry_bg_6 = canvas.create_image(859.0, 575.0, image=entry_image_6)
-currentStocks = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-currentStocks.place(x=809.0, y=565.0, width=100.0, height=24.0)
-currentStocks.configure(state="readonly")
-
-entry_image_7 = PhotoImage(file=relative_to_assets("entry_7.png"))
-entry_bg_7 = canvas.create_image(999.0, 575.0, image=entry_image_7)
-noBorrowers= Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-noBorrowers.place(x=949.0, y=565.0, width=100.0, height=24.0)
-noBorrowers.configure(state="readonly")
-
-canvas.create_text(804.0, 535.0, anchor="nw", text="Current Stocks", fill="#4B0000", font=font.Font(family="Poppins", size=10, weight="bold"))
-
-canvas.create_text(944.0, 535.0, anchor="nw", text="No. of Borrowers", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_8 = PhotoImage(file=relative_to_assets("entry_8.png"))
-entry_bg_8 = canvas.create_image(929.5, 515.0, image=entry_image_8)
-totalStocks = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="bold")
-)
-totalStocks.place(x=809.0, y=505.0, width=241.0, height=24.0)
-totalStocks.configure(state="readonly")
-
-canvas.create_text(799.0, 475.0, anchor="nw", text="Total Stocks", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-canvas.create_text(804.0, 415.0, anchor="nw", text="Shelf Number", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_9 = PhotoImage(file=relative_to_assets("entry_9.png"))
-entry_bg_9 = canvas.create_image(640.5, 455.0, image=entry_image_9)
-isbn= Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-isbn.place(x=520.0, y=445.0, width=241.0, height=24.0)
-isbn.configure(state="readonly")
-
-canvas.create_text(510.0, 415.0, anchor="nw", text="ISBN", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_10 = PhotoImage(file=relative_to_assets("entry_10.png"))
-entry_bg_10 = canvas.create_image(640.5, 515.0,image=entry_image_10)
-
-material = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-material.place(x=520.0, y=501.0, width=241.0, height=24.0)
-material.configure(state="readonly")
-
-canvas.create_text(510.0, 475.0, anchor="nw", text="Material", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-entry_image_11 = PhotoImage(file=relative_to_assets("entry_11.png"))
-entry_bg_11 = canvas.create_image(640.5, 575.0, image=entry_image_11)
-
-genre = Entry(
-    bd=0,
-    bg="#FFFFFF",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=9, weight="normal")
-)
-genre.place(x=520.0, y=565.0, width=241.0, height=24.0)
-genre.configure(state="readonly")
-
-canvas.create_text(515.0, 535.0, anchor="nw", text="Genre", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
-
-image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
-image_6 = canvas.create_image(641.0, 264.0, image=image_image_6)
 
 entry_image_12 = PhotoImage(file=relative_to_assets("entry_12.png"))
 entry_bg_12 = canvas.create_image(606.0, 56.5, image=entry_image_12)
@@ -394,12 +325,164 @@ searchEntry = Entry(
 )
 searchEntry.place(x=460.0, y=43.0, width=290.0, height=30.0)
 
+image_5.place(x=1054.0, y=30.0, width=43.0, height=43.0)
+displayTable.bookTable()
+
+entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
+entry_bg_1 = canvas.create_image(350.5, 455.0, image=entry_image_1)
+titleEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+titleEntry.place(x=230.0, y=445.0, width=241.0, height=24.0)
+
+canvas.create_text(220.0, 415.0, anchor="nw", text="Title", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
+entry_bg_2 = canvas.create_image(280.0, 575.0, image=entry_image_2)
+editionEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+editionEntry.place(x=230.0, y=565.0, width=100.0, height=24.0)
+
+entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
+entry_bg_3 = canvas.create_image(425.0, 575.0, image=entry_image_3)
+
+yearEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+yearEntry.place(x=375.0, y=565.0, width=100.0, height=24.0)
+
+canvas.create_text(220.0, 535.0, anchor="nw", text="Edition", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+canvas.create_text(365.0, 535.0, anchor="nw", text="Year Published", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
+entry_bg_4 = canvas.create_image(350.5, 515.0, image=entry_image_4)
+authorEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+authorEntry.place(x=230.0, y=505.0, width=241.0, height=24.0)
+
+canvas.create_text(220.0, 475.0, anchor="nw", text="Author", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
+entry_bg_5 = canvas.create_image(929.5, 455.0, image=entry_image_5)
+shelfEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+shelfEntry.place(x=809.0, y=445.0, width=241.0, height=24.0)
+
+entry_image_6 = PhotoImage(file=relative_to_assets("entry_6.png"))
+entry_bg_6 = canvas.create_image(859.0, 575.0, image=entry_image_6)
+currentStocksEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+currentStocksEntry.place(x=809.0, y=565.0, width=100.0, height=24.0)
+
+entry_image_7 = PhotoImage(file=relative_to_assets("entry_7.png"))
+entry_bg_7 = canvas.create_image(999.0, 575.0, image=entry_image_7)
+noBorrowersEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+noBorrowersEntry.place(x=949.0, y=565.0, width=100.0, height=24.0)
+
+canvas.create_text(804.0, 535.0, anchor="nw", text="Current Stocks", fill="#4B0000", font=font.Font(family="Poppins", size=10, weight="bold"))
+
+canvas.create_text(944.0, 535.0, anchor="nw", text="No. of Borrowers", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_8 = PhotoImage(file=relative_to_assets("entry_8.png"))
+entry_bg_8 = canvas.create_image(929.5, 515.0, image=entry_image_8)
+totalStocksEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="bold")
+)
+totalStocksEntry.place(x=809.0, y=505.0, width=241.0, height=24.0)
+
+canvas.create_text(799.0, 475.0, anchor="nw", text="Total Stocks", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+canvas.create_text(804.0, 415.0, anchor="nw", text="Shelf Number", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_9 = PhotoImage(file=relative_to_assets("entry_9.png"))
+entry_bg_9 = canvas.create_image(640.5, 455.0, image=entry_image_9)
+isbnEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+isbnEntry.place(x=520.0, y=445.0, width=241.0, height=24.0)
+
+canvas.create_text(510.0, 415.0, anchor="nw", text="ISBN", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_10 = PhotoImage(file=relative_to_assets("entry_10.png"))
+entry_bg_10 = canvas.create_image(640.5, 515.0,image=entry_image_10)
+
+materialEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+materialEntry.place(x=520.0, y=501.0, width=241.0, height=24.0)
+
+canvas.create_text(510.0, 475.0, anchor="nw", text="Material", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+entry_image_11 = PhotoImage(file=relative_to_assets("entry_11.png"))
+entry_bg_11 = canvas.create_image(640.5, 575.0, image=entry_image_11)
+
+genreEntry = Entry(
+    bd=0,
+    bg="#FFFFFF",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=9, weight="normal")
+)
+genreEntry.place(x=520.0, y=565.0, width=241.0, height=24.0)
+
+canvas.create_text(515.0, 535.0, anchor="nw", text="Genre", fill="#4B0000", font= font.Font(family="Poppins", size=10, weight="bold"))
+
+image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
+image_6 = canvas.create_image(641.0, 264.0, image=image_image_6)
+
 button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
 categoryBtn = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=dropdownMenu,
+    command=displayTable.dropdownMenu,
     relief="flat"
 )
 categoryBtn.place(x=908.0, y=99.0, width=173.0, height=20.0)
@@ -420,22 +503,11 @@ searchBtn = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=searchBook,
+    command=displayTable.bookTable,
     relief="flat",
     bg="white"
 )
 searchBtn.place(x=758.0, y=39.0, width=80.0,height=35.0)
-
-button_image_6 = PhotoImage(file=relative_to_assets("button_6.png"))
-borrowBookFrame = Button(
-    image=button_image_6,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_6 clicked"),
-    relief="flat",
-    bg="white"
-)
-borrowBookFrame.place(x=21.0, y=252.0, width=160.0, height=32.0)
 
 window.resizable(False, False)
 window.mainloop()
