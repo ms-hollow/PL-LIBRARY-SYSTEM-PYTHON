@@ -8,14 +8,11 @@ import CBook, CTransaction, CBorrower
 from CBook import bookList
 from CTransaction import transactionList
 from CBorrower import borrowerList
-import BorrowBook
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
 option_value = ""
-indexBook = 0
-indexBorrower = 0
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -27,22 +24,7 @@ def gotoDisplayBooks():
     subprocess.run(["python", script_path])
 
 def borrowBook():
-    '''
-    global indexBook
-    global indexBorrower
 
-    ISBN = isbnEntry.get()
-    indexBook = CBook.locateBook(ISBN)  # kinuha index ng book na hihiramin
-    title = bookList[indexBook].title
-    author = bookList[indexBook].author
-
-    indexBorrower = CBorrower.loggedInAccount  # kinuha index ng currently account logged in.
-    TUP_ID = borrowerList[indexBorrower].TUP_ID
-    borrower = borrowerList[indexBorrower].name
-    yearSection = borrowerList[indexBorrower].yearSection
-
-    borrower = borrowerList[indexBorrower].name
-    '''
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "BorrowBook.py")
     subprocess.run(["python", script_path])
