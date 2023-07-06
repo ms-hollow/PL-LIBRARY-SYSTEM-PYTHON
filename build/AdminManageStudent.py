@@ -6,6 +6,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 import CBorrower
 from CBorrower import borrowerList
+from CTransaction import transactionList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
@@ -105,13 +106,16 @@ def on_table_select(table):
         contactEntry.insert(0, values[3])
         emailEntry.insert(0, values[4])
 
-        '''#
-        index = CBorrower.locateBorrower(tupidEntry.get())
-        totalStocksEntry.insert(0, bookList[index].totalStocks)
-        noBorrowersEntry.insert(0, bookList[index].noOfBorrower)
-        currentStock = str(int(bookList[index].totalStocks) - int(bookList[index].noOfBorrower))
-        currentStocksEntry.insert(0, currentStock)
-        #'''
+        i = 0
+        bookBorrowed = ["", "", ""]
+        for transaction in transactionList:
+            if transaction.TUP_ID == values[1] and transaction.status == "TO RETURN":
+                bookBorrowed[i] = transaction.title
+                i = i + 1
+
+                book1Entry.insert(0, bookBorrowed[2])
+                book2Entry.insert(0, bookBorrowed[1])
+                book3Entry.insert(0, bookBorrowed[0])
 
 def bookTable():
     # TABLE SEARCH BOOK
@@ -154,10 +158,9 @@ def clearFields():
     courseSecEntry.delete(0, END)
     contactEntry.delete(0, END)
     emailEntry.delete(0, END)
-
-    # book1Entry.get()
-    # book2Entry
-    # book3Entry
+    book1Entry.delete(0, END)
+    book2Entry.delete(0, END)
+    book3Entry.delete(0, END)
 
 CBorrower.retrieveBorrower()
 window = Tk()

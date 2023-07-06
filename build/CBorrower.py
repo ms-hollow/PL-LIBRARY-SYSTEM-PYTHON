@@ -340,3 +340,16 @@ def decrypt(text):
     for char in text:  # Iterate through each character in the input text
         decrypted += chr(ord(char) - 29)  # Decrypt the character by subtracting 29 from its ASCII value
     return decrypted  # Return the decrypted text
+
+
+def displayBorrowedBook(TUP_ID):
+    from CTransaction import transactionList
+    i = 0
+
+    bookBorrowed = ["", "", ""]
+    for transaction in transactionList:
+        if transaction.TUP_ID == TUP_ID and transaction.status == "TO RETURN":
+            bookBorrowed[i] = transaction.title
+            i = i + 1
+
+    print(bookBorrowed[2] + bookBorrowed[1] + bookBorrowed[0])
