@@ -27,9 +27,6 @@ def gotoTransaction():
     script_path = os.path.join(current_directory, "AdminManageTransaction.py")
     subprocess.run(["python", script_path])
 
-def searchBook():
-    print("Search Book")
-
 def update():
 
     name = nameEntry.get()
@@ -118,10 +115,12 @@ def on_table_select(table):
                 book3Entry.insert(0, bookBorrowed[0])
 
 def bookTable():
+
     # TABLE SEARCH BOOK
     sub_frame = ttk.Frame(window, width=600, height=350.0)
     sub_frame.place(x=220, y=150)
 
+    keyword = searchEntry.get()
     # treeview
     table = ttk.Treeview(sub_frame,
                          columns=('Name', 'TUP ID', 'Year and Section', 'Contact No.', 'Email'), show='headings')
@@ -146,8 +145,9 @@ def bookTable():
 
     foundMatch = False
     for borrower in borrowerList:
-        table.insert('', 'end', values=(borrower.name, borrower.TUP_ID, borrower.yearSection, borrower.contactNum, borrower.email))
-        foundMatch = True
+        if keyword.lower() in borrower.TUP_ID:
+            table.insert('', 'end', values=(borrower.name, borrower.TUP_ID, borrower.yearSection, borrower.contactNum, borrower.email))
+            foundMatch = True
 
     if not foundMatch:
         messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
@@ -258,6 +258,16 @@ image_5 = Button(
     relief="flat",
     bg="white"
 )
+
+searchEntry = Entry(
+    bd=0,
+    bg="#FFFDFD",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=12, weight="normal")
+)
+searchEntry.place(x=492.0, y=42.0, width=263.0, height=30.0)
+
 image_5.place(x=1054.0, y=30.0, width=43.0, height=43.0)
 bookTable()
 
@@ -434,24 +444,16 @@ entry_bg_9 = canvas.create_image(
     56.5,
     image=entry_image_9
 )
-searchEntry = Entry(
-    bd=0,
-    bg="#FFFDFD",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=12, weight="normal")
-)
-searchEntry.place(x=492.0, y=42.0, width=263.0, height=30.0)
 
 button_image_1 = PhotoImage(file=relative_to_assets("button_1_1.png"))
-button_1 = Button(
+searchBtn = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=bookTable,
     relief="flat"
 )
-button_1.place(
+searchBtn.place(
     x=760.0,
     y=39.0,
     width=80.0,
