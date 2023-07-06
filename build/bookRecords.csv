@@ -1,5 +1,5 @@
 Title,Author,ISBN,Edition,Year Published,Material,Category,Shelf No.,Total Stocks,No. of Borrower
-1,1,1,1,1,1,1,1,1,1
-2,2,2,2,2,2,2,2,2,2
-BOOK22QDDAC,JANE AUSTEN,DADA,DADAD,ADA,DADAD,ADAD,1,2,1
-Book1,George,12317831731,one,1984,SJADC,AEACE,1,21,4
+BOOK1,1,1,1,12,1,DRAMA,1,1,1
+BOOK1,1,12,1,1,1,1,1,1,0
+BOOK2,2,1234,2,2,2,2,2,2,1
+BOOK3,3,3,3,3,3,3,3,22,4

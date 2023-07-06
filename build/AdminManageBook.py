@@ -11,7 +11,6 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
 option_value = ""
-
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -143,8 +142,9 @@ class DisplayTable:
         options = ["Title", "Author", "Year", "Material", "Genre"]  # Add your options here
 
         # Create a StringVar outside the function to store the selected option
-        self.clicked = StringVar()
+        clicked = StringVar()
 
+        # Function to be executed when an option is selected from the dropdown
         def on_option_selected(option):
             self.choice = options.index(option) + 1
             print(option)  # Print the selected option
@@ -157,6 +157,9 @@ class DisplayTable:
 
         # Display the dropdown menu under the category button
         dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
+
+        # Return the StringVar 'clicked' so that it can be accessed outside the method
+        return clicked
 
     def on_table_select(self, table):
         selected_item = table.focus()  # Get the selected item (row) in the table
@@ -238,7 +241,8 @@ class DisplayTable:
                 foundMatch = True
 
         if not foundMatch:
-            messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+           messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+
 
 
 # Create an instance of DisplayTable class
