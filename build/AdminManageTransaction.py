@@ -217,15 +217,15 @@ class DisplayTable:
             if option_value == "Title":
                 attributeValue = transaction.title
             elif option_value == "ISBN":
-                attributeValue = transaction.author
+                attributeValue = transaction.ISBN
             elif option_value == "TUP ID":
-                attributeValue = transaction.yearPublished
+                attributeValue = transaction.TUP_ID
             elif option_value == "Date Borrowed":
-                attributeValue = transaction.material
+                attributeValue = transaction.dateBorrowed
             elif option_value == "Date To Return":
-                attributeValue = transaction.category
+                attributeValue = transaction.dateToReturn
             elif option_value == "Status":
-                attributeValue = transaction.category
+                attributeValue = transaction.status
             else:
                 attributeValue = transaction.title
 
