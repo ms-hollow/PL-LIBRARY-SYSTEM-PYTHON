@@ -64,55 +64,6 @@ def displayBooks():
         currentStock = str(int(book.totalStocks) - int(book.noOfBorrower))
         print(book.title +" "+ book.author +" "+ book.ISBN +" "+ book.edition +" "+ book.yearPublished +" "+ book.material +" "+ book.category +" "+ str(book.shelfNo) +" "+ str(book.totalStocks) +" "+ str(book.noOfBorrower) +" "+ currentStock)
 
-''' UPDATE BOOK IF WALA SA GUI
-def updateBook():
-    ISBN = input("ENTER THE ISBN OF THE BOOK: ")
-    index = locateBook(ISBN)
-
-    if index <0:
-        messagebox.showerror("UPDATE BOOK", "THE ISBN DOES NOT FOUND A MATCH")
-    elif checkBookFields(bookList[index].title, bookList[index].author, bookList[index].ISBN, bookList[index].edition,
-                         bookList[index].yearPublished, bookList[index].material, bookList[index].category,
-                         bookList[index].totalStocks, bookList[index].noOfBorrower):
-        messagebox.showerror("UPDATE BOOK", "PLEASE FILL IN ALL FIELDS")
-
-    else:
-        print("[1] TITLE\n[2] AUTHOR\n[3] ISBN\n[4] EDITION\n[5] YEAR PUBLISHED\n[6] MATERIAL\n[7] CATEGORY\n[8] SHELF NO.\n[9] TOTAL NO. OF STOCK\n[10] TOTAL NO. OF BORROWER")
-        attributeChoice = int(input("ENTER ATTRIBUTE TO UPDATE: "))
-
-        print("ENTER THE UPDATED INFORMATION: ")
-        if attributeChoice > 7:
-            updatedInfoInt = int(input())
-        else:
-            updatedInfo = input()
-
-        # INSERT ASK IF CONFIRM UPDATING
-
-        if attributeChoice == 1:
-            bookList[index].title = updatedInfo
-        elif attributeChoice == 2:
-            bookList[index].author = updatedInfo
-        elif attributeChoice == 3:
-            bookList[index].ISBN = updatedInfo
-        elif attributeChoice == 4:
-            bookList[index].edition = updatedInfo
-        elif attributeChoice == 5:
-            bookList[index].yearPublished = updatedInfo
-        elif attributeChoice == 6:
-            bookList[index].material = updatedInfo
-        elif attributeChoice == 7:
-            bookList[index].category = updatedInfo
-        elif attributeChoice == 8:
-            bookList[index].shelfNo = updatedInfo
-        elif attributeChoice == 9:
-            bookList[index].totalStocks = updatedInfoInt
-        elif attributeChoice == 10:
-            bookList[index].noOfBorrower = updatedInfoInt
-
-        messagebox.showinfo("UPDATE BOOK", "BOOK UPDATED SUCCESSFULLY! ")
-        saveBook()
-'''
-
 #UPDATE BOOK IF NASA GUI
 def updateBook():
     title = input("Enter title: ")

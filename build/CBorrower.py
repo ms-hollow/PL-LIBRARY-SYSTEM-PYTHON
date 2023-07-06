@@ -60,6 +60,29 @@ def addBorrower(borrower):
     borrowerList.insert(index, borrower)
     #Note: Pakitawag ang saveBorrower() after mag-add ng borrower sa main.
 
+def deleteBorrower(TUP_ID):
+    #ISBN = input("Enter the ISBN of the book you want to delete: ")
+
+#IF PININDOT DELETE BOOK:
+    index = locateBorrower(TUP_ID)
+    if index <0:
+        messagebox.showerror("DELETE  BORROWER", "THE BORROWER DOES NOT FOUND A MATCH")
+    #INSERT IF WALANG SINELECT NA ROW
+
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="DELETE BORROWER",
+            message="ARE YOU SURE TO DELETE THIS BORROWER IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+
+        if response:
+            deleted_borrower = borrowerList.pop(index)
+            messagebox.showinfo("DELETE BOOK", "BOOK DELETED SUCCESSFULLY! ")
+            saveBorrower()
+            #display Table
+            #clear fields
+
 def locateBorrower(TUP_ID):
                 for i in range(len(borrowerList)):  # loop through the borrowerList
                     if borrowerList[i].TUP_ID == TUP_ID:  # if nahanap, return index, else return -1
@@ -251,11 +274,11 @@ def saveBorrower():
         # Write each borrower's data row
         for borrower in borrowerList:
             #ENCRYPTED - encrypts every variable, then write it in the file
-            writer.writerow([encrypt(borrower.name), encrypt(borrower.TUP_ID), encrypt(borrower.password), encrypt(borrower.yearSection),
-                             encrypt(borrower.contactNum), encrypt(borrower.email), encrypt(str(borrower.noOfBorrowed))])
+            #writer.writerow([encrypt(borrower.name), encrypt(borrower.TUP_ID), encrypt(borrower.password), encrypt(borrower.yearSection),
+             #                encrypt(borrower.contactNum), encrypt(borrower.email), encrypt(str(borrower.noOfBorrowed))])
             #NOT ENCRYPTED
-            #writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
-            #                 borrower.contactNum, borrower.email, borrower.noOfBorrowed])
+            writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
+                             borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
 
 def retrieveBorrower():
 
@@ -276,9 +299,9 @@ def retrieveBorrower():
 
             #create an object of the retrieved borrower
             #DECRYPTYED
-            borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection), decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))# borrowedBook
+            #borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection), decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))# borrowedBook
             #NOT DECRYPTED
-            #borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
+            borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
 
             #add borrower in the borrowerList
             addBorrower(borrower)
@@ -296,6 +319,16 @@ def checkBorrowerFields(name, TUP_ID, password, yearSection, contactNum, email):
     else:
         return True
 
+def checkBorrowerFieldsAdmin(name, TUP_ID, yearSection, contactNum, email):
+
+    if (name == "" or
+        TUP_ID == "" or
+        yearSection == "" or
+        contactNum == "" or
+        email == "" ):
+        return False
+    else:
+        return True
 def encrypt(text):
     encrypted = ""  # Initialize an empty string to store the encrypted text
     for char in text:  # Iterate through each character in the input text

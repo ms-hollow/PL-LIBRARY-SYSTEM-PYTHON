@@ -103,7 +103,7 @@ image_3 = canvas.create_image(
 
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(773.0,395.0,image=entry_image_1)
-newpassword = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
+newpassword = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0,  font=font.Font(family="Poppins", size=13, weight="bold"), show="*")
 newpassword.place(
     x=550.0,
     y=375.0,
@@ -113,7 +113,7 @@ newpassword.place(
 
 entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
 entry_bg_2 = canvas.create_image(775.0,494.0,image=entry_image_2)
-reenterpass = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
+reenterpass = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0,  font=font.Font(family="Poppins", size=13, weight="bold"), show="*")
 reenterpass.place(
     x=552.0,
     y=474.0,
@@ -123,7 +123,7 @@ reenterpass.place(
 
 entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
 entry_bg_3 = canvas.create_image(773.0,286.0,image=entry_image_3)
-currentpass = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
+currentpass = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0,  font=font.Font(family="Poppins", size=13, weight="bold"), show="*")
 currentpass.place(
     x=550.0,
     y=266.0,

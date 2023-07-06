@@ -1,9 +1,11 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk
+from tkinter import ttk, messagebox, END
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CBorrower
+from CBorrower import borrowerList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
@@ -27,18 +29,50 @@ def gotoTransaction():
 def searchBook():
     print("Search Book")
 
-def refreshPage():
-    print("refresh")
-    # insert code here (POPUP)
+def update():
 
-def addBook():
-    print("add")
-    # this function will search the book, display the table and diplay lahat ng info ng book sa entry.
-    # insert code here para sa search book
+    name = nameEntry.get()
+    TUP_ID = tupidEntry.get()
+    yearSection = courseSecEntry.get()
+    contactNum = contactEntry.get()
+    email = emailEntry.get()
 
-def deleteBook():
-    print("delete")
-    # insert code here (POPUP)
+    #book1Entry.get()
+    #book2Entry
+    #book3Entry
+
+    index = CBorrower.locateBorrower(TUP_ID)
+
+    if index < 0:
+        messagebox.showerror("UPDATE BORROWER", "THE TUP ID DOES NOT FOUND A MATCH")
+    elif not CBorrower.checkBorrowerFieldsAdmin(name, TUP_ID, yearSection, contactNum, email):
+        messagebox.showerror("UPDATE BORROWER", "PLEASE FILL IN ALL FIELDS")
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="UPDATE BORROWER",
+            message="ARE YOU SURE TO UPDATE THIS BORROWER IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:  # if yes, salin new info
+            borrowerList[index].name = name
+            borrowerList[index].TUP_ID = TUP_ID
+            borrowerList[index].password = borrowerList[index].password
+            borrowerList[index].contactNum = contactNum
+            borrowerList[index].yearSection = yearSection
+            borrowerList[index].email = email
+            borrowerList[index].noOfBorrowed = borrowerList[index].noOfBorrowed
+
+            messagebox.showinfo("UPDATE BORROWER", "BOOK UPDATED SUCCESSFULLY! ")
+            CBorrower.saveBorrower()
+            bookTable()
+            clearFields()
+
+def delete():
+
+    TUP_ID = tupidEntry.get()
+    CBorrower.deleteBorrower(TUP_ID)
+    bookTable()
+    clearFields()
 
 def gotoLogout():
     window.destroy()
@@ -60,6 +94,25 @@ def gotoHome():
     script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
 
+def on_table_select(table):
+    selected_item = table.focus()  # Get the selected item (row) in the table
+    values = table.item(selected_item)["values"]  # Get the values of the selected item
+    if values:  # Check if values exist (a row is selected)
+        clearFields()
+        nameEntry.insert(0, values[0])
+        tupidEntry.insert(0, values[1])
+        courseSecEntry.insert(0, values[2])
+        contactEntry.insert(0, values[3])
+        emailEntry.insert(0, values[4])
+
+        '''#
+        index = CBorrower.locateBorrower(tupidEntry.get())
+        totalStocksEntry.insert(0, bookList[index].totalStocks)
+        noBorrowersEntry.insert(0, bookList[index].noOfBorrower)
+        currentStock = str(int(bookList[index].totalStocks) - int(bookList[index].noOfBorrower))
+        currentStocksEntry.insert(0, currentStock)
+        #'''
+
 def bookTable():
     # TABLE SEARCH BOOK
     sub_frame = ttk.Frame(window, width=600, height=350.0)
@@ -67,40 +120,46 @@ def bookTable():
 
     # treeview
     table = ttk.Treeview(sub_frame,
-                         columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                                  'Material', 'Category', 'Shelf No.', 'Total Stock',
-                                  'No. of Borrowers'), show='headings')
-    table.heading('Title', text='Title')
-    table.heading('Edition', text='Edition')
-    table.heading('Author', text='Author')
-    table.heading('Year', text='Year')
-    table.heading('ISBN', text='ISBN')
-    table.heading('Material', text='Material')
-    table.heading('Category', text='Category')
-    table.heading('Shelf No.', text='Shelf No.')
-    table.heading('Total Stock', text='Total Stock')
-    table.heading('No. of Borrowers', text='No. of Borrowers')
+                         columns=('Name', 'TUP ID', 'Year and Section', 'Contact No.', 'Email'), show='headings')
+    table.heading('Name', text='Name')
+    table.heading('TUP ID', text='TUP ID')
+    table.heading('Year and Section', text='Year and Section')
+    table.heading('Contact No.', text='Contact No.')
+    table.heading('Email', text='Email')
 
-    table.column('Title', width=150)
-    table.column('Edition', width=50)
-    table.column('Author', width=120)
-    table.column('Year', width=50)
-    table.column('ISBN', width=100)
-    table.column('Material', width=100)
-    table.column('Category', width=120)
-    table.column('Shelf No.', width=50)
-    table.column('Total Stock', width=50)
-    table.column('No. of Borrowers', width=50)
+    table.column('Name', width=200)
+    table.column('TUP ID', width=180)
+    table.column('Year and Section', width=150)
+    table.column('Contact No.', width=160)
+    table.column('Email', width=150)
 
     table.pack(side='left', fill='y')
+    # Bind the function to the table's selection event
+    table.bind("<<TreeviewSelect>>", lambda event: on_table_select(table))
 
-    '''
-    # adding data to the table
-    for i in range(len(titles)):
-        table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
-    '''
+    # Clear the table before populating it with new search results
+    table.delete(*table.get_children())
 
+    foundMatch = False
+    for borrower in borrowerList:
+        table.insert('', 'end', values=(borrower.name, borrower.TUP_ID, borrower.yearSection, borrower.contactNum, borrower.email))
+        foundMatch = True
 
+    if not foundMatch:
+        messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+def clearFields():
+
+    nameEntry.delete(0, END) # Clear the contents of the Entry widget
+    tupidEntry.delete(0, END)
+    courseSecEntry.delete(0, END)
+    contactEntry.delete(0, END)
+    emailEntry.delete(0, END)
+
+    # book1Entry.get()
+    # book2Entry
+    # book3Entry
+
+CBorrower.retrieveBorrower()
 window = Tk()
 
 window.geometry("1125x670")
@@ -204,7 +263,7 @@ refreshStudent = Button(
     image=button_image_6,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_6 clicked"),
+    command=update,
     relief="flat"
 )
 refreshStudent.place(x=964.0, y=606.0, width=42.0, height=42.0)
@@ -214,7 +273,7 @@ deleteStudent = Button(
     image=button_image_7,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_7 clicked"),
+    command=delete,
     relief="flat"
 )
 deleteStudent.place(x=1018.0, y=606.0, width=42.0, height=42.0)
