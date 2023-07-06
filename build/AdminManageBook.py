@@ -148,6 +148,8 @@ class DisplayTable:
         def on_option_selected(option):
             self.choice = options.index(option) + 1
             print(option)  # Print the selected option
+            global option_value
+            option_value = option
 
         # Add options to the dropdown menu
         for option in options:
@@ -184,8 +186,6 @@ class DisplayTable:
         sub_frame = ttk.Frame(window, width=600, height=350.0)
         sub_frame.place(x=220, y=150)
 
-        keyword = searchEntry.get()
-
         # Create the table outside the loop
         table = ttk.Treeview(sub_frame,
                              columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
@@ -216,21 +216,33 @@ class DisplayTable:
         # Clear the table before populating it with new search results
         table.delete(*table.get_children())
 
-        foundMatch = False
+        keyword = searchEntry.get()
+        global option_value
+        print(option_value)
 
-        # Loop through each book in the bookList
+        foundMatch = False
         for book in bookList:
-            # Check if the keyword is present in any of the book attributes
-            if keyword.lower() in book.title.lower() or keyword.lower() in book.author.lower() \
-                    or keyword.lower() in str(book.yearPublished) or keyword.lower() in book.material.lower() \
-                    or keyword.lower() in book.category.lower():
-                # If a match is found, insert the book's details into the table
+            if option_value == "Title":
+                attributeValue = book.title
+            elif option_value == "Author":
+                attributeValue = book.author
+            elif option_value == "Year":
+                attributeValue = book.yearPublished
+            elif option_value == "Material":
+                attributeValue = book.material
+            elif option_value == "Genre":
+                attributeValue = book.category
+            else:
+                attributeValue = book.title
+
+            if keyword.lower() in attributeValue.lower():
                 table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
                                                 book.material, book.category, book.shelfNo))
                 foundMatch = True
 
         if not foundMatch:
-            messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND")
+           messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+
 
 
 # Create an instance of DisplayTable class
