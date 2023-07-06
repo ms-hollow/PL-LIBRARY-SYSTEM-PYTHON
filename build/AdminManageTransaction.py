@@ -1,12 +1,16 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, Menu
+from tkinter import ttk, Menu, StringVar, messagebox, END
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CTransaction, CBook, CBorrower
+from CTransaction import transactionList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
+
+option_value = ""
 
 
 def relative_to_assets(path: str) -> Path:
@@ -26,22 +30,17 @@ def gotoBook():
     script_path = os.path.join(current_directory, "AdminManageBook.py")
     subprocess.run(["python", script_path])
 
-def searchBook():
-    print("Search Book")
 
 def refreshPage():
     print("refresh")
     # insert code here (POPUP)
 
-def addBook():
-    print("add")
-    # this function will search the book, display the table and diplay lahat ng info ng book sa entry.
-    # insert code here para sa search book
 
-def deleteBook():
-    print("delete")
-    # insert code here (POPUP)
-
+def deleteTransaction():
+    refNum = referenceNumEntry.get()
+    CTransaction.deleteTransaction(refNum)
+    DisplayTable.transactionTable()
+    clearFields()
 
 
 def gotoLogout():
@@ -66,66 +65,141 @@ def gotoHome():
     script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
 
+class DisplayTable:
 
-def dropdownMenu():
-    # Create a dropdown menu
-    dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
-    dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
+    def __init__(self):
+        self.choice = 0  # Initialize the instance variable
 
-    # List of options for the dropdown menu
-    options = ["Title", "Author", "Year", "Material", "Genre                       "]  # Add your options here
+    def dropdownMenu(self):
+        # Create a dropdown menu
+        dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
+        dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
 
-    # Function to be executed when an option is selected from the dropdown
-    def on_option_selected(option):
-        print("Selected Option:", option)
+        # List of options for the dropdown menu
+        options = ["Title", "ISBN", "TUP ID", "Date Borrowed", "Date to Return", "Status"]  # Add your options here
 
-    # Add options to the dropdown menu
-    for option in options:
-        dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
+        # Create a StringVar outside the function to store the selected option
+        clicked = StringVar()
 
-    # Display the dropdown menu under the category button
-    dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
+        # Function to be executed when an option is selected from the dropdown
+        def on_option_selected(option):
+            self.choice = options.index(option) + 1
+            #print(option)  # Print the selected option
+            global option_value
+            option_value = option
 
-def bookTable():
-    # TABLE SEARCH BOOK
-    sub_frame = ttk.Frame(window, width=600, height=350.0)
-    sub_frame.place(x=220, y=150)
+        # Add options to the dropdown menu
+        for option in options:
+            dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
 
-    # treeview
-    table = ttk.Treeview(sub_frame,
-                         columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                                  'Material', 'Category', 'Shelf No.', 'Total Stock',
-                                  'No. of Borrowers'), show='headings')
-    table.heading('Title', text='Title')
-    table.heading('Edition', text='Edition')
-    table.heading('Author', text='Author')
-    table.heading('Year', text='Year')
-    table.heading('ISBN', text='ISBN')
-    table.heading('Material', text='Material')
-    table.heading('Category', text='Category')
-    table.heading('Shelf No.', text='Shelf No.')
-    table.heading('Total Stock', text='Total Stock')
-    table.heading('No. of Borrowers', text='No. of Borrowers')
+        # Display the dropdown menu under the category button
+        dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
 
-    table.column('Title', width=150)
-    table.column('Edition', width=50)
-    table.column('Author', width=120)
-    table.column('Year', width=50)
-    table.column('ISBN', width=100)
-    table.column('Material', width=100)
-    table.column('Category', width=120)
-    table.column('Shelf No.', width=50)
-    table.column('Total Stock', width=50)
-    table.column('No. of Borrowers', width=50)
+        # Return the StringVar 'clicked' so that it can be accessed outside the method
+        return clicked
 
-    table.pack(side='left', fill='y')
+    def on_table_select(self, table):
+        selected_item = table.focus()  # Get the selected item (row) in the table
+        values = table.item(selected_item)["values"]  # Get the values of the selected item
+        if values:  # Check if values exist (a row is selected)
+            clearFields()
+            titleEntry.insert(0, values[0])
+            isbnEntry.insert(0, values[1])
+            tupidEntry.insert(0, values[2])
+            dateborrowedEntry.insert(0, values[3])
+            dateReturnEntry.insert(0, values[4])
+            referenceNumEntry.insert(0, values[6])
 
-    '''
-    # adding data to the table
-    for i in range(len(titles)):
-        table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
-    '''
+            index = CTransaction.locateTransaction(referenceNumEntry.get())
+            borrowerEntry.insert(0, transactionList[index].borrower)
+            authorEntry.insert(0, transactionList[index].author)
+            librarianEntry.insert(0, transactionList[index].librarian)
+            fineEntry.insert(0, transactionList[index].fine)
 
+    def bookTable(self):
+        # TABLE SEARCH BOOK
+        sub_frame = ttk.Frame(window, width=600, height=350.0)
+        sub_frame.place(x=220, y=150)
+
+        # Create the table outside the loop
+        table = ttk.Treeview(sub_frame,
+                             columns=('Title', 'ISBN', 'TUP ID', 'Date Borrowed', 'Date To Return',
+                                      'Status', 'Reference No.'), show='headings')
+
+        table.heading('Title', text='Title')
+        table.heading('ISBN', text='ISBN')
+        table.heading('TUP ID', text='TUP ID')
+        table.heading('Date Borrowed', text='Date Borrowed')
+        table.heading('Date To Return', text='Date To Return')
+        table.heading('Status', text='Status')
+        table.heading('Reference No.', text='Reference No')
+
+        table.column('Title', width=180)
+        table.column('ISBN', width=120)
+        table.column('TUP ID', width=120)
+        table.column('Date Borrowed', width=100)
+        table.column('Date To Return', width=100)
+        table.column('Status', width=100)
+        table.column('Reference No.', width=120)
+
+        table.pack(side='left', fill='y')
+        # Bind the function to the table's selection event
+        table.bind("<<TreeviewSelect>>", lambda event: self.on_table_select(table))
+
+        # Clear the table before populating it with new search results
+        table.delete(*table.get_children())
+
+        keyword = searchEntry.get()
+        global option_value
+        print(option_value)
+
+        foundMatch = False
+        for transaction in transactionList:
+            if option_value == "Title":
+                attributeValue = transaction.title
+            elif option_value == "ISBN":
+                attributeValue = transaction.author
+            elif option_value == "TUP ID":
+                attributeValue = transaction.yearPublished
+            elif option_value == "Date Borrowed":
+                attributeValue = transaction.material
+            elif option_value == "Date To Return":
+                attributeValue = transaction.category
+            elif option_value == "Status":
+                attributeValue = transaction.category
+            else:
+                attributeValue = transaction.title
+
+            if keyword.lower() in attributeValue.lower():
+                table.insert('', 'end', values=(
+                transaction.title, transaction.ISBN, transaction.TUP_ID, transaction.dateBorrowed,
+                transaction.dateToReturn,
+                transaction.status, transaction.refNum))
+                foundMatch = True
+
+        if not foundMatch:
+            messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+
+
+# Create an instance of DisplayTable class
+displayTable = DisplayTable()
+
+def clearFields():
+    titleEntry.delete(0, END)  # Clear the contents of the Entry widget
+    isbnEntry.delete(0, END)
+    tupidEntry.delete(0, END)
+    dateborrowedEntry.delete(0, END)
+    dateReturnEntry.delete(0, END)
+    referenceNumEntry.delete(0, END)
+    borrowerEntry.delete(0, END)
+    authorEntry.delete(0, END)
+    librarianEntry.delete(0, END)
+    fineEntry.delete(0, END)
+
+
+# UNANG MAGRA-RUN
+CBook.retrieveBook()
+CTransaction.retrieveTransaction()
 
 window = Tk()
 
@@ -167,7 +241,7 @@ manageTransaction = Button(
     image=manageTransactionIcon,
     borderwidth=0,
     highlightthickness=0,
-    #command=lambda: print("button_2 clicked"),
+    # command=lambda: print("button_2 clicked"),
     relief="flat",
     bg="white"
 )
@@ -200,7 +274,8 @@ image_2.thumbnail((max_width, max_height), Image.LANCZOS)
 resizedlogo = ImageTk.PhotoImage(image_2)
 image_2 = canvas.create_image(120.0, 59.0, image=resizedlogo)
 
-canvas.create_text(218.0, 19.0, anchor="nw", text="TRANSACTION", fill="#4B0000", font=font.Font(family="Poppins", size=40, weight="bold"))
+canvas.create_text(218.0, 19.0, anchor="nw", text="TRANSACTION", fill="#4B0000",
+                   font=font.Font(family="Poppins", size=40, weight="bold"))
 
 notifButton = PhotoImage(file=relative_to_assets("image_3.png"))
 image_3 = Button(
@@ -234,22 +309,6 @@ image_5 = Button(
     bg="white"
 )
 image_5.place(x=1054.0, y=30.0, width=43.0, height=43.0)
-bookTable()
-
-image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
-image_6 = canvas.create_image(641.0, 264.0, image=image_image_6)
-
-button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
-categoryBtn = Button(
-    image=button_image_3,
-    borderwidth=0,
-    highlightthickness=0,
-    command=dropdownMenu,
-    relief="flat"
-)
-categoryBtn.place(x=908.0, y=99.0, width=173.0, height=20.0)
-
-font_style = font.Font(family="Poppins", size=11, weight="bold")
 
 entry_image_1 = PhotoImage(file=relative_to_assets("searchEntry.png"))
 entry_bg_1 = canvas.create_image(700.0, 55.5, image=entry_image_1)
@@ -258,9 +317,25 @@ searchEntry = Entry(
     bg="#FFFDFD",
     fg="#000716",
     highlightthickness=0,
-    font = font.Font(family="Poppins", size=11, weight="normal")
+    font=font.Font(family="Poppins", size=11, weight="normal")
 )
 searchEntry.place(x=620.0, y=40.0, width=160.0, height=30.0)
+
+displayTable.bookTable()
+image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
+image_6 = canvas.create_image(641.0, 264.0, image=image_image_6)
+
+button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
+categoryBtn = Button(
+    image=button_image_3,
+    borderwidth=0,
+    highlightthickness=0,
+    command=displayTable.dropdownMenu,
+    relief="flat"
+)
+categoryBtn.place(x=908.0, y=99.0, width=173.0, height=20.0)
+
+font_style = font.Font(family="Poppins", size=11, weight="bold")
 
 canvas.create_text(
     218.0,
@@ -276,7 +351,7 @@ searchBtn = Button(
     image=searchIcon,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_8 clicked"),
+    command=displayTable.bookTable,
     relief="flat"
 )
 searchBtn.place(x=790.0, y=38.0, width=80.0, height=35.0)
@@ -292,7 +367,7 @@ titleEntry = Entry(
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font = font.Font(family="Poppins", size=11, weight="normal")
+    font=font.Font(family="Poppins", size=11, weight="normal")
 )
 titleEntry.place(x=230.0, y=444.0, width=241.0, height=23.0)
 
@@ -326,7 +401,7 @@ entry_bg_4 = canvas.create_image(
     575.0,
     image=entry_image_4
 )
-dateReturnEntry= Entry(
+dateReturnEntry = Entry(
     bd=0,
     bg="#FFFFFF",
     fg="#000716",
@@ -423,7 +498,7 @@ librarianEntry = Entry(
     bg="#FFFFFF",
     fg="#000716",
     highlightthickness=0,
-    font = font.Font(family="Poppins", size=11, weight="normal")
+    font=font.Font(family="Poppins", size=11, weight="normal")
 )
 librarianEntry.place(x=809.0, y=504.0, width=241.0, height=23.0)
 
