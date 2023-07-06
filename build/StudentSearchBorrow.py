@@ -26,6 +26,9 @@ def searchBook():
 def borrowBook():
     print("Borrow Book")
     # insert code here (POPUP)
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "BorrowBook.py")
+    subprocess.Popen(["python", script_path])
 def gotoLogin():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -423,7 +426,7 @@ borrowBookFrame = Button(
     image=button_image_6,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_6 clicked"),
+    command=borrowBook,
     relief="flat",
     bg="white"
 )
