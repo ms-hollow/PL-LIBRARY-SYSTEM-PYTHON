@@ -9,7 +9,6 @@ from PIL import Image, ImageTk
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "ChangePassword"
 
-
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -77,67 +76,68 @@ image_1 = canvas.create_image(
     383.0,
     image=image_image_1
 )
+image_image_2 = PhotoImage(
+    file=relative_to_assets("image_2.png"))
+image_2 = canvas.create_image(
+    125.0,
+    66.0,
+    image=image_image_2
+)
+
+image_image_3 = PhotoImage(
+    file=relative_to_assets("image_3.png"))
+image_3 = canvas.create_image(
+    247.0,
+    372.0,
+    image=image_image_3
+)
 
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-entry_bg_1 = canvas.create_image(775.0,258.0,image=entry_image_1)
-tupid = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
-tupid.place(
-    x=552.0,
-    y=243.0,
+entry_bg_1 = canvas.create_image(773.0,395.0,image=entry_image_1)
+newpassword = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
+newpassword.place(
+    x=550.0,
+    y=375.0,
     width=446.0,
-    height=24.0
+    height=33.0
 )
 
 entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-entry_bg_2 = canvas.create_image(775.0,418.0,image=entry_image_2)
-newpassword = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
-newpassword.place(
-    x=552.0,
-    y=403.0,
-    width=446.0,
-    height=24.0
-)
-
-entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
-entry_bg_3 = canvas.create_image(775.0,497.0,image=entry_image_3)
+entry_bg_2 = canvas.create_image(775.0,494.0,image=entry_image_2)
 reenterpass = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
 reenterpass.place(
     x=552.0,
-    y=482.0,
+    y=474.0,
     width=446.0,
-    height=24.0
+    height=33.0
 )
 
-entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-entry_bg_4 = canvas.create_image(775.0,338.0,image=entry_image_4)
-password = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0
-)
-password.place(
-    x=552.0,
-    y=323.0,
+entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
+entry_bg_3 = canvas.create_image(773.0,286.0,image=entry_image_3)
+currentpass = Entry(bd=0,bg="#FFFDFD",fg="#000716",highlightthickness=0)
+currentpass.place(
+    x=550.0,
+    y=266.0,
     width=446.0,
-    height=24.0
+    height=33.0
 )
 
-button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
-changepassbtn = Button(
-    image=button_image_1,
-    borderwidth=0,
+button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
+changepassbtn = Button(image=button_image_1,borderwidth=0,
     highlightthickness=0,
     command=lambda: print("button_1 clicked"),
     relief="flat",
     bg = "white"
 )
 changepassbtn.place(
-    x=660.0,
-    y=540.0,
+    x=647.0,
+    y=541.0,
     width=268.0,
     height=44.0
 )
 
 button_image_2 = PhotoImage(
-    file=relative_to_assets("button_2.png"))
+file=relative_to_assets("button_2.png"))
 notifbtn = Button(
     image=button_image_2,
     borderwidth=0,
@@ -170,7 +170,8 @@ homebtn.place(
     height=42.0
 )
 
-button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
+button_image_4 = PhotoImage(
+    file=relative_to_assets("button_4.png"))
 logoutbtn = Button(
     image=button_image_4,
     borderwidth=0,
@@ -186,12 +187,5 @@ logoutbtn.place(
     height=43.0
 )
 
-image_image_2 = PhotoImage(
-    file=relative_to_assets("image_2.png"))
-image_2 = canvas.create_image(
-    125.0,
-    66.0,
-    image=image_image_2
-)
 window.resizable(False, False)
 window.mainloop()
