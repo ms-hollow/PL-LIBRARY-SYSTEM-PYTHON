@@ -228,20 +228,27 @@ def updateTransaction():
     else:
         print("TRANSACTION NOT FOUND!")
 
-def deleteTransaction():
-    refNum = input("Enter the reference No. of the transaction you want to delete: ")
+def deleteTransaction(refNum):
+    #ISBN = input("Enter the ISBN of the book you want to delete: ")
+
+#IF PININDOT DELETE BOOK:
     index = locateTransaction(refNum)
-    if index >= 0:
-        #ASK CONFIRMATION
-        choice = input("Are you sure to delete the information? (Y/N): ")
-        if choice.upper() == "Y":
-            deleted_transaction = transactionList.pop(index)
-            print(deleted_transaction.title + " is deleted successfully!")
-            saveTransaction()
-        else:
-            print("Transaction deletion canceled.")
+    if index <0:
+        messagebox.showerror("DELETE  TRANSACTION", "THE ISBN DOES NOT FOUND A MATCH")
+    #INSERT IF WALANG SINELECT NA ROW
+
     else:
-        print("Transaction not found!")
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="DELETE TRANSACTION",
+            message="ARE YOU SURE TO DELETE THIS TRANSACTION IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:
+            deleted_transaction = transactionList.pop(index)
+            messagebox.showinfo("DELETE TRANSACTION", "TRANSACTION DELETED SUCCESSFULLY! ")
+            saveTransaction()
+            #display Table
+            #clear fields
 
 def searchTransaction():
     print("Select an attribute for searching")

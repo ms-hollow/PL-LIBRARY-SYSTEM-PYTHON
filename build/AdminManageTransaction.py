@@ -11,7 +11,7 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
 option_value = ""
-
+status_value = ""
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -31,17 +31,73 @@ def gotoBook():
     subprocess.run(["python", script_path])
 
 
-def refreshPage():
-    print("refresh")
-    # insert code here (POPUP)
+def updateTransaction():
+
+    title = titleEntry.get()
+    ISBN = isbnEntry.get()
+    TUP_ID = tupidEntry.get()
+    dateBorrowed = dateborrowedEntry.get()
+    dateToReturn =dateReturnEntry.get()
+    #status =
+    refNum = referenceNumEntry.get()
+    borrower = borrowerEntry.get()
+    author = authorEntry.get()
+    librarian = librarianEntry.get()
+    fine = fineEntry.get()
+
+    # IF PININDOT UPDATE BOOK:
+    index = CTransaction.locateTransaction(refNum)
+
+    if index < 0:
+        messagebox.showerror("UPDATE TRANSACTION", "THE REFERENCE NUMBER DOES NOT FOUND A MATCH")
+    elif not CTransaction.checkTransactionFields(title, ISBN, TUP_ID, dateBorrowed, dateToReturn, status, refNum, borrower, author, librarian, fine):
+        messagebox.showerror("UPDATE TRANSACTION", "PLEASE FILL IN ALL FIELDS")
+        messagebox.showerror("UPDATE TRANSACTION", "PLEASE FILL IN ALL FIELDS")
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="UPDATE TRANSACTION",
+            message="ARE YOU SURE TO UPDATE THIS TRANSACTION IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:  # if yes, salin new info
+            transactionList[index].title = title
+            transactionList[index].ISBN = ISBN
+            transactionList[index].TUP_ID = TUP_ID
+            transactionList[index].dateBorrowed = dateBorrowed
+            transactionList[index].dateToReturn = dateToReturn
+            transactionList[index].status = status_value
+            transactionList[index].refNum = refNum
+            transactionList[index].borrower = borrower
+            transactionList[index].author = author
+            transactionList[index].librarian = librarian
+            transactionList[index].fine = fine
+
+            messagebox.showinfo("UPDATE TRANSACTION", "TRANSACTION UPDATED SUCCESSFULLY! ")
+            CTransaction.saveTransaction()
+            displayTable.bookTable()
+            clearFields()
 
 
 def deleteTransaction():
     refNum = referenceNumEntry.get()
     CTransaction.deleteTransaction(refNum)
-    DisplayTable.transactionTable()
+    displayTable.bookTable()
     clearFields()
 
+def dropdownStatus():
+    # Create a dropdown menu
+    dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
+    dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")
+    options = ["TO APPROVE", "TO RETURN", "RETURNED"]
+
+    def on_option_selected(option):
+        global status_value
+        status_value = option
+        print("Selected Option:", option)
+    # Add options to the dropdown menu
+    for option in options:
+        dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
+    dropdownmenu.post(status.winfo_rootx(), status.winfo_rooty() + status.winfo_height())
 
 def gotoLogout():
     window.destroy()
@@ -115,6 +171,9 @@ class DisplayTable:
             authorEntry.insert(0, transactionList[index].author)
             librarianEntry.insert(0, transactionList[index].librarian)
             fineEntry.insert(0, transactionList[index].fine)
+
+            remainingDays = str(CTransaction.calculateRemainingDays(values[4]))
+            remainingDaysEntry.insert(0, remainingDays)
 
     def bookTable(self):
         # TABLE SEARCH BOOK
@@ -195,6 +254,8 @@ def clearFields():
     authorEntry.delete(0, END)
     librarianEntry.delete(0, END)
     fineEntry.delete(0, END)
+    remainingDaysEntry.delete(0, END)
+
 
 
 # UNANG MAGRA-RUN
@@ -335,6 +396,17 @@ categoryBtn = Button(
 )
 categoryBtn.place(x=908.0, y=99.0, width=173.0, height=20.0)
 
+statusIcon = PhotoImage(file=relative_to_assets("statusdropdown.png"))
+status = Button(
+    image=statusIcon,
+    borderwidth=0,
+    highlightthickness=0,
+    command=dropdownStatus,
+    relief="flat",
+    bg="white"
+)
+status.place(x=961.0, y=560.0, width=99.0, height=30.0)
+
 font_style = font.Font(family="Poppins", size=11, weight="bold")
 
 canvas.create_text(
@@ -467,17 +539,6 @@ remainingDaysEntry = Entry(
 )
 remainingDaysEntry.place(x=809.0, y=564.0, width=115.0, height=23.0)
 
-statusIcon = PhotoImage(file=relative_to_assets("statusdropdown.png"))
-status = Button(
-    image=statusIcon,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
-    relief="flat",
-    bg="white"
-)
-status.place(x=961.0, y=560.0, width=99.0, height=30.0)
-
 canvas.create_text(
     799.0,
     535.0,
@@ -576,20 +637,20 @@ refresh = Button(
     image=button_image_9,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_9 clicked"),
+    command=updateTransaction,
     relief="flat"
 )
 refresh.place(x=965.0, y=606.0, width=42.0, height=41.671875)
 
 button_image_10 = PhotoImage(file=relative_to_assets("button_10.png"))
-refresh = Button(
+delete = Button(
     image=button_image_10,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_10 clicked"),
+    command=deleteTransaction,
     relief="flat"
 )
-refresh.place(x=1019.0, y=606.0, width=42.0, height=42.0)
+delete.place(x=1019.0, y=606.0, width=42.0, height=42.0)
 
 referenceIcon = PhotoImage(file=relative_to_assets("referenceNumEntry.png"))
 entry_bg_1 = canvas.create_image(
