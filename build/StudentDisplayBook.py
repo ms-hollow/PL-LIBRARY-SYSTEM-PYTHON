@@ -1,12 +1,17 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, Menu
+from tkinter import ttk, Menu, StringVar, messagebox
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CBook
+from CBook import bookList
+
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
+
+option_value = ""
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -51,25 +56,6 @@ def gotoChangePass():
     script_path = os.path.join(current_directory, "ChangePassword.py")
     subprocess.run(["python", script_path])
 
-def dropdownMenu():
-    # Create a dropdown menu
-    dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
-    dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
-
-    # List of options for the dropdown menu
-    options = ["Title", "Author", "Year", "Material", "Genre                       "]  # Add your options here
-
-    # Function to be executed when an option is selected from the dropdown
-    def on_option_selected(option):
-        print("Selected Option:", option)
-
-    # Add options to the dropdown menu
-    for option in options:
-        dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
-
-    # Display the dropdown menu under the category button
-    dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
-
 def Student_dropdownMenu():
     # Create a dropdown menu
     dropdown_menu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
@@ -94,45 +80,100 @@ def Student_dropdownMenu():
     # Display the dropdown menu under the image_5 button
     dropdown_menu.post(image_4.winfo_rootx(), image_4.winfo_rooty() + image_4.winfo_height())
 
-def bookTable():
-    #BOOK TABLE
-    sub_frame = ttk.Frame(window, width=600, height=350.0)
-    sub_frame.place(x=220, y=150)
-    # treeview
-    table = ttk.Treeview(sub_frame,
-                         columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                                  'Material', 'Category', 'Shelf No.', 'Total Stock',
-                                  'No. of Borrowers'), show='headings')
-    table.heading('Title', text='Title')
-    table.heading('Edition', text='Edition')
-    table.heading('Author', text='Author')
-    table.heading('Year', text='Year')
-    table.heading('ISBN', text='ISBN')
-    table.heading('Material', text='Material')
-    table.heading('Category', text='Category')
-    table.heading('Shelf No.', text='Shelf No.')
-    table.heading('Total Stock', text='Total Stock')
-    table.heading('No. of Borrowers', text='No. of Borrowers')
+class DisplayTable:
 
-    table.column('Title', width=150)
-    table.column('Edition', width=50)
-    table.column('Author', width=120)
-    table.column('Year', width=50)
-    table.column('ISBN', width=100)
-    table.column('Material', width=100)
-    table.column('Category', width=120)
-    table.column('Shelf No.', width=50)
-    table.column('Total Stock', width=50)
-    table.column('No. of Borrowers', width=50)
+    def __init__(self):
+        self.choice = 0  # Initialize the instance variable
 
-    table.pack(side='left', fill='y')
+    def dropdownMenu(self):
+        # Create a dropdown menu
+        dropdownmenu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))  # Set custom font and size
+        dropdownmenu.configure(bg="#4B0000", fg="#C19A6B")  # Set background and foreground colors
 
-    '''
-    # adding data to the table
-    for i in range(len(titles)):
-        table.insert('', 'end', values=(titles[i], editions[i], authors[i], years[i], isbns[i], materials[i], categories[i], shelf_nos[i], total_stocks[i], no_of_borrowers[i]))
-    '''
+        # List of options for the dropdown menu
+        options = ["Title", "Author", "Year", "Material", "Genre"]  # Add your options here
 
+        # Create a StringVar outside the function to store the selected option
+        clicked = StringVar()
+
+        # Function to be executed when an option is selected from the dropdown
+        def on_option_selected(option):
+            self.choice = options.index(option) + 1
+            print(option)  # Print the selected option
+            global option_value
+            option_value = option
+
+        # Add options to the dropdown menu
+        for option in options:
+            dropdownmenu.add_command(label=option, command=lambda opt=option: on_option_selected(opt))
+
+        # Display the dropdown menu under the category button
+        dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
+
+    def bookTable(self):
+        # TABLE SEARCH BOOK
+        sub_frame = ttk.Frame(window, width=600, height=350.0)
+        sub_frame.place(x=220, y=150)
+
+        # Create the table outside the loop
+        table = ttk.Treeview(sub_frame,
+                             columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
+                                      'Material', 'Genre', 'Shelf No.'), show='headings')
+
+        table.heading('Title', text='Title')
+        table.heading('Edition', text='Edition')
+        table.heading('Author', text='Author')
+        table.heading('Year', text='Year')
+        table.heading('ISBN', text='ISBN')
+        table.heading('Material', text='Material')
+        table.heading('Genre', text='Genre')
+        table.heading('Shelf No.', text='Shelf No.')
+
+        table.column('Title', width=150)
+        table.column('Edition', width=80)
+        table.column('Author', width=120)
+        table.column('Year', width=90)
+        table.column('ISBN', width=100)
+        table.column('Material', width=100)
+        table.column('Genre', width=120)
+        table.column('Shelf No.', width=80)
+
+        table.pack(side='left', fill='y')
+
+        # Clear the table before populating it with new search results
+        table.delete(*table.get_children())
+
+        keyword = searchEntry.get()
+        global option_value
+        print(option_value)
+
+        foundMatch = False
+        for book in bookList:
+            if option_value == "Title":
+                attributeValue = book.title
+            elif option_value == "Author":
+                attributeValue = book.author
+            elif option_value == "Year":
+                attributeValue = book.yearPublished
+            elif option_value == "Material":
+                attributeValue = book.material
+            elif option_value == "Genre":
+                attributeValue = book.category
+            else:
+                attributeValue = book.title
+
+            if keyword.lower() in attributeValue.lower():
+                table.insert('', 'end', values=(book.title, book.edition, book.author, book.yearPublished, book.ISBN,
+                                                book.material, book.category, book.shelfNo))
+                foundMatch = True
+
+        if not foundMatch:
+           messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+
+
+displayTable = DisplayTable()
+
+CBook.retrieveBook()
 window = Tk()
 
 window.geometry("1125x670")
@@ -168,7 +209,7 @@ button_1.place(x=20.0,y=145.0,width=160.0,height=32.0)
 
 #SEARCH BOOK
 button_image_2 = PhotoImage(file=relative_to_assets("button_2.png"))
-button_2 = Button(
+gotoSearchBtn = Button(
     image=button_image_2,
     borderwidth=0,
     highlightthickness=0,
@@ -176,7 +217,7 @@ button_2 = Button(
     relief="flat",
     bg = "white"
 )
-button_2.place(x=20.0, y=199.0, width=160.0, height=32.0)
+gotoSearchBtn.place(x=20.0, y=199.0, width=160.0, height=32.0)
 
 #BORROW BOOK
 
@@ -230,23 +271,22 @@ image_4.place(x=1054.0, y=30.0, width=43.0, height=43.0)
 #TEXTBOX
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
 entry_bg_1 = canvas.create_image(577.5, 56.5, image=entry_image_1)
-entry_1 = Entry(
+searchEntry = Entry(
     bd=0,
     bg="#FFFDFD",
     fg="#000716",
     highlightthickness=0
 )
-entry_1.place(
+searchEntry.place(
     x=405.0,
     y=40.0,
     width=350.0,
     height=33.0
 )
 
-image_image_5 = PhotoImage(
-    file=relative_to_assets("image_5.png"))
+image_image_5 = PhotoImage(file=relative_to_assets("image_5.png"))
 image_5 = canvas.create_image(640.0, 380.0, image=image_image_5)
-bookTable()
+displayTable.bookTable()
 
 #CATEGORY DROPDOWN
 button_image_5 = PhotoImage(
@@ -255,7 +295,7 @@ categoryBtn = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    command=dropdownMenu,
+    command=displayTable.dropdownMenu,
     relief="flat",
 )
 categoryBtn.place(
@@ -266,16 +306,16 @@ categoryBtn.place(
 )
 
 #search book button
-button_image_4 = PhotoImage(
-    file=relative_to_assets("button_4.png"))
-button_4 = Button(
+button_image_4 = PhotoImage(file=relative_to_assets("button_4.png"))
+searchBtn= Button(
     image=button_image_4,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_4 clicked"),
-    relief="flat"
+    command=displayTable.bookTable,
+    relief="flat",
+    bg="white"
 )
-button_4.place(x=758.0, y=40.0, width=80.0, height=35.0)
+searchBtn.place(x=758.0, y=40.0, width=80.0, height=35.0)
 
 image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
 image_6 = canvas.create_image(250.0, 599.0, image=image_image_6)

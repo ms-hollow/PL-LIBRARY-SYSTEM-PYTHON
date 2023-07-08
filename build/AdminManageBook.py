@@ -11,6 +11,7 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
 option_value = ""
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -202,7 +203,7 @@ class DisplayTable:
         # Create the table outside the loop
         table = ttk.Treeview(sub_frame,
                              columns=('Title', 'Edition', 'Author', 'Year', 'ISBN',
-                                      'Material', 'Category', 'Shelf No.'), show='headings')
+                                      'Material', 'Genre', 'Shelf No.'), show='headings')
 
         table.heading('Title', text='Title')
         table.heading('Edition', text='Edition')
@@ -210,7 +211,7 @@ class DisplayTable:
         table.heading('Year', text='Year')
         table.heading('ISBN', text='ISBN')
         table.heading('Material', text='Material')
-        table.heading('Category', text='Category')
+        table.heading('Genre', text='Genre')
         table.heading('Shelf No.', text='Shelf No.')
 
         table.column('Title', width=150)
@@ -219,7 +220,7 @@ class DisplayTable:
         table.column('Year', width=90)
         table.column('ISBN', width=100)
         table.column('Material', width=100)
-        table.column('Category', width=120)
+        table.column('Genre', width=120)
         table.column('Shelf No.', width=80)
 
         table.pack(side='left', fill='y')

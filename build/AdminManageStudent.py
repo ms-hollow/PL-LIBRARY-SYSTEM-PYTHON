@@ -36,10 +36,6 @@ def update():
     contactNum = contactEntry.get()
     email = emailEntry.get()
 
-    #book1Entry.get()
-    #book2Entry
-    #book3Entry
-
     index = CBorrower.locateBorrower(TUP_ID)
 
     if index < 0:
