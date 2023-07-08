@@ -102,44 +102,42 @@ def displayBorrower():
         print(borrower.name +" "+ borrower.TUP_ID +" "+ borrower.yearSection +" " + borrower.contactNum + " " +borrower.email)
 
 
+changePassTries = 3
 def changePass():
-        tries = 3
-        exit = False
 
-        while tries > 0 and exit == False:
-            #TUP_ID = input("Enter your TUP ID:")
-            currentPass = input("Enter current password: ")
-            newPass = input("Enter new password: ")
-            reEnterPass = input("Re-enter new password: ")
+        global changePassTries
 
-            index = loggedInAccount
+        #TUP_ID = input("Enter your TUP ID:")
+        currentPass = input("Enter current password: ")
+        newPass = input("Enter new password: ")
+        reEnterPass = input("Re-enter new password: ")
 
-            if index < 0:
-                messagebox.showerror("CHANGE PASSWORD", "ACCOUNT NOT FOUND")
-            elif currentPass != borrowerList[index].password:
-                messagebox.showerror("CHANGE PASSWORD", "INCORRECT CURRENT PASSWORD")
-                tries-=1
-            elif newPass != reEnterPass:
-                messagebox.showerror("CHANGE PASSWORD", "NEW PASSWORD DOESN'T MATCH THE RE-ENTERED PASSWORD!")
-            elif currentPass == newPass:
-                messagebox.showerror("CHANGE PASSWORD", "YOU CAN'T CHANGE IT TO YOUR CURRENT PASSWORD")
-            else:
-                response = messagebox.askyesno(  # creates a yes or no message box
-                    title="Confirmation",
-                    message="CONFIRM CHANGES?",
-                    icon=messagebox.QUESTION
-                )
-                if response:
-                    borrowerList[index].password = newPass      #set password to new pass
-                    saveBorrower()
-                    messagebox.showinfo("CHANGE PASSWORD", "YOUR PASSWORD HAS BEEN SUCCESSFULLY CHANGED!")
-                    exit = True
+        index = loggedInAccount
 
-            if tries == 0:
-                print("YOU HAVE EXCEEDED THE MAXIMUM NUMBER OF TRIES.")
-                isBlocked = True
-                return
+        if index < 0:
+            messagebox.showerror("CHANGE PASSWORD", "ACCOUNT NOT FOUND")
+        elif currentPass != borrowerList[index].password:
+            messagebox.showerror("CHANGE PASSWORD", "INCORRECT CURRENT PASSWORD")
+            changePassTries -= 1
+        elif newPass != reEnterPass:
+            messagebox.showerror("CHANGE PASSWORD", "NEW PASSWORD DOESN'T MATCH THE RE-ENTERED PASSWORD!")
+        elif currentPass == newPass:
+            messagebox.showerror("CHANGE PASSWORD", "YOU CAN'T CHANGE IT TO YOUR CURRENT PASSWORD")
+        else:
+            response = messagebox.askyesno(  # creates a yes or no message box
+                title="CHANGE PASSWORD",
+                message="CONFIRM CHANGES?",
+                icon=messagebox.QUESTION
+            )
+            if response:
+                borrowerList[index].password = newPass      #set password to new pass
+                saveBorrower()
+                messagebox.showinfo("CHANGE PASSWORD", "YOUR PASSWORD HAS BEEN SUCCESSFULLY CHANGED!")
+                #CLEAR FIELDS
 
+        if changePassTries == 0:
+            messagebox.showerror("CHANGE PASSWORD", "YOU HAVE EXCEEDED THE MAXIMUM NUMBER OF TRIES. TRY AGAIN LATER")
+            #EXIT FRAME
 def updateBorrower():
     #TUP_ID = input("ENTER TUP ID: ")
     index = loggedInAccount

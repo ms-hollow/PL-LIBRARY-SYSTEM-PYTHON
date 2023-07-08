@@ -153,6 +153,7 @@ def getInfoTransaction(ISBN):
                 #INSERT SUMMARY OF TRANSACTION
                 messagebox.showinfo("BORROW BOOK", "TRANSACTION SUCCESSFULLY SUBMITTED. PROCEED TO THE LIBRARIAN TO APPROVE TRANSACTION")
                 root.destroy()  # Close the form after submitting
+
     def cancel():
         root.destroy()  # Close the form
 
