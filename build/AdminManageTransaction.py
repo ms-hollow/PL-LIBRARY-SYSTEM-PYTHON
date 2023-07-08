@@ -45,7 +45,7 @@ def updateTransaction():
     librarian = librarianEntry.get()
     fine = fineEntry.get()
 
-    # IF PININDOT UPDATE BOOK:
+    # IF PININDOT UPDATE BORROWER:
     index = CTransaction.locateTransaction(refNum)
 
     if index < 0:
@@ -158,6 +158,7 @@ class DisplayTable:
         selected_item = table.focus()  # Get the selected item (row) in the table
         values = table.item(selected_item)["values"]  # Get the values of the selected item
         if values:  # Check if values exist (a row is selected)
+            DisplayTable.enableEntries(self)
             clearFields()
             titleEntry.insert(0, values[0])
             isbnEntry.insert(0, values[1])
@@ -174,9 +175,34 @@ class DisplayTable:
 
             remainingDays = str(CTransaction.calculateRemainingDays(values[4]))
             remainingDaysEntry.insert(0, remainingDays)
+            DisplayTable.disableEntries(self)
+
+    def enableEntries(self):
+        titleEntry.config(state="normal")
+        isbnEntry.config(state="normal")
+        tupidEntry.config(state="normal")
+        dateborrowedEntry.config(state="normal")
+        referenceNumEntry.config(state="normal")
+        borrowerEntry.config(state="normal")
+        authorEntry.config(state="normal")
+        librarianEntry.config(state="normal")
+        fineEntry.config(state="normal")
+        remainingDaysEntry.config(state="normal")
+
+    def disableEntries(self):
+        titleEntry.config(state="disable")
+        isbnEntry.config(state="disable")
+        tupidEntry.config(state="disable")
+        dateborrowedEntry.config(state="disable")
+        referenceNumEntry.config(state="disable")
+        borrowerEntry.config(state="disable")
+        authorEntry.config(state="disable")
+        librarianEntry.config(state="disable")
+        fineEntry.config(state="disable")
+        remainingDaysEntry.config(state="disable")
 
     def bookTable(self):
-        # TABLE SEARCH BOOK
+        # TABLE SEARCH BORROWER
         sub_frame = ttk.Frame(window, width=600, height=350.0)
         sub_frame.place(x=220, y=150)
 
@@ -237,7 +263,7 @@ class DisplayTable:
                 foundMatch = True
 
         if not foundMatch:
-            messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+            messagebox.showinfo("SEARCH BORROWER", "NO MATCH FOUND ")
 
 
 # Create an instance of DisplayTable class

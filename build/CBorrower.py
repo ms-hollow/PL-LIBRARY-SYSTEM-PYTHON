@@ -173,6 +173,8 @@ def updateBorrower():
 
     else:
         print("STUDENT NOT FOUND!")
+def getLoggedInAccount():
+    return loggedInAccount
 
 #login
 def logInBorrower():
@@ -344,12 +346,14 @@ def decrypt(text):
 
 def displayBorrowedBook(TUP_ID):
     from CTransaction import transactionList
+
     i = 0
-
     bookBorrowed = ["", "", ""]
-    for transaction in transactionList:
-        if transaction.TUP_ID == TUP_ID and transaction.status == "TO RETURN":
+    print(TUP_ID)
+    # Loop through transaction mula sa dulo since ang latest transaction ay naa-add sa unahan
+    for transaction in reversed(transactionList):
+        if transaction.TUP_ID == TUP_ID and transaction.status == "TO APPROVE" or transaction.status == "TO RETURN":
             bookBorrowed[i] = transaction.title
-            i = i + 1
+            i = i+1
 
-    print(bookBorrowed[2] + bookBorrowed[1] + bookBorrowed[0])
+    return bookBorrowed

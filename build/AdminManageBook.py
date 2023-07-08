@@ -165,12 +165,14 @@ class DisplayTable:
         selected_item = table.focus()  # Get the selected item (row) in the table
         values = table.item(selected_item)["values"]  # Get the values of the selected item
         if values:  # Check if values exist (a row is selected)
-            clearFields()
+
+            DisplayTable.enableEntries(self)    #enable
+            clearFields()                       #clear lahat
             titleEntry.insert(0, values[0])
-            authorEntry.insert(0, values[1])
-            isbnEntry.insert(0, values[2])
-            editionEntry.insert(0, values[3])
-            yearEntry.insert(0, values[4])
+            editionEntry.insert(0, values[1])
+            authorEntry.insert(0, values[2])
+            yearEntry.insert(0, values[3])
+            isbnEntry.insert(0, values[4])
             materialEntry.insert(0, values[5])
             genreEntry.insert(0, values[6])
             shelfEntry.insert(0, values[7])
@@ -180,6 +182,17 @@ class DisplayTable:
             noBorrowersEntry.insert(0, bookList[index].noOfBorrower)
             currentStock = str(int(bookList[index].totalStocks) - int(bookList[index].noOfBorrower))
             currentStocksEntry.insert(0, currentStock)
+
+            DisplayTable.disableEntries(self)       #disable
+    def enableEntries(self):
+        isbnEntry.config(state="normal")
+        noBorrowersEntry.config(state="normal")
+        currentStocksEntry.config(state="normal")
+
+    def disableEntries(self):
+        isbnEntry.config(state="disable")
+        noBorrowersEntry.config(state="disable")
+        currentStocksEntry.config(state="disable")
 
     def bookTable(self):
         # TABLE SEARCH BOOK

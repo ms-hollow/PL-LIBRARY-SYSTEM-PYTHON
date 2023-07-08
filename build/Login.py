@@ -3,7 +3,9 @@ import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
+import CBook
 import CBorrower
+import CTransaction
 
 
 OUTPUT_PATH = Path(__file__).parent
@@ -17,8 +19,10 @@ exit = False
 def login():
 
     #Insert here lahat ng retrieve
+    CBook.retrieveBook()
     CBorrower.retrieveBorrower()
-    #CBook.retrieveBook()
+    CTransaction.retrieveTransaction()
+
 
     enteredID = tupid.get()
     enteredPass = password.get()

@@ -37,7 +37,7 @@ class CTransaction:
 
 indexBook = 0
 indexBorrower = 0
-def getInfoTransaction():
+def getInfoTransaction(ISBN):
     global indexBook
     global indexBorrower
 
@@ -46,14 +46,16 @@ def getInfoTransaction():
     # Create main frame
     main_frame = tk.Frame(root)
     main_frame.pack(padx=10, pady=10)
+    # Lift the top window above the main window
+    main_frame.lift()
+
     # Set the background color
 
-    ISBN = input("ENTER ISBN: ")
     indexBook = CBook.locateBook(ISBN)                #kinuha index ng book na hihiramin
     title = bookList[indexBook].title
     author = bookList[indexBook].author
 
-    indexBorrower = CBorrower.loggedInAccount        #kinuha index ng currently account logged in.
+    indexBorrower = CBorrower.loggedInAccount  # kinuha index ng currently account logged in.
     TUP_ID = borrowerList[indexBorrower].TUP_ID
     borrower = borrowerList[indexBorrower].name
     yearSection = borrowerList[indexBorrower].yearSection

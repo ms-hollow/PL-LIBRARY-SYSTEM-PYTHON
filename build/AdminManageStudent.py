@@ -5,6 +5,7 @@ from tkinter import ttk, messagebox, END
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 import CBorrower
+import CTransaction
 from CBorrower import borrowerList
 from CTransaction import transactionList
 
@@ -60,7 +61,7 @@ def update():
             borrowerList[index].email = email
             borrowerList[index].noOfBorrowed = borrowerList[index].noOfBorrowed
 
-            messagebox.showinfo("UPDATE BORROWER", "BOOK UPDATED SUCCESSFULLY! ")
+            messagebox.showinfo("UPDATE BORROWER", "BORROWER UPDATED SUCCESSFULLY! ")
             CBorrower.saveBorrower()
             bookTable()
             clearFields()
@@ -96,6 +97,7 @@ def on_table_select(table):
     selected_item = table.focus()  # Get the selected item (row) in the table
     values = table.item(selected_item)["values"]  # Get the values of the selected item
     if values:  # Check if values exist (a row is selected)
+        enableEntries()
         clearFields()
         nameEntry.insert(0, values[0])
         tupidEntry.insert(0, values[1])
@@ -103,20 +105,15 @@ def on_table_select(table):
         contactEntry.insert(0, values[3])
         emailEntry.insert(0, values[4])
 
-        i = 0
-        bookBorrowed = ["", "", ""]
-        for transaction in transactionList:
-            if transaction.TUP_ID == values[1] and transaction.status == "TO RETURN":
-                bookBorrowed[i] = transaction.title
-                i = i + 1
-
-                book1Entry.insert(0, bookBorrowed[2])
-                book2Entry.insert(0, bookBorrowed[1])
-                book3Entry.insert(0, bookBorrowed[0])
+        bookBorrowed = CBorrower.displayBorrowedBook(str(values[1]))
+        book1Entry.insert(0, bookBorrowed[0])
+        book2Entry.insert(0, bookBorrowed[1])
+        book3Entry.insert(0, bookBorrowed[2])
+        disableEntries()
 
 def bookTable():
 
-    # TABLE SEARCH BOOK
+    # TABLE SEARCH BORROWER
     sub_frame = ttk.Frame(window, width=600, height=350.0)
     sub_frame.place(x=220, y=150)
 
@@ -150,7 +147,20 @@ def bookTable():
             foundMatch = True
 
     if not foundMatch:
-        messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+        messagebox.showinfo("SEARCH BORROWER", "NO MATCH FOUND ")
+
+def enableEntries():
+    tupidEntry.config(state="normal")
+    book1Entry.config(state="normal")
+    book2Entry.config(state="normal")
+    book3Entry.config(state="normal")
+
+def disableEntries():
+    tupidEntry.config(state="disable")
+    book1Entry.config(state="disable")
+    book2Entry.config(state="disable")
+    book3Entry.config(state="disable")
+
 def clearFields():
 
     nameEntry.delete(0, END) # Clear the contents of the Entry widget
@@ -163,6 +173,8 @@ def clearFields():
     book3Entry.delete(0, END)
 
 CBorrower.retrieveBorrower()
+CTransaction.retrieveTransaction()
+
 window = Tk()
 
 window.geometry("1125x670")

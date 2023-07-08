@@ -21,30 +21,18 @@ def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def gotoDisplayBooks():
+
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "StudentDisplayBook.py")
     subprocess.run(["python", script_path])
 
 def borrowBook():
-    '''
-    global indexBook
-    global indexBorrower
 
-    ISBN = isbnEntry.get()
-    indexBook = CBook.locateBook(ISBN)  # kinuha index ng book na hihiramin
-    title = bookList[indexBook].title
-    author = bookList[indexBook].author
+    CTransaction.getInfoTransaction(isbnEntry.get())
 
-    indexBorrower = CBorrower.loggedInAccount  # kinuha index ng currently account logged in.
-    TUP_ID = borrowerList[indexBorrower].TUP_ID
-    borrower = borrowerList[indexBorrower].name
-    yearSection = borrowerList[indexBorrower].yearSection
-
-    borrower = borrowerList[indexBorrower].name
-    '''
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "BorrowBook.py")
+    script_path = os.path.join(current_directory, "BorrowBook.py") #TINAWAG YUNG SUMMARY
     subprocess.run(["python", script_path])
 
 def gotoLogin():
@@ -135,12 +123,14 @@ class DisplayTable:
         selected_item = table.focus()  # Get the selected item (row) in the table
         values = table.item(selected_item)["values"]  # Get the values of the selected item
         if values:  # Check if values exist (a row is selected)
-            clearFields()
+
+            DisplayTable.enableEntries(self)  # enable
+            clearFields()  # clear lahat
             titleEntry.insert(0, values[0])
-            authorEntry.insert(0, values[1])
-            isbnEntry.insert(0, values[2])
-            editionEntry.insert(0, values[3])
-            yearEntry.insert(0, values[4])
+            editionEntry.insert(0, values[1])
+            authorEntry.insert(0, values[2])
+            yearEntry.insert(0, values[3])
+            isbnEntry.insert(0, values[4])
             materialEntry.insert(0, values[5])
             genreEntry.insert(0, values[6])
             shelfEntry.insert(0, values[7])
@@ -150,6 +140,36 @@ class DisplayTable:
             noBorrowersEntry.insert(0, bookList[index].noOfBorrower)
             currentStock = str(int(bookList[index].totalStocks) - int(bookList[index].noOfBorrower))
             currentStocksEntry.insert(0, currentStock)
+
+            DisplayTable.disableEntries(self)  # disable
+
+    def enableEntries(self):
+        titleEntry.config(state="normal")
+        authorEntry.config(state="normal")
+        isbnEntry.config(state="normal")
+        editionEntry.config(state="normal")
+        yearEntry.config(state="normal")
+        materialEntry.config(state="normal")
+        categoryBtn.config(state="normal")
+        shelfEntry.config(state="normal")
+        totalStocksEntry.config(state="normal")
+        noBorrowersEntry.config(state="normal")
+        currentStocksEntry.config(state="normal")
+        genreEntry.config(state="normal")
+
+    def disableEntries(self):
+        titleEntry.config(state="disable")
+        authorEntry.config(state="disable")
+        isbnEntry.config(state="disable")
+        editionEntry.config(state="disable")
+        yearEntry.config(state="disable")
+        materialEntry.config(state="disable")
+        categoryBtn.config(state="disable")
+        shelfEntry.config(state="disable")
+        totalStocksEntry.config(state="disable")
+        noBorrowersEntry.config(state="disable")
+        currentStocksEntry.config(state="disable")
+        genreEntry.config(state="disable")
 
     def bookTable(self):
         # TABLE SEARCH BOOK
@@ -211,7 +231,7 @@ class DisplayTable:
                 foundMatch = True
 
         if not foundMatch:
-           messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+            messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
 
 
 # Create an instance of DisplayTable class
@@ -230,6 +250,8 @@ def clearFields():
     genreEntry.delete(0, END)
 
 CBook.retrieveBook()
+CBorrower.retrieveBorrower()
+CTransaction.retrieveTransaction()
 window = Tk()
 
 window.geometry("1125x670")
