@@ -19,6 +19,7 @@ indexBorrower = 0
 
 transactionList = []       #Initializing an empty list of CTransaction objects          datasruct: list
 loggedInAccount = 0
+latestRefNum = ""
 
 class CTransaction:
     # Object Constructor
@@ -136,7 +137,7 @@ def getInfoTransaction(ISBN):
         elif currentStock < 1:
             messagebox.showerror("BORROW BOOK", "BOOK SELECTED IS OUT OF STOCK")
             root.destroy()  # Close the form
-        elif int(borrowerList[indexBorrower].noOfBorrowed) >= 3:
+        elif int(borrowerList[indexBorrower].noOfBorrowed) >= 20:
             messagebox.showerror("BORROW BOOK", "YOU CAN ONLY BORROW MAXIMUM OF 3 BOOKS")
             root.destroy()  # Close the form
         elif remainingDays >7:
@@ -156,6 +157,8 @@ def getInfoTransaction(ISBN):
                 CBook.saveBook()
                 borrowerList[indexBorrower].noOfBorrowed = int(borrowerList[indexBorrower].noOfBorrowed) + 1  # add noOfBorrowed if nanghiram
                 CBorrower.saveBorrower()
+
+                save_refNum(refNum)
                 #INSERT SUMMARY OF TRANSACTION
                 messagebox.showinfo("BORROW BOOK", "TRANSACTION SUCCESSFULLY SUBMITTED. PROCEED TO THE LIBRARIAN TO APPROVE TRANSACTION")
                 root.destroy()  # Close the form after submitting
@@ -174,8 +177,21 @@ def getInfoTransaction(ISBN):
 
     root.mainloop()
 
-def getLoggedInIndex():
-    return loggedInAccount
+def save_refNum(refNum):
+    with open('login_account.txt', 'w') as file:
+        file.write(str(refNum))
+
+def retrieve_refNum():
+    try:
+        with open('login_account.txt', 'r') as file:
+            refNum = int(file.read())
+            return refNum
+    except FileNotFoundError:
+        return None
+
+def getLatestRefNum():
+    global latestRefNum
+    return latestRefNum
 def setLoggedInIndex(index):
     global loggedInAccount
     loggedInAccount = index

@@ -312,15 +312,15 @@ def retrieveBorrower():
             #add borrower in the borrowerList
             addBorrower(borrower)
 
-def save_login_account(login_index):
+def save_login_account(login_ID):
     with open('login_account.txt', 'w') as file:
-        file.write(str(login_index))
+        file.write(str(login_ID))
 
 def retrieve_login_account():
     try:
         with open('login_account.txt', 'r') as file:
-            login_index = int(file.read())
-            return login_index
+            login_ID = int(file.read())
+            return login_ID
     except FileNotFoundError:
         return None
 

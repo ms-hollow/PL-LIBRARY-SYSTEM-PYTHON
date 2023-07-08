@@ -3,12 +3,17 @@ import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CTransaction
+import CBorrower
+from CTransaction import transactionList
+from CBorrower import borrowerList
 
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "StatementTrans"
 
-
+CTransaction.retrieveTransaction()
+CBorrower.retrieveBorrower()
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -304,5 +309,31 @@ okbtn.place(
     width=43.0,
     height=24.0
 )
+
+
+def displayStatementTrans():
+
+    index = 0       #kasi laging nasa unahan
+    print(transactionList[index].title)
+    titleEntry.insert(0, transactionList[index].title)
+    isbnEntry.insert(0, transactionList[index].ISBN)
+    tupidEntry.insert(0, transactionList[index].TUP_ID)
+    dateBorrowedEntry.insert(0, transactionList[index].dateBorrowed)
+    dateReturnEntry.insert(0, transactionList[index].dateToReturn)
+    statusEntry.insert(0, transactionList[index].status)
+    refnumEntry.insert(0, transactionList[index].refNum)
+    nameEntry.insert(0, transactionList[index].borrower)
+    authorEntry.insert(0, transactionList[index].author)
+    librarianEntry.insert(0, transactionList[index].librarian)
+
+
+    indexBorrower = CBorrower.retrieve_login_account()
+    yearandSectionEntry.insert(0,borrowerList[0].yearSection)
+    remainingDays = CTransaction.calculateRemainingDays(transactionList[index].dateToReturn)
+    remainingDaysEntry.insert(0, remainingDays)
+
+
+displayStatementTrans()
+
 window.resizable(False, False)
 window.mainloop()
