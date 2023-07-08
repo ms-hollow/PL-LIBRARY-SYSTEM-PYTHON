@@ -314,6 +314,19 @@ def retrieveBorrower():
             #add borrower in the borrowerList
             addBorrower(borrower)
 
+def save_login_account(login_index):
+    with open('login_account.txt', 'w') as file:
+        file.write(str(login_index))
+
+def retrieve_login_account():
+    try:
+        with open('login_account.txt', 'r') as file:
+            login_index = int(file.read())
+            return login_index
+    except FileNotFoundError:
+        return None
+
+
 
 def checkBorrowerFields(name, TUP_ID, password, yearSection, contactNum, email):
 

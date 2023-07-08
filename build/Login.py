@@ -7,7 +7,7 @@ import CBook
 import CBorrower
 import CTransaction
 
-#loggedInAccount = 0   #dito store yung index ng naka-log in na account.
+loggedInAccount = 0   #dito store yung index ng naka-log in na account.
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
@@ -32,10 +32,8 @@ def login():
     if index >= 0 and enteredPass == CBorrower.borrowerList[index].password:
         messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
         CBorrower.saveBorrower()
-        CBorrower.setLoggedInIndex(index)
-        print(CBorrower.getLoggedInIndex())
-        CTransaction.setLoggedInIndex(index)
-        print(CTransaction.getLoggedInIndex())
+        CBorrower.save_login_account(index)     #save sa file ang index ng account logged in.
+
 
         #Punta sa student frame
         window.destroy()

@@ -55,7 +55,7 @@ def getInfoTransaction(ISBN):
     title = bookList[indexBook].title
     author = bookList[indexBook].author
 
-    indexBorrower = getLoggedInIndex()      #kinuha index ng currently account logged in.
+    indexBorrower = CBorrower.retrieve_login_account()     #kinuha index ng currently account logged in.
     print(indexBorrower)
     TUP_ID = borrowerList[indexBorrower].TUP_ID
     borrower = borrowerList[indexBorrower].name

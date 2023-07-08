@@ -28,10 +28,7 @@ def gotoDisplayBooks():
 
 def borrowBook():
 
-    CTransaction.getInfoTransaction(isbnEntry.get())
-
-    # dateBorrowedEntry.insert(0, )
-
+    CTransaction.getInfoTransaction(str(isbnEntry.get()))
 
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "BorrowBook.py") #TINAWAG YUNG SUMMARY
