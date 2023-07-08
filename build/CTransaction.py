@@ -8,7 +8,6 @@ from tkcalendar import DateEntry
 from tkinter import messagebox
 from CBorrower import borrowerList
 from CBook import bookList
-from CBorrower import loggedInAccount
 import CBorrower
 import CBook
 
@@ -55,7 +54,7 @@ def getInfoTransaction(ISBN):
     title = bookList[indexBook].title
     author = bookList[indexBook].author
 
-    indexBorrower = CBorrower.loggedInAccount  # kinuha index ng currently account logged in.
+    indexBorrower = CBorrower.loggedInIndex# kinuha index ng currently account logged in.
     TUP_ID = borrowerList[indexBorrower].TUP_ID
     borrower = borrowerList[indexBorrower].name
     yearSection = borrowerList[indexBorrower].yearSection

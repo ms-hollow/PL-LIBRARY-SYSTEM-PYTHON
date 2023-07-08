@@ -2,7 +2,7 @@ import csv
 from tkinter import messagebox
 
 borrowerList = []     #Initializing an empty list of Cborrower objects          datasruct: list
-loggedInAccount = 0     #once na nakapag-log in, di na magpapa-enter uli ng TUP_ID, ito na yung index na gagamitin
+loggedInIndex = 0     #once na nakapag-log in, di na magpapa-enter uli ng TUP_ID, ito na yung index na gagamitin
 
 class CBorrower:
     # Object Constructor
@@ -175,6 +175,11 @@ def updateBorrower():
         print("STUDENT NOT FOUND!")
 def getLoggedInAccount():
     return loggedInAccount
+
+def setLoggedInAccount(loggedInAccount):
+    global loggedInIndex
+    loggedInIndex= loggedInAccount
+    return loggedInIndex
 
 #login
 def logInBorrower():

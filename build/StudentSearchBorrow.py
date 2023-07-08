@@ -26,11 +26,8 @@ def gotoDisplayBooks():
 
 def borrowBook():
 
-<<<<<<< HEAD
     CTransaction.getInfoTransaction(isbnEntry.get())
 
-=======
->>>>>>> 20a56793bfdd1ba92de46ef98d5544309ec57523
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "BorrowBook.py") #TINAWAG YUNG SUMMARY
     subprocess.run(["python", script_path])

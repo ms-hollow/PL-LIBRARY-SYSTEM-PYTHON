@@ -7,6 +7,7 @@ import CBook
 import CBorrower
 import CTransaction
 
+loggedInAccount = 0     #dito store yung index ng naka-log in na account.
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
@@ -23,11 +24,11 @@ def login():
     CBorrower.retrieveBorrower()
     CTransaction.retrieveTransaction()
 
-
     enteredID = tupid.get()
     enteredPass = password.get()
 
     index = CBorrower.locateBorrower(enteredID)
+    CBorrower.setLoggedInAccount(index)
 
     if index >= 0 and enteredPass == CBorrower.borrowerList[index].password:
         messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
