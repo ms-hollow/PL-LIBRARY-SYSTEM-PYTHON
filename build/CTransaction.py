@@ -10,9 +10,13 @@ from CBorrower import borrowerList
 from CBook import bookList
 import CBorrower
 import CBook
+from CBorrower import loggedInAccount
 
+indexBook = 0
+indexBorrower = 0
 
 transactionList = []       #Initializing an empty list of CTransaction objects          datasruct: list
+loggedInAccount = 0
 
 class CTransaction:
     # Object Constructor
@@ -34,8 +38,6 @@ class CTransaction:
 
 #######################  METHODS   ##############################################
 
-indexBook = 0
-indexBorrower = 0
 def getInfoTransaction(ISBN):
     global indexBook
     global indexBorrower
@@ -45,7 +47,6 @@ def getInfoTransaction(ISBN):
     # Create main frame
     main_frame = tk.Frame(root)
     main_frame.pack(padx=10, pady=10)
-    # Lift the top window above the main window
     main_frame.lift()
 
     # Set the background color
@@ -54,7 +55,8 @@ def getInfoTransaction(ISBN):
     title = bookList[indexBook].title
     author = bookList[indexBook].author
 
-    indexBorrower = CBorrower.loggedInIndex# kinuha index ng currently account logged in.
+    indexBorrower = getLoggedInIndex()      #kinuha index ng currently account logged in.
+    print(indexBorrower)
     TUP_ID = borrowerList[indexBorrower].TUP_ID
     borrower = borrowerList[indexBorrower].name
     yearSection = borrowerList[indexBorrower].yearSection
@@ -160,6 +162,12 @@ def getInfoTransaction(ISBN):
     cancel_button.pack(padx=40, pady=10)  # Adjust the side and pady values as needed
 
     root.mainloop()
+
+def getLoggedInIndex():
+    return loggedInAccount
+def setLoggedInIndex(index):
+    global loggedInAccount
+    loggedInAccount = index
 
 def calculateRemainingDays(dateToReturn):
     today = date.today()

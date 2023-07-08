@@ -179,16 +179,6 @@ button_2 = Button(
 button_2.place(x=20.0, y=199.0, width=160.0, height=32.0)
 
 #BORROW BOOK
-button_image_3 = PhotoImage(file=relative_to_assets("button_3.png"))
-button_3 = Button(
-    image=button_image_3,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_3 clicked"),
-    relief="flat",
-    bg = "white"
-)
-button_3.place(x=20.0, y=253.0, width=160.0, height=32.0)
 
 image_1_path = relative_to_assets("image_1.png")
 image_1 = Image.open(image_1_path)

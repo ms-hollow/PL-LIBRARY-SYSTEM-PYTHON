@@ -6,6 +6,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 import CBook, CTransaction, CBorrower
 from CBook import bookList
+import CTransaction
 from CTransaction import transactionList
 from CBorrower import borrowerList
 
@@ -24,13 +25,21 @@ def gotoDisplayBooks():
     script_path = os.path.join(current_directory, "StudentDisplayBook.py")
     subprocess.run(["python", script_path])
 
+
 def borrowBook():
 
     CTransaction.getInfoTransaction(isbnEntry.get())
 
+    # dateBorrowedEntry.insert(0, )
+
+
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "BorrowBook.py") #TINAWAG YUNG SUMMARY
     subprocess.run(["python", script_path])
+
+def getISBN():
+    ISBN = isbnEntry.get()
+    return ISBN
 
 def gotoLogin():
     window.destroy()

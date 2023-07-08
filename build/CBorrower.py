@@ -2,7 +2,7 @@ import csv
 from tkinter import messagebox
 
 borrowerList = []     #Initializing an empty list of Cborrower objects          datasruct: list
-loggedInIndex = 0     #once na nakapag-log in, di na magpapa-enter uli ng TUP_ID, ito na yung index na gagamitin
+loggedInAccount = 0     #once na nakapag-log in, di na magpapa-enter uli ng TUP_ID, ito na yung index na gagamitin
 
 class CBorrower:
     # Object Constructor
@@ -51,6 +51,12 @@ def getInfoBorrower():
             saveBorrower()
             messagebox.showinfo("REGISTRATION", "YOUR ACCOUNT IS SUCCESSFULLY REGISTERED!")
 
+def getLoggedInIndex():
+    return loggedInAccount
+def setLoggedInIndex(index):
+    global loggedInAccount
+    loggedInAccount = index
+
 def addBorrower(borrower):
     # Find the index to insert the borrower alphabetically based on the name
     index = 0
@@ -84,6 +90,7 @@ def deleteBorrower(TUP_ID):
             #clear fields
 
 def locateBorrower(TUP_ID):
+                print(loggedInAccount)
                 for i in range(len(borrowerList)):  # loop through the borrowerList
                     if borrowerList[i].TUP_ID == TUP_ID:  # if nahanap, return index, else return -1
                         return i
@@ -173,13 +180,7 @@ def updateBorrower():
 
     else:
         print("STUDENT NOT FOUND!")
-def getLoggedInAccount():
-    return loggedInAccount
 
-def setLoggedInAccount(loggedInAccount):
-    global loggedInIndex
-    loggedInIndex= loggedInAccount
-    return loggedInIndex
 
 #login
 def logInBorrower():

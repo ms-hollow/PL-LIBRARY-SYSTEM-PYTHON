@@ -7,7 +7,7 @@ import CBook
 import CBorrower
 import CTransaction
 
-loggedInAccount = 0     #dito store yung index ng naka-log in na account.
+#loggedInAccount = 0   #dito store yung index ng naka-log in na account.
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
@@ -20,21 +20,22 @@ exit = False
 def login():
 
     #Insert here lahat ng retrieve
-    CBook.retrieveBook()
+    #CBook.retrieveBook()
     CBorrower.retrieveBorrower()
-    CTransaction.retrieveTransaction()
+    #CTransaction.retrieveTransaction()
 
     enteredID = tupid.get()
     enteredPass = password.get()
 
     index = CBorrower.locateBorrower(enteredID)
-    CBorrower.setLoggedInAccount(index)
 
     if index >= 0 and enteredPass == CBorrower.borrowerList[index].password:
         messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
         CBorrower.saveBorrower()
-        global loggedInAccount  # accessing global variable
-        loggedInAccount = index  # modifying global variable
+        CBorrower.setLoggedInIndex(index)
+        print(CBorrower.getLoggedInIndex())
+        CTransaction.setLoggedInIndex(index)
+        print(CTransaction.getLoggedInIndex())
 
         #Punta sa student frame
         window.destroy()
@@ -148,7 +149,7 @@ image_2 = canvas.create_image(900.0, 480.0, image=image_image_2)
 
 canvas.create_text(457.0, 146.0, anchor="nw", text="WELCOME ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=30, weight="bold"))
-canvas.create_text(372.0, 234.0, anchor="nw", text="Username ", fill="#4B0000",
+canvas.create_text(372.0, 234.0, anchor="nw", text="TUP ID ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=20, weight="bold"))
 
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
