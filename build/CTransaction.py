@@ -1,5 +1,7 @@
 import csv
+import os
 import random
+import subprocess
 import tkinter as tk
 import tkcalendar as tkcalendar
 from datetime import date
@@ -129,13 +131,17 @@ def getInfoTransaction(ISBN):
 
         if indexBook < 0:
             messagebox.showerror("BORROW BOOK", "BOOK DOES NOT EXIST")
+            root.destroy()  # Close the form
         #INSERT IF WALANG SELECTED ROW
         elif currentStock < 1:
             messagebox.showerror("BORROW BOOK", "BOOK SELECTED IS OUT OF STOCK")
+            root.destroy()  # Close the form
         elif int(borrowerList[indexBorrower].noOfBorrowed) >= 3:
             messagebox.showerror("BORROW BOOK", "YOU CAN ONLY BORROW MAXIMUM OF 3 BOOKS")
+            root.destroy()  # Close the form
         elif remainingDays >7:
             messagebox.showerror("BORROW BOOK", "RETURN DATE MUST BE WITHIN 7 DAYS FROM THE DATE BORROWED")
+            root.destroy()  # Close the form
         else:
             response = messagebox.askyesno(
                 title="BORROW BOOK",
@@ -153,6 +159,10 @@ def getInfoTransaction(ISBN):
                 #INSERT SUMMARY OF TRANSACTION
                 messagebox.showinfo("BORROW BOOK", "TRANSACTION SUCCESSFULLY SUBMITTED. PROCEED TO THE LIBRARIAN TO APPROVE TRANSACTION")
                 root.destroy()  # Close the form after submitting
+
+                current_directory = os.path.dirname(os.path.abspath(__file__))
+                script_path = os.path.join(current_directory, "StatementTrans.py")
+                subprocess.run(["python", script_path])
 
     def cancel():
         root.destroy()  # Close the form

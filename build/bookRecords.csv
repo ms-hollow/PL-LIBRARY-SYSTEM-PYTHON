@@ -1,5 +1,5 @@
 Title,Author,ISBN,Edition,Year Published,Material,Category,Shelf No.,Total Stocks,No. of Borrower
-BOOK1,1,12,1,1,1,1,1,10,1
+BOOK1,1,12,1,1,1,1,1,10,2
 BOOK1,1,1,1,12,1,DRAMA,1,20,1
-BOOK2,A,1234,E,Y,M,G,2,30,6
-BOOK3,3,3,3,3,3,3,3,22,8
+BOOK2,A,1234,E,Y,M,G,2,30,9
+BOOK3,3,3,3,3,3,3,3,22,9

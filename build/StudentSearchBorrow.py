@@ -30,9 +30,9 @@ def borrowBook():
 
     CTransaction.getInfoTransaction(str(isbnEntry.get()))
 
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "BorrowBook.py") #TINAWAG YUNG SUMMARY
-    subprocess.run(["python", script_path])
+    #current_directory = os.path.dirname(os.path.abspath(__file__))
+    #script_path = os.path.join(current_directory, "StatementTrans.py") #TINAWAG YUNG SUMMARY
+    #subprocess.run(["python", script_path])
 
 def getISBN():
     ISBN = isbnEntry.get()

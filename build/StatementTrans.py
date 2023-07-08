@@ -19,6 +19,7 @@ def destroyWindow():
 window = Tk()
 
 window.geometry("478x580")
+window.lift()
 window.configure(bg = "#C19A6B")
 
 # Calculate the center coordinates of the screen
