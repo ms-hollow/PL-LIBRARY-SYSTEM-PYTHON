@@ -105,7 +105,7 @@ canvas.create_text(
     fill="#4B0000",
     font=font_style
 )
-sample = font.Font(family="Poppins", size=9, weight="normal")
+sample = font.Font(family="Poppins", size=9, weight="bold")
 
 canvas.create_text(
     750.0,
@@ -348,7 +348,7 @@ canvas.create_text(
 
 canvas.create_text(
     750.0,
-    491.0,
+    492.0,
     anchor="nw",
     text="(example: juandelatorre@tup.edu.ph)",
     fill="#4B0000",

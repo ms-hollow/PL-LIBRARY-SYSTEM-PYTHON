@@ -280,11 +280,11 @@ def saveBorrower():
         # Write each borrower's data row
         for borrower in borrowerList:
             #ENCRYPTED - encrypts every variable, then write it in the file
-            #writer.writerow([encrypt(borrower.name), encrypt(borrower.TUP_ID), encrypt(borrower.password), encrypt(borrower.yearSection),
-             #                encrypt(borrower.contactNum), encrypt(borrower.email), encrypt(str(borrower.noOfBorrowed))])
+            writer.writerow([encrypt(borrower.name), encrypt(borrower.TUP_ID), encrypt(borrower.password), encrypt(borrower.yearSection),
+                             encrypt(borrower.contactNum), encrypt(borrower.email), encrypt(str(borrower.noOfBorrowed))])
             #NOT ENCRYPTED
-            writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
-                             borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
+            #writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
+             #                borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
 
 def retrieveBorrower():
 
@@ -305,9 +305,9 @@ def retrieveBorrower():
 
             #create an object of the retrieved borrower
             #DECRYPTYED
-            #borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection), decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))# borrowedBook
+            borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection), decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))# borrowedBook
             #NOT DECRYPTED
-            borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
+            #borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
 
             #add borrower in the borrowerList
             addBorrower(borrower)
