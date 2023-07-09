@@ -1,8 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
+from tkinter import Tk, Canvas, Button, PhotoImage
 from PIL import Image, ImageTk
 
 

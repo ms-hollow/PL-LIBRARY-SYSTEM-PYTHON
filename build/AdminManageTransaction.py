@@ -36,55 +36,62 @@ def gotoBook():
     script_path = os.path.join(current_directory, "AdminManageBook.py")
     subprocess.run(["python", script_path])
 
-
 def getSummary():
-    # Get the count of each book title
-    title_counts = {}
-    for transaction in transactionList:
-        title = transaction.title
-        if title in title_counts:
-            title_counts[title] += 1
-        else:
-            title_counts[title] = 1
+    import csv
 
-    # Get the most borrowed book title
-    most_borrowed_title = max(title_counts, key=title_counts.get)
+    # Code to calculate the most borrowed book, genre, and author
 
-    # Get the count of books in each genre/category and the number of unique borrowers
-    genre_counts = {}
-    genre_borrowers = {}
-    for transaction in transactionList:
-        title = transaction.title
-        genre = next((book.category for book in bookList if book.title == title), None)
-        if genre:
-            if genre in genre_counts:
-                genre_counts[genre] += 1
-                if transaction.TUP_ID not in genre_borrowers[genre]:
-                    genre_borrowers[genre].append(transaction.TUP_ID)
-            else:
-                genre_counts[genre] = 1
-                genre_borrowers[genre] = [transaction.TUP_ID]
-
-    # Get the most borrowed book genre
-    most_borrowed_genre = max(genre_counts, key=genre_counts.get)
-
-    # Get the author of the most borrowed book
+    most_borrowed_book = ""
+    most_borrowed_genre = ""
     most_borrowed_author = ""
-    max_books_count = 0
-    max_borrowers_count = 0
-    for transaction in transactionList:
-        if transaction.title == most_borrowed_title:
-            author = transaction.author
-            books_count = title_counts.get(most_borrowed_title, 0)
-            borrowers_count = len(genre_borrowers.get(most_borrowed_genre, []))
-            if books_count > max_books_count or (books_count == max_books_count and borrowers_count > max_borrowers_count):
-                most_borrowed_author = author
-                max_books_count = books_count
-                max_borrowers_count = borrowers_count
 
-    print("Most Borrowed Book Title: ", most_borrowed_title)
-    print("Most Borrowed Book Genre: ", most_borrowed_genre)
-    print("Most Borrowed Book Author: ", most_borrowed_author)
+    # Code to calculate the counts of the most borrowed book, genre, and author
+    book_counts = {}
+    genre_counts = {}
+    author_counts = {}
+
+    for transaction in transactionList:
+        book_title = transaction.title
+        ISBN = transaction.ISBN
+        indexBook = CBook.locateBook(ISBN)
+        genre = bookList[indexBook].category
+        author = transaction.author
+
+        # Increment the counts for book, genre, and author
+        book_counts[book_title] = book_counts.get(book_title, 0) + 1
+        genre_counts[genre] = genre_counts.get(genre, 0) + 1
+        author_counts[author] = author_counts.get(author, 0) + 1
+
+    # Find the most borrowed book, genre, and author based on counts
+    if book_counts:
+        most_borrowed_book = max(book_counts, key=book_counts.get)
+    if genre_counts:
+        most_borrowed_genre = max(genre_counts, key=genre_counts.get)
+    if author_counts:
+        most_borrowed_author = max(author_counts, key=author_counts.get)
+
+    # Print the most borrowed book, genre, and author
+    print("Most Borrowed Book Title:", most_borrowed_book)
+    print("Most Borrowed Book Genre:", most_borrowed_genre)
+    print("Most Borrowed Book Author:", most_borrowed_author)
+
+    # Save the information in a text file
+    with open('summary_report.txt', 'w') as file:
+        file.write("\n")
+        file.write("Summary Report\n")
+        file.write("TUP Reads\n")
+        file.write("\n")
+        file.write("==============================================\n")
+        file.write("Most Borrowed Book Title: " + most_borrowed_book + "\n")
+        file.write("Total: " + str(book_counts.get(most_borrowed_book, 0)) + "\n")
+        file.write("\n")
+        file.write("Most Borrowed Book Genre: " + most_borrowed_genre + "\n")
+        file.write("Total: " + str(genre_counts.get(most_borrowed_genre, 0)) + "\n")
+        file.write("\n")
+        file.write("Most Borrowed Book Author: " + most_borrowed_author + "\n")
+        file.write("Total: " + str(author_counts.get(most_borrowed_author, 0)) + "\n")
+        file.write("\n")
+        file.write("==============================================\n")
 
 def updateTransaction():
     from CBorrower import borrowerList
@@ -100,6 +107,7 @@ def updateTransaction():
     author = authorEntry.get()
     librarian = librarianEntry.get()
     fine = fineEntry.get()
+    status = currentStatus
 
     # IF PININDOT UPDATE BORROWER:
     index = CTransaction.locateTransaction(refNum)
@@ -120,22 +128,17 @@ def updateTransaction():
             transactionList[index].TUP_ID = TUP_ID
             transactionList[index].dateBorrowed = dateBorrowed
             transactionList[index].dateToReturn = dateToReturn
-            transactionList[index].status = status_value
+            transactionList[index].status = currentStatus
             transactionList[index].refNum = refNum
             transactionList[index].borrower = borrower
             transactionList[index].author = author
             transactionList[index].librarian = librarian
             transactionList[index].fine = fine
 
-            messagebox.showinfo("UPDATE TRANSACTION", "TRANSACTION UPDATED SUCCESSFULLY! ")
-            CTransaction.saveTransaction()
-            displayTable.bookTable()
-            clearFields()
-
-
             #IF INUPDATE SA "RETURNED"
             newStatus = status_value
             if (currentStatus == "TO APPROVE" or currentStatus == "TO RETURN") and newStatus == "RETURNED":
+                    transactionList[index].status = newStatus
                     indexBook = CBook.locateBook(ISBN)
                     bookList[indexBook].noOfBorrower = int(bookList[indexBook].noOfBorrower) - 1  #if ni-return, babawasan noOfBorrower ng book
                     CBook.saveBook()
@@ -143,7 +146,10 @@ def updateTransaction():
                     borrowerList[indexBorrower].noOfBorrowed = int(borrowerList[indexBorrower].noOfBorrowed) - 1       #if ni-return, babawasan noOfBorrowed ng borrower
                     CBorrower.saveBorrower()
 
-
+            CTransaction.saveTransaction()
+            displayTable.bookTable()
+            clearFields()
+            messagebox.showinfo("UPDATE TRANSACTION", "TRANSACTION UPDATED SUCCESSFULLY! ")
 def deleteTransaction():
     refNum = referenceNumEntry.get()
     CTransaction.deleteTransaction(refNum)

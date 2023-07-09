@@ -275,19 +275,25 @@ def saveBorrower():
         writer = csv.writer(csvfile)  # Create a CSV writer object
 
         # Write the header row
-        writer.writerow(["Name", "TUP_ID", "Password", "Year and Section", "Contact Number", "Email","No. of Borrowed Books", "Borrowed Book(s)"])
+        writer.writerow(
+            ["Name", "TUP_ID", "Password", "Year and Section", "Contact Number", "Email", "No. of Borrowed Books",
+             "Borrowed Book(s)"])
 
         # Write each borrower's data row
         for borrower in borrowerList:
-            #ENCRYPTED - encrypts every variable, then write it in the file
-            writer.writerow([encrypt(borrower.name), encrypt(borrower.TUP_ID), encrypt(borrower.password), encrypt(borrower.yearSection),
-                             encrypt(borrower.contactNum), encrypt(borrower.email), encrypt(str(borrower.noOfBorrowed))])
-            #NOT ENCRYPTED
-            #writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
-             #                borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
+            # ENCRYPTED - encrypts every variable, then write it in the file
+            '''
+            writer.writerow(
+                [encrypt(str(borrower.name)), encrypt(str(borrower.TUP_ID)), encrypt(str(borrower.password)),
+                 encrypt(str(borrower.yearSection)),
+                 encrypt(str(borrower.contactNum)), encrypt(str(borrower.email)), encrypt(str(borrower.noOfBorrowed))])
+            '''
+            # NOT ENCRYPTED
+            writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
+                        borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
+
 
 def retrieveBorrower():
-
     with open("borrowerRecords.csv", "r") as csvfile:
         reader = csv.reader(csvfile)  # Create a CSV reader objectatego
         next(reader)  # Skip the header row
@@ -300,16 +306,17 @@ def retrieveBorrower():
             yearSection = row[3]
             contactNum = row[4]
             email = row[5]
-            noOfBorrowed = row [6]
-            #borrowedborrowers [0] = row[6]
+            noOfBorrowed = row[6]
+            # borrowedborrowers [0] = row[6]
 
-            #create an object of the retrieved borrower
-            #DECRYPTYED
-            borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection), decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))# borrowedBook
-            #NOT DECRYPTED
-            #borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
+            # create an object of the retrieved borrower
+            # DECRYPTYED
+            #borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection),
+                               #  decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))  # borrowedBook
+            # NOT DECRYPTED
+            borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
 
-            #add borrower in the borrowerList
+            # add borrower in the borrowerList
             addBorrower(borrower)
 
 def save_login_account(login_ID):
@@ -348,11 +355,13 @@ def checkBorrowerFieldsAdmin(name, TUP_ID, yearSection, contactNum, email):
         return False
     else:
         return True
+
 def encrypt(text):
     encrypted = ""  # Initialize an empty string to store the encrypted text
     for char in text:  # Iterate through each character in the input text
         encrypted += chr(ord(char) + 29)  # Encrypt the character by adding 29 to its ASCII value
     return encrypted  # Return the encrypted text
+
 
 def decrypt(text):
     decrypted = ""  # Initialize an empty string to store the decrypted text
