@@ -1,3 +1,2 @@
 Title,ISBN,TUP ID,dateBorrowed,dateToReturn,Status,Reference No.,Borrower,Author,Librarian,Fine
-BOOK 3,3,666666,7/9/23,7/10/23,,550452,6,3,MS. LAICA YGOT,0
-BOOK1,12,555555,7/9/2023,7/10/23,,449194,alex ,1,MS. LAICA YGOT,0
+Beyond Good and Evil,210987654,345672,7/9/23,7/9/23,TO APPROVE,776634,Alejandro Hernandez,Friedrich Nietzsche,MS. LAICA YGOT,0

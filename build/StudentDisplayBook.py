@@ -113,7 +113,7 @@ class DisplayTable:
     def bookTable(self):
         # TABLE SEARCH BOOK
         sub_frame = ttk.Frame(window, width=600, height=350.0)
-        sub_frame.place(x=220, y=150)
+        sub_frame.place(x=220, y=170)
 
         # Create the table outside the loop
         table = ttk.Treeview(sub_frame,
@@ -244,8 +244,7 @@ image_2 = Button(
 image_2.place(x=993.0,y=30.0,width=38.0,height=43.0)
 
 #HOME BUTTON
-homeImage = PhotoImage(
-    file=relative_to_assets("image_3.png"))
+homeImage = PhotoImage(file=relative_to_assets("image_3.png"))
 image_3 = Button(
     image=homeImage,
     borderwidth=1,
@@ -284,8 +283,13 @@ searchEntry.place(
     height=33.0
 )
 
-image_image_5 = PhotoImage(file=relative_to_assets("image_5.png"))
-image_5 = canvas.create_image(640.0, 380.0, image=image_image_5)
+bgimg = PhotoImage(
+    file=relative_to_assets("bgimg.png"))
+bg_bg = canvas.create_image(
+    639.0,
+    380.0,
+    image=bgimg
+)
 displayTable.bookTable()
 
 #CATEGORY DROPDOWN
@@ -321,6 +325,70 @@ image_image_6 = PhotoImage(file=relative_to_assets("image_6.png"))
 image_6 = canvas.create_image(250.0, 599.0, image=image_image_6)
 # Move the image to the bottom of the stacking order
 canvas.lower(image_6)
+
+
+lastimg = PhotoImage(
+    file=relative_to_assets("last.png"))
+lastbg = canvas.create_image(
+    910.0,
+    542.5,
+    image=lastimg
+)
+last = Entry(
+    bd=0,
+    bg="#4B0000",
+    fg="#FFFFFF",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=11, weight="bold")
+)
+last.place(
+    x=801.0,
+    y=525.0,
+    width=218.0,
+    height=38.0
+)
+
+secondimg = PhotoImage(
+    file=relative_to_assets("second.png"))
+secondbg = canvas.create_image(
+    640.0,
+    542.5,
+    image=secondimg
+)
+second = Entry(
+    bd=0,
+    bg="#4B0000",
+    fg="#FFFFFF",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=11, weight="bold")
+)
+second.place(
+    x=531.0,
+    y=525.0,
+    width=218.0,
+    height=38.0
+)
+
+firstimg = PhotoImage(
+    file=relative_to_assets("first.png"))
+firstbg = canvas.create_image(
+    369.0,
+    542.5,
+    image=firstimg
+)
+first = Entry(
+    bd=0,
+    bg="#4B0000",
+    fg="#FFFFFF",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=11, weight="bold")
+)
+first.place(
+    x=260.0,
+    y=525.0,
+    width=218.0,
+    height=39.0
+)
 
 window.resizable(False, False)
 window.mainloop()

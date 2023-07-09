@@ -126,10 +126,10 @@ def bookTable():
     table.heading('Email', text='Email')
 
     table.column('Name', width=200)
-    table.column('TUP ID', width=180)
-    table.column('Year and Section', width=150)
-    table.column('Contact No.', width=160)
-    table.column('Email', width=150)
+    table.column('TUP ID', width=130)
+    table.column('Year and Section', width=130)
+    table.column('Contact No.', width=180)
+    table.column('Email', width=200)
 
     table.pack(side='left', fill='y')
     # Bind the function to the table's selection event

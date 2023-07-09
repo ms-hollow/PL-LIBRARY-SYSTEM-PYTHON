@@ -65,7 +65,7 @@ def login():
         #Punta sa home
         window.destroy()
         current_directory = os.path.dirname(os.path.abspath(__file__))
-        script_path = os.path.join(current_directory, "Register.py")
+        script_path = os.path.join(current_directory, "HomePage.py")
         subprocess.run(["python", script_path])
 
 def gotoRegister():

@@ -31,6 +31,8 @@ def gotoBook():
     script_path = os.path.join(current_directory, "AdminManageBook.py")
     subprocess.run(["python", script_path])
 
+def getSummary():
+    print("get summary")
 
 def updateTransaction():
     from CBorrower import borrowerList
@@ -368,6 +370,17 @@ manageStudent = Button(
     bg="white"
 )
 manageStudent.place(x=20.0, y=253.0, width=160.0, height=32.0)
+
+sumrepimg = PhotoImage(file=relative_to_assets("sumrepo.png"))
+sumrep = Button(
+    image=sumrepimg,
+    borderwidth=0,
+    highlightthickness=0,
+    command=getSummary,
+    relief="flat",
+    bg="white"
+)
+sumrep.place(x=19.0, y=305.0, width=160.0,height=40.0)
 
 image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
 image_1 = canvas.create_image(250.0, 599.0, image=image_image_1)
