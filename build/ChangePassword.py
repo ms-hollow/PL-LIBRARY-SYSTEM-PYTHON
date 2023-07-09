@@ -123,11 +123,6 @@ y = (screen_height - 670) // 2
 
 # Set the window position to the center of the screen
 window.geometry(f"+{x}+{y}")
-window.title("TUP Reads")
-image_path = relative_to_assets("TUP_Reads.png")
-image = Image.open(image_path)
-icon = ImageTk.PhotoImage(image)
-window.iconphoto(True, icon)
 
 canvas = Canvas(
     window,
@@ -246,23 +241,6 @@ changepassbtn.place(
     height=44.0
 )
 
-button_image_2 = PhotoImage(
-file=relative_to_assets("button_2.png"))
-notifbtn = Button(
-    image=button_image_2,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_2 clicked"),
-    relief="flat",
-    bg = "white"
-)
-notifbtn.place(
-    x=994.0,
-    y=31.0,
-    width=38.0,
-    height=43.0
-)
-
 button_image_3 = PhotoImage(
     file=relative_to_assets("button_3.png"))
 homebtn = Button(
@@ -274,8 +252,8 @@ homebtn = Button(
     bg = "white"
 )
 homebtn.place(
-    x=925.0,
-    y=32.0,
+    x=930.0,
+    y=31.0,
     width=42.0,
     height=42.0
 )
@@ -291,7 +269,7 @@ logoutbtn = Button(
     bg = "white"
 )
 logoutbtn.place(
-    x=1055.0,
+    x=1000.0,
     y=31.0,
     width=43.0,
     height=43.0

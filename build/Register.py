@@ -105,6 +105,16 @@ canvas.create_text(
     fill="#4B0000",
     font=font_style
 )
+sample = font.Font(family="Poppins", size=9, weight="normal")
+
+canvas.create_text(
+    750.0,
+    125.0,
+    anchor="nw",
+    text="(example: 123456)",
+    fill="#4B0000",
+    font=sample
+)
 
 entry_image_1 = PhotoImage(
     file=relative_to_assets("nameEntry.png"))
@@ -157,6 +167,15 @@ canvas.create_text(
     font=font_style
 )
 
+canvas.create_text(
+    750.0,
+    183.0,
+    anchor="nw",
+    text="(example: Juan Dela Torre)",
+    fill="#4B0000",
+    font=sample
+)
+
 entry_image_3 = PhotoImage(
     file=relative_to_assets("yearSectionEntry.png"))
 entry_bg_3 = canvas.create_image(
@@ -185,6 +204,15 @@ canvas.create_text(
     text="Year and Section",
     fill="#4B0000",
     font=font_style
+)
+
+canvas.create_text(
+    860.0,
+    243.0,
+    anchor="nw",
+    text="(example: BSCSNS2AB)",
+    fill="#4B0000",
+    font=sample
 )
 
 canvas.create_text(
@@ -279,6 +307,15 @@ canvas.create_text(
     font=font_style
 )
 
+canvas.create_text(
+    860.0,
+    431.0,
+    anchor="nw",
+    text="(example: 091234567889)",
+    fill="#4B0000",
+    font=sample
+)
+
 entry_image_7 = PhotoImage(
     file=relative_to_assets("emailEntry.png"))
 entry_bg_7 = canvas.create_image(
@@ -307,6 +344,15 @@ canvas.create_text(
     text="Email",
     fill="#4B0000",
     font=font_style
+)
+
+canvas.create_text(
+    750.0,
+    491.0,
+    anchor="nw",
+    text="(example: juandelatorre@tup.edu.ph)",
+    fill="#4B0000",
+    font=sample
 )
 
 button_image_1 = PhotoImage(
