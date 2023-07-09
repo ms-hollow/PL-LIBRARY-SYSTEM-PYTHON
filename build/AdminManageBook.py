@@ -99,7 +99,10 @@ def updateBook():
             messagebox.showinfo("UPDATE BOOK", "BOOK UPDATED SUCCESSFULLY! ")
             CBook.saveBook()
             displayTable.bookTable()
+            # TO CLEAR FIELDS
+            displayTable.enableEntries()
             clearFields()
+            displayTable.disableEntries()
 
 def deleteBook():
 

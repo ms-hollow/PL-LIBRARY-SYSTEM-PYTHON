@@ -60,7 +60,10 @@ def update():
             messagebox.showinfo("UPDATE BORROWER", "BORROWER UPDATED SUCCESSFULLY! ")
             CBorrower.saveBorrower()
             bookTable()
+            # TO CLEAR FIELDS
+            enableEntries()
             clearFields()
+            disableEntries()
 
 def delete():
 
@@ -101,6 +104,7 @@ def on_table_select(table):
         contactEntry.insert(0, values[3])
         emailEntry.insert(0, values[4])
 
+        bookBorrowed = ["", "", ""]
         bookBorrowed = CBorrower.displayBorrowedBook(str(values[1]))
         book1Entry.insert(0, bookBorrowed[0])
         book2Entry.insert(0, bookBorrowed[1])

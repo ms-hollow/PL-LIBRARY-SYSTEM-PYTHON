@@ -369,8 +369,11 @@ def displayBorrowedBook(TUP_ID):
     print(TUP_ID)
     # Loop through transaction mula sa dulo since ang latest transaction ay naa-add sa unahan
     for transaction in reversed(transactionList):
-        if transaction.TUP_ID == TUP_ID and transaction.status == "TO APPROVE" or transaction.status == "TO RETURN":
-            bookBorrowed[i] = transaction.title
-            i = i+1
+        if transaction.TUP_ID == TUP_ID and i <3:
+            if transaction.status == "TO APPROVE" or transaction.status == "TO RETURN":
+                bookBorrowed[i] = transaction.title
+                i = i+1
+        else:
+            continue
 
     return bookBorrowed

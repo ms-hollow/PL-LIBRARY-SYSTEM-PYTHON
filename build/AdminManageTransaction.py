@@ -75,7 +75,11 @@ def updateTransaction():
             messagebox.showinfo("UPDATE TRANSACTION", "TRANSACTION UPDATED SUCCESSFULLY! ")
             CTransaction.saveTransaction()
             displayTable.bookTable()
+            #TO CLEAR FIELDS
+            displayTable.enableEntries()
             clearFields()
+            displayTable.disableEntries()
+
 
 
 def deleteTransaction():

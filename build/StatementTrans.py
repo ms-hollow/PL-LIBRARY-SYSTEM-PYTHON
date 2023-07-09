@@ -328,7 +328,7 @@ def displayStatementTrans():
 
 
     indexBorrower = CBorrower.retrieve_login_account()
-    yearandSectionEntry.insert(0,borrowerList[0].yearSection)
+    yearandSectionEntry.insert(0,borrowerList[indexBorrower].yearSection)
     remainingDays = CTransaction.calculateRemainingDays(transactionList[index].dateToReturn)
     remainingDaysEntry.insert(0, remainingDays)
 

@@ -12,6 +12,10 @@ loggedInAccount = 0   #dito store yung index ng naka-log in na account.
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
 
+# Insert here lahat ng retrieve
+CBorrower.retrieveBorrower()
+
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -19,10 +23,6 @@ tries = 3
 exit = False
 def login():
 
-    #Insert here lahat ng retrieve
-    #CBook.retrieveBook()
-    CBorrower.retrieveBorrower()
-    #CTransaction.retrieveTransaction()
 
     enteredID = tupid.get()
     enteredPass = password.get()
