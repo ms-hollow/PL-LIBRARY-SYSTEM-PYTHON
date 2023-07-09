@@ -395,7 +395,6 @@ def recommendBooks(borrower):
             if len(recommendations) == 3:
                 break
 
-    random.shuffle(recommendations)
     return recommendations
 
 def recom():

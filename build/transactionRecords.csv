@@ -1,3 +1,8 @@
 Title,ISBN,TUP ID,dateBorrowed,dateToReturn,Status,Reference No.,Borrower,Author,Librarian,Fine
-A People's History of the United States,987654321,345672,7/9/23,7/9/23,TO APPROVE,174210,Alejandro Hernandez,Howard Zinn,MS. LAICA YGOT,0
-Beyond Good and Evil,210987654,345672,7/9/23,7/9/23,TO APPROVE,776634,Alejandro Hernandez,Friedrich Nietzsche,MS. LAICA YGOT,0
+The Great Gatsby,76543217,901234,7/9/23,7/9/23,TO APPROVE,949757,Miguel Torres,F. Scott Fitzgerald,MS. LAICA YGOT,0
+Sapiens: A Brief History of Humankind,54361098,901234,7/9/23,7/9/23,TO APPROVE,348081,Miguel Torres,Yuval Noah Harari,MS. LAICA YGOT,0
+A Brief History of Time,19876543,901234,7/9/23,7/11/23,TO APPROVE,924665,Miguel Torres,Stephen Hawking,MS. LAICA YGOT,0
+The Prince,87684321,890123,7/9/23,7/9/23,TO APPROVE,884498,Luisa Dela Cruz,Niccolò Machiavelli,MS. LAICA YGOT,0
+Meditations,43210187,890123,7/9/23,7/9/23,TO APPROVE,727171,Luisa Dela Cruz,Marcus Aurelius,MS. LAICA YGOT,0
+Beyond Good and Evil,12345678,890123,7/9/23,7/9/23,TO APPROVE,401682,Luisa Dela Cruz,Friedrich Nietzsche,MS. LAICA YGOT,0
+The Great Gatsby,76543217,345672,7/9/23,7/10/23,TO APPROVE,825927,Alejandro Hernandez,F. Scott Fitzgerald,MS. LAICA YGOT,0

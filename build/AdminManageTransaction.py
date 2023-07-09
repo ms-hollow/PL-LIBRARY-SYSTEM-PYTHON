@@ -6,6 +6,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 import CTransaction, CBook, CBorrower
 from CTransaction import transactionList
+from CBook import bookList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
@@ -31,8 +32,55 @@ def gotoBook():
     script_path = os.path.join(current_directory, "AdminManageBook.py")
     subprocess.run(["python", script_path])
 
+
 def getSummary():
-    print("get summary")
+    # Get the count of each book title
+    title_counts = {}
+    for transaction in transactionList:
+        title = transaction.title
+        if title in title_counts:
+            title_counts[title] += 1
+        else:
+            title_counts[title] = 1
+
+    # Get the most borrowed book title
+    most_borrowed_title = max(title_counts, key=title_counts.get)
+
+    # Get the count of books in each genre/category and the number of unique borrowers
+    genre_counts = {}
+    genre_borrowers = {}
+    for transaction in transactionList:
+        title = transaction.title
+        genre = next((book.category for book in bookList if book.title == title), None)
+        if genre:
+            if genre in genre_counts:
+                genre_counts[genre] += 1
+                if transaction.TUP_ID not in genre_borrowers[genre]:
+                    genre_borrowers[genre].append(transaction.TUP_ID)
+            else:
+                genre_counts[genre] = 1
+                genre_borrowers[genre] = [transaction.TUP_ID]
+
+    # Get the most borrowed book genre
+    most_borrowed_genre = max(genre_counts, key=genre_counts.get)
+
+    # Get the author of the most borrowed book
+    most_borrowed_author = ""
+    max_books_count = 0
+    max_borrowers_count = 0
+    for transaction in transactionList:
+        if transaction.title == most_borrowed_title:
+            author = transaction.author
+            books_count = title_counts.get(most_borrowed_title, 0)
+            borrowers_count = len(genre_borrowers.get(most_borrowed_genre, []))
+            if books_count > max_books_count or (books_count == max_books_count and borrowers_count > max_borrowers_count):
+                most_borrowed_author = author
+                max_books_count = books_count
+                max_borrowers_count = borrowers_count
+
+    print("Most Borrowed Book Title: ", most_borrowed_title)
+    print("Most Borrowed Book Genre: ", most_borrowed_genre)
+    print("Most Borrowed Book Author: ", most_borrowed_author)
 
 def updateTransaction():
     from CBorrower import borrowerList
