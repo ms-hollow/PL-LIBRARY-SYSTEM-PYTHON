@@ -1,7 +1,7 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk
+from tkinter import ttk, messagebox
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
 
@@ -10,6 +10,7 @@ OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "ContactUs"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
+
 def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -32,6 +33,9 @@ def gotoRegister():
     script_path = os.path.join(current_directory, "Register.py")
     subprocess.run(["python", script_path])
 
+def displayMessage():
+    messagebox.showinfo("CONTACT US",
+                        "Thank you for messaging TUP Reads Library! We greatly appreciate your messages and value your engagement with our library. Your feedback, inquiries, and suggestions are important to us as we strive to provide the best possible services and resources to our valued patrons. If you have any further questions or need assistance, please don't hesitate to reach out. Thank you once again for your support and involvement with TUP Reads Library!")
 
 window = Tk()
 
@@ -131,7 +135,7 @@ sendbtn = Button(
     image=button_image_1,
     borderwidth=0,
     highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
+    command=displayMessage,
     relief="flat",
     bg = caramel
 )

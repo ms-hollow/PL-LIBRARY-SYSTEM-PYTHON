@@ -4,9 +4,9 @@ from pathlib import Path
 from tkinter import ttk, Menu, StringVar, messagebox
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
-import CBook
+import CBook, CTransaction, CBorrower
 from CBook import bookList
-
+from CBorrower import borrowerList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "DisplayBook"
@@ -48,7 +48,6 @@ def gotoLogin():
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "Login.py")
     subprocess.run(["python", script_path])
-
 
 def gotoChangePass():
     window.destroy()
@@ -109,6 +108,12 @@ class DisplayTable:
 
         # Display the dropdown menu under the category button
         dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
+
+    def recommendedBooks(self):
+        recommendation = CTransaction.recom()
+        first.insert(0, recommendation[0])
+        second.insert(0, recommendation[1])
+        last.insert(0, recommendation[2])
 
     def bookTable(self):
         # TABLE SEARCH BOOK
@@ -174,6 +179,8 @@ class DisplayTable:
 displayTable = DisplayTable()
 
 CBook.retrieveBook()
+CBorrower.retrieveBorrower()
+
 window = Tk()
 
 window.geometry("1125x670")
@@ -288,6 +295,65 @@ searchEntry.place(
     height=33.0
 )
 
+
+lastimg = PhotoImage(
+    file=relative_to_assets("last.png"))
+lastbg = canvas.create_image(
+    910.0,
+    542.5,
+    image=lastimg
+)
+last = Entry(
+    bd=0,
+    bg="#4B0000",
+    fg="#FFFFFF",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=8, weight="normal")
+)
+last.place(
+    x=806.0,
+    y=525.0,
+    width=218.0,
+    height=38.0
+)
+
+secondimg = PhotoImage(
+    file=relative_to_assets("second.png"))
+secondbg = canvas.create_image(
+    640.0,
+    542.5,
+    image=secondimg
+)
+second = Entry(
+    bd=0,
+    bg="#4B0000",
+    fg="#FFFFFF",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=8, weight="normal")
+)
+second.place(
+    x=536.0,
+    y=525.0,
+    width=218.0,
+    height=38.0
+)
+
+firstimg = PhotoImage(
+    file=relative_to_assets("first.png"))
+firstbg = canvas.create_image(
+    369.0,
+    542.5,
+    image=firstimg
+)
+first = Entry(
+    bd=0,
+    bg="#4B0000",
+    fg="#FFFFFF",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=8, weight="normal")
+)
+first.place(x=265.0, y=525.0, width=218.0,height=39.0)
+
 bgimg = PhotoImage(
     file=relative_to_assets("bgimg.png"))
 bg_bg = canvas.create_image(
@@ -296,6 +362,7 @@ bg_bg = canvas.create_image(
     image=bgimg
 )
 displayTable.bookTable()
+displayTable.recommendedBooks()
 
 #CATEGORY DROPDOWN
 button_image_5 = PhotoImage(
@@ -331,69 +398,6 @@ image_6 = canvas.create_image(250.0, 599.0, image=image_image_6)
 # Move the image to the bottom of the stacking order
 canvas.lower(image_6)
 
-
-lastimg = PhotoImage(
-    file=relative_to_assets("last.png"))
-lastbg = canvas.create_image(
-    910.0,
-    542.5,
-    image=lastimg
-)
-last = Entry(
-    bd=0,
-    bg="#4B0000",
-    fg="#FFFFFF",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=11, weight="bold")
-)
-last.place(
-    x=801.0,
-    y=525.0,
-    width=218.0,
-    height=38.0
-)
-
-secondimg = PhotoImage(
-    file=relative_to_assets("second.png"))
-secondbg = canvas.create_image(
-    640.0,
-    542.5,
-    image=secondimg
-)
-second = Entry(
-    bd=0,
-    bg="#4B0000",
-    fg="#FFFFFF",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=11, weight="bold")
-)
-second.place(
-    x=531.0,
-    y=525.0,
-    width=218.0,
-    height=38.0
-)
-
-firstimg = PhotoImage(
-    file=relative_to_assets("first.png"))
-firstbg = canvas.create_image(
-    369.0,
-    542.5,
-    image=firstimg
-)
-first = Entry(
-    bd=0,
-    bg="#4B0000",
-    fg="#FFFFFF",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=11, weight="bold")
-)
-first.place(
-    x=260.0,
-    y=525.0,
-    width=218.0,
-    height=39.0
-)
 
 window.resizable(False, False)
 window.mainloop()

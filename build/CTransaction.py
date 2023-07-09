@@ -361,3 +361,45 @@ def checkTransactionFields(title, ISBN, TUP_ID, dateBorrowed, dateToReturn, stat
         return False
     else:
         return True
+
+def recommendBooks(borrower):
+    borrowed_categories = []
+
+    # Find the categories of the books borrowed by the borrower
+    for transaction in transactionList:
+        if transaction.borrower == borrower.name:
+            book = next((book for book in bookList if book.title == transaction.title), None)
+            if book:
+                borrowed_categories.append(book.category)
+
+    recommendations = []
+
+    TUP_ID = borrower.TUP_ID
+    borrowedBook = CBorrower.displayBorrowedBook(TUP_ID)
+
+    if borrowedBook[0] == "":
+        # Find three books from the same categories as the borrowed books, excluding the ones already borrowed
+        for book in bookList:
+            if book.category and book.title not in recommendations and book.title:
+                recommendations.append(book.title)
+
+            if len(recommendations) == 3:
+                break
+
+    else:
+        # Find three books from the same categories as the borrowed books, excluding the ones already borrowed
+        for book in bookList:
+            if book.category in borrowed_categories and book.title not in recommendations and book.title not in borrowedBook :
+                recommendations.append(book.title)
+
+            if len(recommendations) == 3:
+                break
+
+    random.shuffle(recommendations)
+    return recommendations
+
+def recom():
+
+    borrower = borrowerList[CBorrower.retrieve_login_account()]
+    recommendations = recommendBooks(borrower)
+    return recommendations

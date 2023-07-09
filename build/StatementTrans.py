@@ -1,5 +1,3 @@
-import os
-import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font
 from PIL import Image, ImageTk
@@ -331,7 +329,10 @@ def displayStatementTrans():
     nameEntry.insert(0, transactionList[index].borrower)
     authorEntry.insert(0, transactionList[index].author)
     librarianEntry.insert(0, transactionList[index].librarian)
-
+    # DATE AND TIME
+    from datetime import datetime
+    current_datetime = datetime.now()
+    dateEntry.insert(0, current_datetime)
 
     indexBorrower = CBorrower.retrieve_login_account()
     yearandSectionEntry.insert(0,borrowerList[indexBorrower].yearSection)

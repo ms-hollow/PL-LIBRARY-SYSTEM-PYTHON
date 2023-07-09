@@ -1,7 +1,7 @@
 Title,Author,ISBN,Edition,Year Published,Material,Category,Shelf No.,Total Stocks,No. of Borrower
 1984,George Orwell,98765432,First,1949,Softbound,Fiction,4,5,0
 A Brief History of Time,Stephen Hawking,123450987,First,1988,Hardcover,Educational,3,5,0
-A People's History of the United States,Howard Zinn,987654321,First,1980,Softbound,History,6,5,0
+A People's History of the United States,Howard Zinn,987654321,First,1980,Softbound,History,6,5,1
 A Streetcar Named Desire,Tennessee Williams,567890123,First,1947,Hardcover,Drama,1,5,0
 Atomic Habits,James Clear,109876543,First,2018,Hardcover,Self-Help,9,5,0
 Becoming,Michelle Obama,432109876,First,2018,Softbound,Non-Fiction,5,5,0
@@ -18,8 +18,8 @@ Othello,William Shakespeare,456789012,First,1604,Softbound,Drama,1,5,0
 Pride and Prejudice,Jane Austen,789012345,First,1813,Hardcover,Comedy,2,5,0
 Quiet: The Power of Introverts in a World That Can't Stop Talking,Susan Cain,109876543,First,2012,Hardcover,Non-Fiction,5,5,0
 Romeo and Juliet,William Shakespeare,345678901,First,1597,Hardcover,Drama,1,5,0
-Sapiens: A Brief History of Humankind,Yuval Noah Harari,543210987,First,2011,Hardcover,Non-Fiction,5,5,0
 Sapiens: A Brief History of Humankind,Yuval Noah Harari,234509876,First,2011,Softbound,Educational,3,5,0
+Sapiens: A Brief History of Humankind,Yuval Noah Harari,543210987,First,2011,Hardcover,Non-Fiction,5,5,0
 The 7 Habits of Highly Effective People,Stephen R. Covey,321098765,First,1989,Hardcover,Self-Help,9,5,0
 The Alchemist,Paulo Coelho,765432109,First,1988,Hardcover,Fiction,4,5,0
 The Art Book,Phaidon Editors,432109876,First,1994,Softbound,Art,8,5,0

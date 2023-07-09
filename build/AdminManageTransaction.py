@@ -87,12 +87,9 @@ def updateTransaction():
                     indexBook = CBook.locateBook(ISBN)
                     bookList[indexBook].noOfBorrower = int(bookList[indexBook].noOfBorrower) - 1  #if ni-return, babawasan noOfBorrower ng book
                     CBook.saveBook()
-                    #indexBorrower = CBorrower.locateBorrower(TUP_ID)
-                    #borrowerList[indexBorrower].noOfBorrowed -= 1       #if ni-return, babawasan noOfBorrowed ng borrower
-                    #CBorrower.saveBorrower()
-
-
-
+                    indexBorrower = CBorrower.locateBorrower(TUP_ID)
+                    borrowerList[indexBorrower].noOfBorrowed = int(borrowerList[indexBorrower].noOfBorrowed) - 1       #if ni-return, babawasan noOfBorrowed ng borrower
+                    CBorrower.saveBorrower()
 
 
 def deleteTransaction():
