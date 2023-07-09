@@ -395,10 +395,10 @@ def recommendBooks(borrower):
             if len(recommendations) == 3:
                 break
 
+    random.shuffle(recommendations)
     return recommendations
 
 def recom():
-
     borrower = borrowerList[CBorrower.retrieve_login_account()]
     recommendations = recommendBooks(borrower)
     return recommendations
