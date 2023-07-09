@@ -12,6 +12,7 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
 option_value = ""
 status_value = ""
+currentStatus =""
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -32,13 +33,14 @@ def gotoBook():
 
 
 def updateTransaction():
+    from CBorrower import borrowerList
+    from CBook import bookList
 
     title = titleEntry.get()
     ISBN = isbnEntry.get()
     TUP_ID = tupidEntry.get()
     dateBorrowed = dateborrowedEntry.get()
     dateToReturn =dateReturnEntry.get()
-    #status =
     refNum = referenceNumEntry.get()
     borrower = borrowerEntry.get()
     author = authorEntry.get()
@@ -51,7 +53,6 @@ def updateTransaction():
     if index < 0:
         messagebox.showerror("UPDATE TRANSACTION", "THE REFERENCE NUMBER DOES NOT FOUND A MATCH")
     elif not CTransaction.checkTransactionFields(title, ISBN, TUP_ID, dateBorrowed, dateToReturn, status, refNum, borrower, author, librarian, fine):
-        messagebox.showerror("UPDATE TRANSACTION", "PLEASE FILL IN ALL FIELDS")
         messagebox.showerror("UPDATE TRANSACTION", "PLEASE FILL IN ALL FIELDS")
     else:
         response = messagebox.askyesno(  # creates a yes or no message box
@@ -75,10 +76,20 @@ def updateTransaction():
             messagebox.showinfo("UPDATE TRANSACTION", "TRANSACTION UPDATED SUCCESSFULLY! ")
             CTransaction.saveTransaction()
             displayTable.bookTable()
-            #TO CLEAR FIELDS
-            displayTable.enableEntries()
             clearFields()
-            displayTable.disableEntries()
+
+
+            #IF INUPDATE SA "RETURNED"
+            newStatus = status_value
+            if (currentStatus == "TO APPROVE" or currentStatus == "TO RETURN") and newStatus == "RETURNED":
+                    indexBook = CBook.locateBook(ISBN)
+                    bookList[indexBook].noOfBorrower = int(bookList[indexBook].noOfBorrower) - 1  #if ni-return, babawasan noOfBorrower ng book
+                    CBook.saveBook()
+                    #indexBorrower = CBorrower.locateBorrower(TUP_ID)
+                    #borrowerList[indexBorrower].noOfBorrowed -= 1       #if ni-return, babawasan noOfBorrowed ng borrower
+                    #CBorrower.saveBorrower()
+
+
 
 
 
@@ -86,6 +97,7 @@ def deleteTransaction():
     refNum = referenceNumEntry.get()
     CTransaction.deleteTransaction(refNum)
     displayTable.bookTable()
+    # TO DELETE FIELDS
     clearFields()
 
 def dropdownStatus():
@@ -180,6 +192,8 @@ class DisplayTable:
             remainingDays = str(CTransaction.calculateRemainingDays(values[4]))
             remainingDaysEntry.insert(0, remainingDays)
             DisplayTable.disableEntries(self)
+            global currentStatus
+            currentStatus = values[5]       #para makuha ang current status, since walan siyang entry. Para ito sa if babaguhin status to return.
 
     def enableEntries(self):
         titleEntry.config(state="normal")
@@ -274,6 +288,7 @@ class DisplayTable:
 displayTable = DisplayTable()
 
 def clearFields():
+    displayTable.enableEntries()
     titleEntry.delete(0, END)  # Clear the contents of the Entry widget
     isbnEntry.delete(0, END)
     tupidEntry.delete(0, END)

@@ -99,10 +99,7 @@ def updateBook():
             messagebox.showinfo("UPDATE BOOK", "BOOK UPDATED SUCCESSFULLY! ")
             CBook.saveBook()
             displayTable.bookTable()
-            # TO CLEAR FIELDS
-            displayTable.enableEntries()
             clearFields()
-            displayTable.disableEntries()
 
 def deleteBook():
 
@@ -265,6 +262,7 @@ class DisplayTable:
 # Create an instance of DisplayTable class
 displayTable = DisplayTable()
 def clearFields():
+    displayTable.enableEntries()
     titleEntry.delete(0, END)  # Clear the contents of the Entry widget
     editionEntry.delete(0, END)
     yearEntry.delete(0, END)

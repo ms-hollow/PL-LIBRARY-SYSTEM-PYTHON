@@ -60,10 +60,8 @@ def update():
             messagebox.showinfo("UPDATE BORROWER", "BORROWER UPDATED SUCCESSFULLY! ")
             CBorrower.saveBorrower()
             bookTable()
-            # TO CLEAR FIELDS
-            enableEntries()
             clearFields()
-            disableEntries()
+
 
 def delete():
 
@@ -163,6 +161,7 @@ def disableEntries():
 
 def clearFields():
 
+    enableEntries()
     nameEntry.delete(0, END) # Clear the contents of the Entry widget
     tupidEntry.delete(0, END)
     courseSecEntry.delete(0, END)
