@@ -1,17 +1,19 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, messagebox, END
+from tkinter import ttk, messagebox, END, Menu
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font
 from PIL import Image, ImageTk
-import CBorrower
-import CTransaction
+import CBorrower, CTransaction, CBook
 from CBorrower import borrowerList
 from CTransaction import transactionList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
+CBook.retrieveBook()
+CTransaction.retrieveTransaction()
+CBorrower.retrieveBorrower()
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -76,14 +78,37 @@ def gotoLogout():
     script_path = os.path.join(current_directory, "Login.py")
     subprocess.run(["python", script_path])
 
-
-'''#
 def gotoNotif():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
+    dropdown_menu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))
+    dropdown_menu.configure(bg="#C19A6B", fg="#4B0000")
+
+    items = set()  # Use a set to store unique items
+
+    for book in CBook.bookList:
+        if book.totalStocks == 0:
+            title = book.title
+            items.add(f"{title} : Total Stocks 0")
+
+    for transaction in CTransaction.transactionList:
+        if transaction.status == "TO RETURN":
+            title = transaction.title
+            status = transaction.status
+            refnum = transaction.refNum
+            items.add(f"{refnum} : {title} : {status}")
+
+    for transaction in CTransaction.transactionList:
+        remainingDays = CTransaction.calculateRemainingDays(transaction.dateToReturn)
+        if remainingDays == 0:
+            refnum = transaction.refNum
+            items.add(f"{refnum} : Remaining Days {remainingDays}")
+
+    # Add options to the dropdown menu
+    for item in items:
+        dropdown_menu.add_command(label=item)
+
+    # Display the dropdown menu below the image_3 button
+    dropdown_menu.post(image_3.winfo_rootx(), image_3.winfo_rooty() + image_3.winfo_height())
+
 def gotoHome():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -171,9 +196,6 @@ def clearFields():
     book2Entry.delete(0, END)
     book3Entry.delete(0, END)
 
-CBorrower.retrieveBorrower()
-CTransaction.retrieveTransaction()
-
 window = Tk()
 
 window.geometry("1125x670")
@@ -248,7 +270,7 @@ image_3 = Button(
     image=notifButton,
     borderwidth=1,
     highlightthickness=0,
-    # command=gotoNotif,
+    command=gotoNotif,
     relief="flat",
     bg="white"
 )

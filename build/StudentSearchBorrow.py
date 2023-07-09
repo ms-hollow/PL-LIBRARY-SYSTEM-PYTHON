@@ -13,6 +13,12 @@ from CBorrower import borrowerList
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "SearchBook"
 
+CBook.retrieveBook()
+CBorrower.retrieveBorrower()
+CTransaction.retrieveTransaction()
+
+indexBorrower = 0
+index = 0
 option_value = ""
 
 def relative_to_assets(path: str) -> Path:
@@ -44,13 +50,33 @@ def gotoLogin():
     script_path = os.path.join(current_directory, "Login.py")
     subprocess.run(["python", script_path])
 
-'''#
 def gotoNotif():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "studentDispBookFrame.py")
-    subprocess.run(["python", script_path])
-'''
+    # Create the dropdown menu
+    dropdown_menu = Menu(window, tearoff=False, font=("Poppins", 10, "bold"))
+    dropdown_menu.configure(bg="#C19A6B", fg="#4B0000")
+
+    # Retrieve the indexBorrower value
+    indexBorrower = CBorrower.retrieve_login_account()
+    print(indexBorrower)
+
+    # Collect transactions
+    transactions = []
+
+    #if 0 <= indexBorrower < len(CBorrower.borrowerList):
+    borrower_tup_id = CBorrower.borrowerList[indexBorrower].TUP_ID
+
+    for transaction in CTransaction.transactionList:
+        if transaction.TUP_ID == borrower_tup_id:
+            status = transaction.status
+            refNum = transaction.refNum
+            transactions.append(f"{refNum} : {status}")
+
+    # Add options to the dropdown menu
+    for transaction in transactions:
+        dropdown_menu.add_command(label=transaction)
+
+    # Display the dropdown menu below the image_2 button
+    dropdown_menu.post(image_3.winfo_rootx(), image_3.winfo_rooty() + image_3.winfo_height())
 
 def gotoHome():
     window.destroy()
@@ -250,9 +276,6 @@ def clearFields():
     materialEntry.delete(0, END)
     genreEntry.delete(0, END)
 
-CBook.retrieveBook()
-CBorrower.retrieveBorrower()
-CTransaction.retrieveTransaction()
 window = Tk()
 
 window.geometry("1125x670")
@@ -316,7 +339,7 @@ image_3 = Button(
     image=notifButton,
     borderwidth=1,
     highlightthickness=0,
-    #command=gotoNotif,
+    command=gotoNotif,
     relief="flat",
     bg = "white"
 )
