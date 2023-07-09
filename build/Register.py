@@ -61,6 +61,11 @@ y = (screen_height - 670) // 2
 window.geometry(f"+{x}+{y}")
 
 window.configure(bg="#FFFFFF")
+window.title("TUP Reads")
+image_path = relative_to_assets("TUP_Reads.png")
+image = Image.open(image_path)
+icon = ImageTk.PhotoImage(image)
+window.iconphoto(True, icon)
 
 canvas = Canvas(
     window,

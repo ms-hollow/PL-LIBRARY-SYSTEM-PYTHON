@@ -1,8 +1,11 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import ttk, messagebox, END
+from tkinter import ttk, messagebox, END, Image
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, Menu
+
+from PIL import ImageTk
+
 import CBorrower
 
 OUTPUT_PATH = Path(__file__).parent
@@ -120,6 +123,11 @@ y = (screen_height - 670) // 2
 
 # Set the window position to the center of the screen
 window.geometry(f"+{x}+{y}")
+window.title("TUP Reads")
+image_path = relative_to_assets("TUP_Reads.png")
+image = Image.open(image_path)
+icon = ImageTk.PhotoImage(image)
+window.iconphoto(True, icon)
 
 canvas = Canvas(
     window,

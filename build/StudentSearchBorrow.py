@@ -191,14 +191,14 @@ class DisplayTable:
         table.heading('Category', text='Category')
         table.heading('Shelf No.', text='Shelf No.')
 
-        table.column('Title', width=150)
-        table.column('Edition', width=80)
+        table.column('Title', width=250)
+        table.column('Edition', width=50)
         table.column('Author', width=120)
-        table.column('Year', width=90)
+        table.column('Year', width=50)
         table.column('ISBN', width=100)
         table.column('Material', width=100)
-        table.column('Category', width=120)
-        table.column('Shelf No.', width=80)
+        table.column('Category', width=100)
+        table.column('Shelf No.', width=70)
 
         table.pack(side='left', fill='y')
         # Bind the function to the table's selection event
@@ -266,6 +266,12 @@ y = (screen_height - 670) // 2
 
 # Set the window position to the center of the screen
 window.geometry(f"+{x}+{y}")
+
+window.title("TUP Reads")
+image_path = relative_to_assets("TUP_Reads.png")
+image = Image.open(image_path)
+icon = ImageTk.PhotoImage(image)
+window.iconphoto(True, icon)
 
 canvas = Canvas(window, bg = "#FFFFFF", height = 670, width = 1125, bd = 0, highlightthickness = 0, relief = "ridge")
 

@@ -3,6 +3,8 @@ import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
+from skimage.data import logo
+
 import CBook
 import CBorrower
 import CTransaction
@@ -95,6 +97,7 @@ def gotoContactus():
     subprocess.run(["python", script_path])
 
 window = Tk()
+
 window.geometry("1125x670")
 
 # Calculate the center coordinates of the screen
@@ -105,8 +108,12 @@ y = (screen_height - 670) // 2
 
 # Set the window position to the center of the screen
 window.geometry(f"+{x}+{y}")
-
 window.configure(bg="#FFFFFF")
+window.title("TUP Reads")
+image_path = relative_to_assets("TUP_Reads.png")
+image = Image.open(image_path)
+icon = ImageTk.PhotoImage(image)
+window.iconphoto(True, icon)
 
 canvas = Canvas(
     window,

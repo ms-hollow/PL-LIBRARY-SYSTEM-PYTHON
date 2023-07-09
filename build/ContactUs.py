@@ -46,6 +46,12 @@ y = (screen_height - 670) // 2
 
 # Set the window position to the center of the screen
 window.geometry(f"+{x}+{y}")
+window.title("TUP Reads")
+image_path = relative_to_assets("TUP_Reads.png")
+image = Image.open(image_path)
+icon = ImageTk.PhotoImage(image)
+window.iconphoto(True, icon)
+
 caramel = "#C19A6B"
 
 
