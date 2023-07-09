@@ -4,10 +4,18 @@ from pathlib import Path
 from tkinter import ttk
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, font, Toplevel, OptionMenu, Menu, StringVar
 from PIL import Image, ImageTk
+import CBook
+import CTransaction
+import CBorrower
+from CBook import bookList
+from CBorrower import borrowerList
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "BorrowBook"
 
+CTransaction.retrieveTransaction()
+CBorrower.retrieveBorrower()
+CBook.retrieveBook()
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
@@ -23,12 +31,53 @@ def gotoStatement():
     script_path = os.path.join(current_directory, "StatementTrans.py")
     subprocess.run(["python", script_path])
 
+indexBook = 0
+indexBorrower = 0
+
+def getInfoTransaction(ISBN):
+    from StudentSearchBorrow import getISBN
+    global indexBook
+    global indexBorrower
+    print("GET INFO TRANSACTION")
+    ISBN = getISBN()
+    print(ISBN)
+
+    # Set the background color
+
+    indexBook = CBook.locateBook(ISBN)                #kinuha index ng book na hihiramin
+    title = bookList[indexBook].title
+    author = bookList[indexBook].author
+
+    indexBorrower = CBorrower.loggedInAccount   #kinuha index ng currently account logged in.
+    TUP_ID = borrowerList[indexBorrower].TUP_ID
+    borrower = borrowerList[indexBorrower].name
+    yearSection = borrowerList[indexBorrower].yearSection
+
+    titleEntry.insert(0, title)
+    authorEntry.insert(0, author)
+    tupid.insert(0, TUP_ID)
+    name.insert(0, borrower)
+    yearandSection.insert(0, yearSection)
+
+
+   # dateBorrowedEntry.insert(0, )
+
+
 window = Tk()
 
 window.geometry("660x580")
 window.configure(bg = "#4B0000")
 
+# Calculate the center coordinates of the screen
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x = (screen_width - 660) // 2
+y = (screen_height - 580) // 2
 
+# Set the window position to the center of the screen
+window.geometry(f"+{x}+{y}")
+
+window.lift()
 canvas = Canvas(
     window,
     bg = "#4B0000",

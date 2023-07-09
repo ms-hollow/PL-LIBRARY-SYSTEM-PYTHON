@@ -3,12 +3,17 @@ import subprocess
 from pathlib import Path
 from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font
 from PIL import Image, ImageTk
+import CTransaction
+import CBorrower
+from CTransaction import transactionList
+from CBorrower import borrowerList
 
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "StatementTrans"
 
-
+CTransaction.retrieveTransaction()
+CBorrower.retrieveBorrower()
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -19,8 +24,17 @@ def destroyWindow():
 window = Tk()
 
 window.geometry("478x580")
+window.lift()
 window.configure(bg = "#C19A6B")
 
+# Calculate the center coordinates of the screen
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x = (screen_width - 660) // 2
+y = (screen_height - 580) // 2
+
+# Set the window position to the center of the screen
+window.geometry(f"+{x}+{y}")
 
 canvas = Canvas(
     window,
@@ -88,13 +102,13 @@ dateEntry.place(
 
 entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
 entry_bg_3 = canvas.create_image( 222.5, 265.0,image=entry_image_3)
-name = Entry(
+nameEntry = Entry(
     bd=0,
     bg="#C19A6B",
     fg="#000716",
     highlightthickness=0, font=font.Font(family="Courier New", size=11, weight="bold"))
 
-name.place(
+nameEntry.place(
     x=117.0,
     y=260.0,
     width=211.0,
@@ -103,13 +117,13 @@ name.place(
 
 entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
 entry_bg_4 = canvas.create_image(237.5,285.0,image=entry_image_4)
-tupid = Entry(
+tupidEntry = Entry(
     bd=0,
     bg="#C19A6B",
     fg="#000716",
     highlightthickness=0, font=font.Font(family="Courier New", size=11, weight="bold"))
 
-tupid.place(
+tupidEntry.place(
     x=132.0,
     y=280.0,
     width=211.0,
@@ -118,13 +132,13 @@ tupid.place(
 
 entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
 entry_bg_5 = canvas.create_image(309.5,305.0,image=entry_image_5)
-yearandSection = Entry(
+yearandSectionEntry = Entry(
     bd=0,
     bg="#C19A6B",
     fg="#000716",
     highlightthickness=0, font=font.Font(family="Courier New", size=11, weight="bold"))
 
-yearandSection.place(
+yearandSectionEntry.place(
     x=204.0,
     y=300.0,
     width=211.0,
@@ -171,13 +185,13 @@ entry_bg_8 = canvas.create_image(
     365.0,
     image=entry_image_8
 )
-ISBN = Entry(
+isbnEntry = Entry(
     bd=0,
     bg="#C19A6B",
     fg="#000716",
     highlightthickness=0, font=font.Font(family="Courier New", size=11, weight="bold"))
 
-ISBN.place(
+isbnEntry.place(
     x=204.0,
     y=360.0,
     width=211.0,
@@ -267,12 +281,12 @@ entry_bg_13 = canvas.create_image(
     465.0,
     image=entry_image_13
 )
-status = Entry(
+statusEntry = Entry(
     bd=0,
     bg="#C19A6B",
     fg="#000716",
     highlightthickness=0, font=font.Font(family="Courier New", size=11, weight="bold"))
-status.place(
+statusEntry.place(
     x=131.0,
     y=460.0,
     width=211.0,
@@ -295,5 +309,31 @@ okbtn.place(
     width=43.0,
     height=24.0
 )
+
+
+def displayStatementTrans():
+
+    index = 0       #kasi laging nasa unahan
+    print(transactionList[index].title)
+    titleEntry.insert(0, transactionList[index].title)
+    isbnEntry.insert(0, transactionList[index].ISBN)
+    tupidEntry.insert(0, transactionList[index].TUP_ID)
+    dateBorrowedEntry.insert(0, transactionList[index].dateBorrowed)
+    dateReturnEntry.insert(0, transactionList[index].dateToReturn)
+    statusEntry.insert(0, transactionList[index].status)
+    refnumEntry.insert(0, transactionList[index].refNum)
+    nameEntry.insert(0, transactionList[index].borrower)
+    authorEntry.insert(0, transactionList[index].author)
+    librarianEntry.insert(0, transactionList[index].librarian)
+
+
+    indexBorrower = CBorrower.retrieve_login_account()
+    yearandSectionEntry.insert(0,borrowerList[0].yearSection)
+    remainingDays = CTransaction.calculateRemainingDays(transactionList[index].dateToReturn)
+    remainingDaysEntry.insert(0, remainingDays)
+
+
+displayStatementTrans()
+
 window.resizable(False, False)
 window.mainloop()

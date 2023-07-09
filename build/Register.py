@@ -1,37 +1,52 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
-
+import CBorrower
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "RegisterFrame"
-
 
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 def register():
-    name_value = name.get()
-    tupid_value = tupid.get()
-    password_value = password.get()
-    reenterpass_value = reenterpass.get()
-    contactnum_value = contactnum.get()
-    email_value = email.get()
 
-    # Process the entered values as needed
-    print("Name:", name_value)
-    print("TUP ID:", tupid_value)
-    print("Password:", password_value)
-    print("Re-enter Password:", reenterpass_value)
-    print("Contact Number:", contactnum_value)
-    print("Email:", email_value)
+    CBorrower.retrieveBorrower()
+    name = nameEntry.get()
+    TUP_ID = tupidEntry.get()
+    password = passwordEntry.get()
+    yearSection = yearSectionEntry.get()
+    repassword = reenterpassEntry.get()
+    contactNum = contactnumEntry.get()
+    email = emailEntry.get()
+    noOfBorrowed = "0"
 
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "Login.py")
-    subprocess.run(["python", script_path])
+    if CBorrower.locateBorrower(TUP_ID) >= 0:               #if existing na sa borrowerList
+        messagebox.showerror("REGISTRATION ", "YOUR TUP ID IS ALREADY REGISTERED")
+    elif not CBorrower.checkBorrowerFields(name, TUP_ID, password, yearSection, contactNum, email):    #if di complete fields
+        messagebox.showerror("REGISTRATION", "PLEASE FILL IN ALL THE FIELDS")
+    elif len(TUP_ID) != 6:
+        messagebox.showerror("REGISTRATION", "TUP ID MUST BE 6 DIGITS LONG")
+    elif password != repassword:
+        messagebox.showerror("REGISTRATION", "PASSWORD DIDN'T MATCH")
+    else:
+        response = messagebox.askyesno(    #creates a yes or no message box
+            title="Confirmation",
+            message="DO YOU WANT TO SUBMIT YOUR REGISTRATION?",
+            icon=messagebox.QUESTION,
+        )
+        if response:                        #if yes
+            borrower = CBorrower.CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)
+            CBorrower.addBorrower(borrower)
+            CBorrower.saveBorrower()
+            messagebox.showinfo("REGISTRATION", "YOUR ACCOUNT IS SUCCESSFULLY REGISTERED!")
+
+            window.destroy() #destroy current window and lipat sa login window
+            current_directory = os.path.dirname(os.path.abspath(__file__))
+            script_path = os.path.join(current_directory, "Login.py")
+            subprocess.run(["python", script_path])
 
 window = Tk()
 window.geometry("1125x670")
@@ -78,41 +93,112 @@ canvas.create_text(
 )
 
 canvas.create_text(
-    653.0,
-    124.0,
+    683.0,
+    118.0,
     anchor="nw",
     text="TUP ID",
     fill="#4B0000",
     font=font_style
 )
 
-entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
-entry_bg_1 = canvas.create_image(833.5, 245.0, image=entry_image_1)
-name = Entry(
+entry_image_1 = PhotoImage(
+    file=relative_to_assets("nameEntry.png"))
+entry_bg_1 = canvas.create_image(
+    863.5,
+    221.0,
+    image=entry_image_1
+)
+nameEntry= Entry(
     bd=0,
     bg="#FFFDFD",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=13, weight="normal")
 )
-name.place(x=664.0, y=230.0, width=339.0, height=25.0)
+nameEntry.place(
+    x=694.0,
+    y=206.0,
+    width=339.0,
+    height=23.0
+)
 
-entry_image_2 = PhotoImage(file=relative_to_assets("entry_2.png"))
-entry_bg_2 = canvas.create_image(833.5, 175.0, image=entry_image_2)
-tupid = Entry(
+entry_image_2 = PhotoImage(
+    file=relative_to_assets("tupidEntry.png"))
+entry_bg_2 = canvas.create_image(
+    863.5,
+    164.0,
+    image=entry_image_2
+)
+tupidEntry = Entry(
     bd=0,
     bg="#FFFDFD",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=13, weight="normal")
 )
-tupid.place(x=664.0, y=160.0, width=339.0, height=25.0)
+tupidEntry.place(
+    x=694.0,
+    y=149.0,
+    width=339.0,
+    height=23.0
+)
 
-canvas.create_text(652.0, 194.0, anchor="nw", text="Name", fill="#4B0000", font=font_style)
+canvas.create_text(
+    683.0,
+    175.0,
+    anchor="nw",
+    text="Name",
+    fill="#4B0000",
+    font=font_style
+)
 
-entry_image_3 = PhotoImage(file=relative_to_assets("entry_3.png"))
-entry_bg_3 = canvas.create_image(833.0, 315.0, image=entry_image_3)
-password = Entry(
+entry_image_3 = PhotoImage(
+    file=relative_to_assets("yearSectionEntry.png"))
+entry_bg_3 = canvas.create_image(
+    862.0,
+    284.0,
+    image=entry_image_3
+)
+yearSectionEntry = Entry(
+    bd=0,
+    bg="#FFFDFD",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=13, weight="normal")
+)
+yearSectionEntry.place(
+    x=693.0,
+    y=269.0,
+    width=338.0,
+    height=23.0
+)
+
+canvas.create_text(
+    682.0,
+    236.0,
+    anchor="nw",
+    text="Year and Section",
+    fill="#4B0000",
+    font=font_style
+)
+
+canvas.create_text(
+    683.0,
+    299.0,
+    anchor="nw",
+    text="Password",
+    fill="#4B0000",
+    font=font_style
+)
+
+entry_image_4 = PhotoImage(
+    file=relative_to_assets("reenterpassEntry.png"))
+entry_bg_4 = canvas.create_image(
+    864.0,
+    407.0,
+    image=entry_image_4
+)
+reenterpassEntry = Entry(
     bd=0,
     bg="#FFFDFD",
     fg="#000716",
@@ -120,25 +206,21 @@ password = Entry(
     font=font.Font(family="Poppins", size=13, weight="bold"),
     show="*"
 )
-password.place(x=664.0, y=300.0, width=338.0, height=25.0)
-
-canvas.create_text(652.0, 263.0, anchor="nw", text="Password", fill="#4B0000", font=font_style)
-canvas.create_text(653.0, 334.0, anchor="nw", text="Re-Enter Password", fill="#4B0000", font=font_style)
-
-entry_image_4 = PhotoImage(file=relative_to_assets("entry_4.png"))
-entry_bg_4 = canvas.create_image(833.0, 455.0, image=entry_image_4)
-contactnum = Entry(
-    bd=0,
-    bg="#FFFDFD",
-    fg="#000716",
-    highlightthickness=0,
-    font=font.Font(family="Poppins", size=13, weight="normal")
+reenterpassEntry.place(
+    x=695.0,
+    y=392.0,
+    width=338.0,
+    height=23.0
 )
-contactnum.place(x=664.0, y=440.0, width=338.0, height=25.0)
 
-entry_image_5 = PhotoImage(file=relative_to_assets("entry_5.png"))
-entry_bg_5 = canvas.create_image(833.0, 385.0, image=entry_image_5)
-reenterpass = Entry(
+entry_image_5 = PhotoImage(
+    file=relative_to_assets("passwordEntry.png"))
+entry_bg_5 = canvas.create_image(
+    864.0,
+    344.0,
+    image=entry_image_5
+)
+passwordEntry = Entry(
     bd=0,
     bg="#FFFDFD",
     fg="#000716",
@@ -146,33 +228,98 @@ reenterpass = Entry(
     font=font.Font(family="Poppins", size=13, weight="bold"),
     show="*"
 )
-reenterpass.place(x=664.0, y=370.0, width=338.0, height=25.0)
+passwordEntry.place(
+    x=695.0,
+    y=329.0,
+    width=338.0,
+    height=23.0
+)
 
-canvas.create_text(652.0, 403.0, anchor="nw", text="Contact Number", fill="#4B0000", font=font_style)
+canvas.create_text(
+    682.0,
+    362.0,
+    anchor="nw",
+    text="Re-enter Password",
+    fill="#4B0000",
+    font=font_style
+)
 
-entry_image_6 = PhotoImage(file=relative_to_assets("entry_6.png"))
-entry_bg_6 = canvas.create_image(833.0, 525.0, image=entry_image_6)
-email = Entry(
+entry_image_6 = PhotoImage(
+    file=relative_to_assets("contactnumEntry.png"))
+entry_bg_6 = canvas.create_image(
+    864.0,
+    470.0,
+    image=entry_image_6
+)
+contactnumEntry = Entry(
     bd=0,
     bg="#FFFDFD",
     fg="#000716",
     highlightthickness=0,
     font=font.Font(family="Poppins", size=13, weight="normal")
 )
-email.place(x=664.0, y=510.0, width=338.0, height=25.0)
+contactnumEntry.place(
+    x=695.0,
+    y=455.0,
+    width=338.0,
+    height=23.0
+)
 
-canvas.create_text(653.0, 474.0, anchor="nw", text="Email", fill="#4B0000", font=font_style)
+canvas.create_text(
+    683.0,
+    425.0,
+    anchor="nw",
+    text="Contact Number",
+    fill="#4B0000",
+    font=font_style
+)
 
-button_image_1 = PhotoImage(file=relative_to_assets("button_1.png"))
-button_1 = Button(
+entry_image_7 = PhotoImage(
+    file=relative_to_assets("emailEntry.png"))
+entry_bg_7 = canvas.create_image(
+    864.0,
+    533.0,
+    image=entry_image_7
+)
+emailEntry = Entry(
+    bd=0,
+    bg="#FFFDFD",
+    fg="#000716",
+    highlightthickness=0,
+    font=font.Font(family="Poppins", size=13, weight="normal")
+)
+emailEntry.place(
+    x=695.0,
+    y=518.0,
+    width=338.0,
+    height=23.0
+)
+
+canvas.create_text(
+    683.0,
+    486.0,
+    anchor="nw",
+    text="Email",
+    fill="#4B0000",
+    font=font_style
+)
+
+button_image_1 = PhotoImage(
+    file=relative_to_assets("registerBtn.png"))
+register = Button(
     image=button_image_1,
     borderwidth=1,
     highlightthickness=0,
     command=register,
     relief="flat",
-    bg = "#C19A6B"
+    bg="#C19A6B"
 )
-button_1.place(x=749.0, y=580.0, width=170.0, height=44.0)
+register.place(
+    x=771.0,
+    y=578.0,
+    width=170.0,
+    height=44.0
+)
 
 image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
 image_1 = canvas.create_image(349.0, 298.0, image=image_image_1)

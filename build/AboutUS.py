@@ -38,7 +38,16 @@ def gotoRegister():
 window = Tk()
 
 window.geometry("1125x670")
-window.configure(bg = "#FFFFFF")
+window.configure(bg="#FFFFFF")
+
+# Calculate the center coordinates of the screen
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x = (screen_width - 1125) // 2
+y = (screen_height - 670) // 2
+
+# Set the window position to the center of the screen
+window.geometry(f"+{x}+{y}")
 
 
 canvas = Canvas(
@@ -120,11 +129,10 @@ homebtn.place(
     height=32.0
 )
 
-image_image_1 = PhotoImage(
-    file=relative_to_assets("image_1.png"))
+image_image_1 = PhotoImage(file=relative_to_assets("image_1.png"))
 image_1 = canvas.create_image(
-    101.0,
-    56.0,
+    134.0,
+    71.0,
     image=image_image_1
 )
 
@@ -134,14 +142,6 @@ image_2 = canvas.create_image(
     560.0,
     214.0,
     image=image_image_2
-)
-
-image_image_3 = PhotoImage(
-    file=relative_to_assets("image_3.png"))
-image_3 = canvas.create_image(
-    101.0,
-    56.0,
-    image=image_image_3
 )
 
 image_image_4 = PhotoImage(

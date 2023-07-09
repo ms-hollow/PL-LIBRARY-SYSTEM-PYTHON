@@ -1,9 +1,13 @@
 import os
 import subprocess
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font
+from tkinter import Tk, Canvas, Entry, Button, PhotoImage, font, messagebox
 from PIL import Image, ImageTk
+import CBook
+import CBorrower
+import CTransaction
 
+loggedInAccount = 0   #dito store yung index ng naka-log in na account.
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
@@ -11,25 +15,65 @@ ASSETS_PATH = OUTPUT_PATH / "assets" / "LoginFrame"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+tries = 3
+exit = False
 def login():
 
-    tupidval = tupid.get()
-    passval = password.get()
+    #Insert here lahat ng retrieve
+    #CBook.retrieveBook()
+    CBorrower.retrieveBorrower()
+    #CTransaction.retrieveTransaction()
 
-    print("Name:", tupidval)
-    print("TUP ID:", passval)
+    enteredID = tupid.get()
+    enteredPass = password.get()
 
-    '''#
+    index = CBorrower.locateBorrower(enteredID)
+
+    if index >= 0 and enteredPass == CBorrower.borrowerList[index].password:
+        messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
+        CBorrower.saveBorrower()
+        CBorrower.save_login_account(index)     #save sa file ang index ng account logged in.
+
+
+        #Punta sa student frame
+        window.destroy()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_directory, "StudentDisplayBook.py")
+        subprocess.run(["python", script_path])
+
+    elif enteredID == "ADMIN" and enteredPass == "1234":
+        messagebox.showinfo("LOG IN ", "LOG IN SUCCESSFULLY!")
+
+        #Punta sa admin frame
+        window.destroy()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_directory, "AdminManageBook.py")
+        subprocess.run(["python", script_path])
+
+    elif index < 0:
+        messagebox.showerror("LOG IN", "YOUR TUP ID IS NOT YET REGISTERED")
+
+    else:
+        messagebox.showerror("LOG IN", "INCORRECT TUP ID OR PASSWORD")
+        global tries
+        tries -= 1
+        print("YOU HAVE", tries, "TRIES LEFT.")
+
+    if tries == 0:
+        messagebox.showerror("LOG IN", "YOU HAVE REACHED THE MAXIMUM NUMBER OF ATTEMPTS.\nTRY AGAIN LATER")
+
+        #Punta sa home
+        window.destroy()
+        current_directory = os.path.dirname(os.path.abspath(__file__))
+        script_path = os.path.join(current_directory, "Register.py")
+        subprocess.run(["python", script_path])
+
+def gotoRegister():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "StudentDisplayBook.py")
-    subprocess.run(["python", script_path])#'''
-
-def gotoAboutUs():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "AboutUS.py")
+    script_path = os.path.join(current_directory, "Register.py")
     subprocess.run(["python", script_path])
+
 
 def gotoHome():
     window.destroy()
@@ -37,15 +81,17 @@ def gotoHome():
     script_path = os.path.join(current_directory, "HomePage.py")
     subprocess.run(["python", script_path])
 
-def gotoContactUs():
+
+def gotoAboutus():
+    window.destroy()
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    script_path = os.path.join(current_directory, "AboutUS.py")
+    subprocess.run(["python", script_path])
+
+def gotoContactus():
     window.destroy()
     current_directory = os.path.dirname(os.path.abspath(__file__))
     script_path = os.path.join(current_directory, "ContactUs.py")
-    subprocess.run(["python", script_path])
-def gotoRegister():
-    window.destroy()
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    script_path = os.path.join(current_directory, "Register.py")
     subprocess.run(["python", script_path])
 
 window = Tk()
@@ -101,7 +147,7 @@ image_2 = canvas.create_image(900.0, 480.0, image=image_image_2)
 
 canvas.create_text(457.0, 146.0, anchor="nw", text="WELCOME ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=30, weight="bold"))
-canvas.create_text(372.0, 234.0, anchor="nw", text="Username ", fill="#4B0000",
+canvas.create_text(372.0, 234.0, anchor="nw", text="TUP ID ", fill="#4B0000",
                    font=font.Font(family="Poppins", size=20, weight="bold"))
 
 entry_image_1 = PhotoImage(file=relative_to_assets("entry_1.png"))
@@ -152,7 +198,7 @@ button_3 = Button(
     image=button_image_3,
     borderwidth=0,
     highlightthickness=0,
-    command=gotoContactUs,
+    command=gotoContactus,
     relief="flat",
     bg = "white"
 )
@@ -164,7 +210,7 @@ button_4 = Button(
     image=button_image_4,
     borderwidth=0,
     highlightthickness=0,
-    command=gotoAboutUs,
+    command=gotoAboutus,
     relief="flat",
     bg = "white"
 )
@@ -176,8 +222,8 @@ button_5 = Button(
     image=button_image_5,
     borderwidth=0,
     highlightthickness=0,
-    relief="flat",
-    #command
+    command=login,
+    relief="flat"
 )
 button_5.place(x=487.0, y=481.0, width=150.0, height=44.0)
 

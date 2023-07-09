@@ -8,8 +8,6 @@ from PIL import Image, ImageTk
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "assets" / "ContactUs"
-
-
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 def gotoHome():
@@ -38,7 +36,16 @@ def gotoRegister():
 window = Tk()
 
 window.geometry("1125x670")
-window.configure(bg = "#FFFFFF")
+window.configure(bg="#FFFFFF")
+
+# Calculate the center coordinates of the screen
+screen_width = window.winfo_screenwidth()
+screen_height = window.winfo_screenheight()
+x = (screen_width - 1125) // 2
+y = (screen_height - 670) // 2
+
+# Set the window position to the center of the screen
+window.geometry(f"+{x}+{y}")
 caramel = "#C19A6B"
 
 
@@ -208,8 +215,7 @@ image_2 = canvas.create_image(
     image=image_image_2
 )
 
-image_image_3 = PhotoImage(
-    file=relative_to_assets("image_3.png"))
+image_image_3 = PhotoImage(file=relative_to_assets("image_3.png"))
 image_3 = canvas.create_image(
     134.0,
     71.0,

@@ -1,0 +1,227 @@
+import csv
+from tkinter import messagebox
+
+bookList = []     #Initializing an empty list of CBook objects          datasruct: list
+
+class CBook:
+    # Object Constructor
+    def __init__(self, title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks, noOfBorrower):
+        self.title = title
+        self.author = author
+        self.ISBN = ISBN
+        self.edition = edition
+        self.yearPublished = yearPublished
+        self.material = material
+        self.category = category
+        self.shelfNo = shelfNo
+        self.totalStocks = totalStocks
+        self.noOfBorrower = noOfBorrower
+
+    #lahat ng mga naka-indent dito ay kasama sa CBook Class
+
+#######################  METHODS   ##############################################
+
+def getInfoBook():
+    title = input("Enter title: ")
+    author = input("Enter author: ")
+    ISBN = input("Enter ISBN: ")
+    edition = input("Enter edition: ")
+    yearPublished = input("Enter year published: ")
+    material = input("Enter material: ")
+    category = input("Enter category: ")
+    shelfNo = int(input("Enter shelf no.: "))
+    totalStocks = int(input("Enter total number of stocks: "))
+    noOfBorrower = int(input("Enter total number of borrowers: "))
+
+    if locateBook(ISBN) >= 0:               #if existing na sa bookList
+        messagebox.showerror("ADD BOOK", "THE BOOK ALREADY EXISTS IN THE RECORD")
+    elif not checkBookFields(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks):    #if di complete fields
+        messagebox.showerror("ADD BOOK", "THE BOOK ALREADY EXISTS IN THE RECORD")
+    else:
+        response = messagebox.askyesno(    #creates a yes or no message box
+            title="ADD BOOK",
+            message="ARE YOU SURE TO ADD THIS BOOK IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:                        #if yes
+            book = CBook(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks, noOfBorrower)
+            addBook(book)
+            messagebox.showinfo("ADD BOOK", "BOOK ADDED SUCCESSFULLY")
+            #display table
+            #clear fields
+
+def addBook(book):
+    # Find the index to insert the book alphabetically based on the title
+    index = 0
+    while index < len(bookList) and book.title > bookList[index].title:
+        index += 1
+    # Insert the book at the determined index
+    bookList.insert(index, book)
+    #Note: Pakitawag ang saveBook() after mag-add ng book sa main.
+
+def displayBooks():
+    for book in bookList:
+        currentStock = str(int(book.totalStocks) - int(book.noOfBorrower))
+        print(book.title +" "+ book.author +" "+ book.ISBN +" "+ book.edition +" "+ book.yearPublished +" "+ book.material +" "+ book.category +" "+ str(book.shelfNo) +" "+ str(book.totalStocks) +" "+ str(book.noOfBorrower) +" "+ currentStock)
+
+#UPDATE BOOK IF NASA GUI
+def updateBook():
+    title = input("Enter title: ")
+    author = input("Enter author: ")
+    ISBN = input("Enter ISBN: ")
+    edition = input("Enter edition: ")
+    yearPublished = input("Enter year published: ")
+    material = input("Enter material: ")
+    category = input("Enter category: ")
+    shelfNo = int(input("Enter shelf no.: "))
+    totalStocks = int(input("Enter total number of stocks: "))
+    noOfBorrower = int(input("Enter total number of borrowers: "))
+
+#IF PININDOT UPDATE BOOK:
+    index = locateBook(ISBN)
+
+    if index <0:
+        messagebox.showerror("UPDATE BOOK", "THE ISBN DOES NOT FOUND A MATCH")
+    elif not checkBookFields(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks):
+        messagebox.showerror("UPDATE BOOK", "PLEASE FILL IN ALL FIELDS")
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="UPDATE BOOK",
+            message="ARE YOU SURE TO UPDATE THIS BOOK IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+        if response:  # if yes, salin new info
+            bookList[index].title = title
+            bookList[index].author = author
+            bookList[index].ISBN = ISBN
+            bookList[index].edition = edition
+            bookList[index].yearPublished = yearPublished
+            bookList[index].material = material
+            bookList[index].category = category
+            bookList[index].shelfNo = shelfNo
+            bookList[index].totalStocks = totalStocks
+            bookList[index].noOfBorrower = noOfBorrower
+
+            messagebox.showinfo("UPDATE BOOK", "BOOK UPDATED SUCCESSFULLY! ")
+            saveBook()
+            #display Table
+            #clear fields
+
+def deleteBook(ISBN):
+    #ISBN = input("Enter the ISBN of the book you want to delete: ")
+
+#IF PININDOT DELETE BOOK:
+    index = locateBook(ISBN)
+    if index <0:
+        messagebox.showerror("DELETE  BOOK", "THE ISBN DOES NOT FOUND A MATCH")
+    #INSERT IF WALANG SINELECT NA ROW
+
+    else:
+        response = messagebox.askyesno(  # creates a yes or no message box
+            title="DELETE BOOK",
+            message="ARE YOU SURE TO DELETE THIS BOOK IN THE RECORD?",
+            icon=messagebox.QUESTION
+        )
+
+        if response:
+            deleted_book = bookList.pop(index)
+            messagebox.showinfo("DELETE BOOK", "BOOK DELETED SUCCESSFULLY! ")
+            saveBook()
+            #display Table
+            #clear fields
+
+
+def searchBook():
+    print("Select an attribute for searching")
+    print("[1] Title")
+    print("[2] Author")
+    print("[3] Year Published")
+    print("[4] Material")
+    print("[5] Category")
+    choice = int(input("Enter search category: "))
+
+    keyword = input("Enter the search keyword or substring: ")
+
+    foundMatch = False
+    for book in bookList:
+        attributeValue = ""
+        if choice == 1:
+            attributeValue = book.title
+        elif choice == 2:
+            attributeValue = book.author
+        elif choice == 3:
+            attributeValue = book.yearPublished
+        elif choice == 4:
+            attributeValue = book.material
+        elif choice == 5:
+            attributeValue = book.category
+        else:
+            attributeValue = book.title
+
+        if keyword.lower() in attributeValue.lower():
+            currentStock = str(int(book.totalStocks) - int(book.noOfBorrower))
+            print(book.title +" "+ book.author +" "+ book.ISBN +" "+ book.edition +" "+ book.yearPublished +" "+ book.material +" "+ book.category +" "+ str(book.shelfNo) +" "+ str(book.totalStocks) +" "+ str(book.noOfBorrower) +" "+ currentStock)
+            foundMatch = True
+
+    if not foundMatch:
+        messagebox.showinfo("SEARCH BOOK", "NO MATCH FOUND ")
+
+
+def locateBook(ISBN):
+    for i in range(len(bookList)):      #loop through the bookList
+        if bookList[i].ISBN == ISBN:    #if nahanap, return index, else return -1
+            return i
+
+    return -1
+
+def saveBook():
+    filename = "bookRecords.csv"  # Specify the filename for the CSV file
+
+    with open(filename, "w", newline="") as csvfile:
+        writer = csv.writer(csvfile)  # Create a CSV writer object
+
+        # Write the header row
+        writer.writerow(["Title", "Author", "ISBN", "Edition", "Year Published", "Material", "Category", "Shelf No.", "Total Stocks", "No. of Borrower"])
+
+        # Write each book's data row
+        for book in bookList:
+            writer.writerow([book.title, book.author, book.ISBN, book.edition, book.yearPublished, book.material, book.category, book.shelfNo, book.totalStocks, book.noOfBorrower])
+
+def retrieveBook():
+
+    with open("bookRecords.csv", "r") as csvfile:
+        reader = csv.reader(csvfile)  # Create a CSV reader objectatego
+        next(reader)  # Skip the header row
+
+        for row in reader:
+            # Extract the data from each row and create a CBook object
+            title = row[0]
+            author = row[1]
+            ISBN = row[2]
+            edition = row[3]
+            yearPublished = row[4]
+            material = row[5]
+            category = row[6]
+            shelfNo = row[7]
+            totalStocks = row[8]
+            noOfBorrower = row[9]
+
+            #create an object of the retrieved book
+            book = CBook(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks,noOfBorrower)
+            #add book in the bookList
+            addBook(book)
+
+def checkBookFields(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks):
+
+    if (title == "" or
+        author == "" or
+        ISBN == "" or
+        edition == "" or
+        yearPublished == "" or
+        material == "" or
+        category == "" or
+        shelfNo == 0 or
+        totalStocks == 0):
+        return False
+    else:
+        return True
