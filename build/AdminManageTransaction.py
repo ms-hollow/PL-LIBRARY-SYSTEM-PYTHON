@@ -135,17 +135,19 @@ def updateTransaction():
             transactionList[index].librarian = librarian
             transactionList[index].fine = fine
 
-            #IF INUPDATE SA "RETURNED"
             newStatus = status_value
-            if (currentStatus == "TO APPROVE" or currentStatus == "TO RETURN") and newStatus == "RETURNED":
-                    transactionList[index].status = newStatus
-                    indexBook = CBook.locateBook(ISBN)
-                    bookList[indexBook].noOfBorrower = int(bookList[indexBook].noOfBorrower) - 1  #if ni-return, babawasan noOfBorrower ng book
-                    CBook.saveBook()
-                    indexBorrower = CBorrower.locateBorrower(TUP_ID)
-                    borrowerList[indexBorrower].noOfBorrowed = int(borrowerList[indexBorrower].noOfBorrowed) - 1       #if ni-return, babawasan noOfBorrowed ng borrower
-                    CBorrower.saveBorrower()
 
+            #IF INUPDATE SA "RETURNED"
+            if (currentStatus == "TO APPROVE" or currentStatus == "TO RETURN") and newStatus == "RETURNED":
+                #transactionList[index].status = newStatus
+                indexBook = CBook.locateBook(ISBN)
+                bookList[indexBook].noOfBorrower = int(bookList[indexBook].noOfBorrower) - 1  #if ni-return, babawasan noOfBorrower ng book
+                CBook.saveBook()
+                indexBorrower = CBorrower.locateBorrower(TUP_ID)
+                borrowerList[indexBorrower].noOfBorrowed = int(borrowerList[indexBorrower].noOfBorrowed) - 1       #if ni-return, babawasan noOfBorrowed ng borrower
+                CBorrower.saveBorrower()
+
+            transactionList[index].status = newStatus       #UPDATE ANG STATUS
             CTransaction.saveTransaction()
             displayTable.bookTable()
             clearFields()
@@ -296,7 +298,6 @@ class DisplayTable:
         borrowerEntry.config(state="disable")
         authorEntry.config(state="disable")
         librarianEntry.config(state="disable")
-        fineEntry.config(state="disable")
         remainingDaysEntry.config(state="disable")
 
     def bookTable(self):

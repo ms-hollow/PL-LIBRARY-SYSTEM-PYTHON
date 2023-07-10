@@ -48,6 +48,7 @@ def addBook():
 
     if CBook.locateBook(ISBN) >= 0:  # if existing na sa bookList
         messagebox.showerror("ADD BOOK", "THE BOOK ALREADY EXISTS IN THE RECORD")
+        clearFields()
     elif not CBook.checkBookFields(title, author, ISBN, edition, yearPublished, material, category, shelfNo, totalStocks):  # if di complete fields
         messagebox.showerror("ADD BOOK", "PLEASE FILL IN ALL FIELDS")
     else:

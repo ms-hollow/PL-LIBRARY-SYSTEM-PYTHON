@@ -1,44 +1,44 @@
 Title,Author,ISBN,Edition,Year Published,Material,Category,Shelf No.,Total Stocks,No. of Borrower
-1984,George Orwell,11234567,First,1949,Softbound,Fiction,4,5,0
-A Brief History of Time,Stephen Hawking,19876543,First,1988,Hardcover,Educational,3,5,1
-A People's History of the United States,Howard Zinn,29876543,First,1980,Softbound,History,6,5,1
-A Streetcar Named Desire,Tennessee Williams,39876543,First,1947,Hardcover,Drama,1,5,0
-Atomic Habits,James Clear,49876543,First,2018,Hardcover,Self-Help,9,5,0
-Becoming,Michelle Obama,10987654,First,2018,Softbound,Non-Fiction,6,5,0
-Beyond Good and Evil,Friedrich Nietzsche,12345678,First,1886,Hardcover,Philosophy,7,5,2
-Hamlet,William Shakespeare,21098765,First,1603,Hardcover,Drama,1,5,0
-Harry Potter and the Philosopher's Stone,J.K. Rowling,22098765,First,1997,Softbound,Fiction,4,5,1
-How to Win Friends and Influence People,Dale Carnegie,23456789,First,1936,Softbound,Self-Help,9,5,0
-Leonardo da Vinci,Walter Isaacson,33109875,First,2017,Hardcover,Art,8,5,1
-Macbeth,William Shakespeare,32109876,First,1606,Softbound,Drama,1,5,0
-Man's Search for Meaning,Viktor E. Frankl,34567890,First,1946,Hardcover,Self-Help,9,5,0
-Meditations,Marcus Aurelius,43210187,First,180,Hardcover,Philosophy,7,5,1
-Much Ado About Nothing,William Shakespeare,43210287,First,1598,Softbound,Comedy,2,5,0
-Othello,William Shakespeare,43211987,First,1604,Softbound,Drama,1,5,0
-Pride and Prejudice,Jane Austen,43210387,First,1813,Hardcover,Comedy,2,5,0
-Quiet: The Power of Introverts in a World That Can't Stop Talking,Susan Cain,45678901,First,2012,Hardcover,Non-Fiction,5,5,0
-Romeo and Juliet,William Shakespeare,56321098,First,1597,Hardcover,Drama,1,5,0
-Sapiens: A Brief History of Humankind,Yuval Noah Harari,54321018,First,2011,Hardcover,Non-Fiction,5,5,0
-Sapiens: A Brief History of Humankind,Yuval Noah Harari,54361098,First,2011,Softbound,Educational,3,5,1
-The 7 Habits of Highly Effective People,Stephen R. Covey,54321018,First,1989,Hardcover,Self-Help,9,5,0
-The Alchemist,Paulo Coelho,56742012,First,1988,Hardcover,Fiction,4,5,0
-The Art Book,Phaidon Editors,69432109,First,1994,Softbound,Art,8,5,0
-The Birth of Venus,Sarah Dunant,65432179,First,2003,Softbound,Art,8,5,0
-The Catcher in the Rye,J.D. Salinger,61422103,First,1951,Hardcover,Fiction,4,5,0
-The Comedy of Errors,William Shakespeare,65457809,First,1594,Hardcover,Comedy,2,5,0
-The Decline and Fall of the Roman Empire,Edward Gibbon,64896923,First,1776,Hardcover,History,6,5,0
-The Diary of a Young Girl,Anne Frank,76673210,First,1947,Hardcover,Non-Fiction,5,5,0
-The Elements of Style,William Strunk Jr.,76544910,Fourth,1918,Hardcover,Educational,3,5,0
-The Great Gatsby,F. Scott Fitzgerald,76543217,First,1925,Hardcover,Educational,3,5,2
-The Guns of August,Barbara W. Tuchman,76543898,First,1962,Softbound,History,6,5,0
-The Hitchhiker's Guide to the Galaxy,Douglas Adams,78934234,First,1979,Softbound,Comedy,2,5,0
-The Importance of Being Earnest,Oscar Wilde,87654311,First,1895,Softbound,Comedy,2,5,0
-The Lord of the Rings,J.R.R. Tolkien,87144321,First,1954,Softbound,Fiction,4,5,0
-The Power of Now,Eckhart Tolle,86543621,First,1997,Softbound,Self-Help,9,5,0
-The Prince,Niccolò Machiavelli,87684321,First,1532,Softbound,Philosophy,7,5,0
-The Republic,Plato,89012345,First,380 BC,Softbound,Philosophy,7,5,0
-The Rise and Fall of the Third Reich,William L. Shirer,90123456,First,1960,Softbound,History,6,5,0
-The Story of Art,Ernst H. Gombrich,98779432,First,1950,Softbound,Art,8,5,0
-Thus Spoke Zarathustra,Friedrich Nietzsche,98765886,First,1883,Hardcover,Philosophy,7,5,0
-To Kill a Mockingbird,Harper Lee,99069432,First,1960,Softbound,Educational,3,5,0
-Ways of Seeing,John Berger,98769732,First,1972,Hardcover,Art,8,5,0
+1984,George Orwell,98765432,First,1949,Softbound,Fiction,4,5,0
+A Brief History of Time,Stephen Hawking,123450987,First,1988,Hardcover,Educational,3,5,0
+A People's History of the United States,Howard Zinn,987654321,First,1980,Softbound,History,6,5,0
+A Streetcar Named Desire,Tennessee Williams,567890123,First,1947,Hardcover,Drama,1,5,0
+Atomic Habits,James Clear,109876543,First,2018,Hardcover,Self-Help,9,5,0
+Becoming,Michelle Obama,432109876,First,2018,Softbound,Non-Fiction,5,5,0
+Beyond Good and Evil,Friedrich Nietzsche,210987654,First,1886,Hardcover,Philosophy,7,5,1
+Hamlet,William Shakespeare,123456789,First,1603,Hardcover,Drama,1,5,0
+Harry Potter and the Philosopher's Stone,J.K. Rowling,654321098,First,1997,Softbound,Fiction,4,5,0
+How to Win Friends and Influence People,Dale Carnegie,210987654,First,1936,Softbound,Self-Help,9,5,0
+Leonardo da Vinci,Walter Isaacson,543210987,First,2017,Hardcover,Art,8,5,0
+Macbeth,William Shakespeare,234567890,First,1606,Softbound,Drama,1,5,0
+Man's Search for Meaning,Viktor E. Frankl,987654321,First,1946,Hardcover,Self-Help,9,5,0
+Meditations,Marcus Aurelius,432109876,First,180,Hardcover,Philosophy,7,5,0
+Much Ado About Nothing,William Shakespeare,890123456,First,1598,Softbound,Comedy,2,5,0
+Othello,William Shakespeare,456789012,First,1604,Softbound,Drama,1,5,0
+Pride and Prejudice,Jane Austen,789012345,First,1813,Hardcover,Comedy,2,5,0
+Quiet: The Power of Introverts in a World That Can't Stop Talking,Susan Cain,109876543,First,2012,Hardcover,Non-Fiction,5,5,0
+Romeo and Juliet,William Shakespeare,345678901,First,1597,Hardcover,Drama,1,5,0
+Sapiens: A Brief History of Humankind,Yuval Noah Harari,543210987,First,2011,Hardcover,Non-Fiction,5,5,0
+Sapiens: A Brief History of Humankind,Yuval Noah Harari,234509876,First,2011,Softbound,Educational,3,5,0
+The 7 Habits of Highly Effective People,Stephen R. Covey,321098765,First,1989,Hardcover,Self-Help,9,5,0
+The Alchemist,Paulo Coelho,765432109,First,1988,Hardcover,Fiction,4,5,0
+The Art Book,Phaidon Editors,432109876,First,1994,Softbound,Art,8,5,0
+The Birth of Venus,Sarah Dunant,654321098,First,2003,Softbound,Art,8,5,0
+The Catcher in the Rye,J.D. Salinger,987654321,First,1951,Hardcover,Fiction,4,5,0
+The Comedy of Errors,William Shakespeare,901234567,First,1594,Hardcover,Comedy,2,5,0
+The Decline and Fall of the Roman Empire,Edward Gibbon,654321098,First,1776,Hardcover,History,6,5,0
+The Diary of a Young Girl,Anne Frank,321098765,First,1947,Hardcover,Non-Fiction,5,5,0
+The Elements of Style,William Strunk Jr.,345098765,Fourth,1918,Hardcover,Educational,3,5,0
+The Great Gatsby,F. Scott Fitzgerald,509876543,First,1925,Hardcover,Educational,3,5,0
+The Guns of August,Barbara W. Tuchman,543210987,First,1962,Softbound,History,6,5,0
+The Hitchhiker's Guide to the Galaxy,Douglas Adams,12345678,First,1979,Softbound,Comedy,2,5,0
+The Importance of Being Earnest,Oscar Wilde,678901234,First,1895,Softbound,Comedy,2,5,0
+The Lord of the Rings,J.R.R. Tolkien,876543210,First,1954,Softbound,Fiction,4,5,0
+The Power of Now,Eckhart Tolle,98765432,First,1997,Softbound,Self-Help,9,5,0
+The Prince,Niccolò Machiavelli,109876543,First,1532,Softbound,Philosophy,7,5,0
+The Republic,Plato,321098765,First,380 BC,Softbound,Philosophy,7,5,0
+The Rise and Fall of the Third Reich,William L. Shirer,765432109,First,1960,Softbound,History,6,5,0
+The Story of Art,Ernst H. Gombrich,876543210,First,1950,Softbound,Art,8,5,0
+Thus Spoke Zarathustra,Friedrich Nietzsche,987654321,First,1883,Hardcover,Philosophy,7,5,0
+To Kill a Mockingbird,Harper Lee,450987654,First,1960,Softbound,Educational,3,5,0
+Ways of Seeing,John Berger,765432109,First,1972,Hardcover,Art,8,5,0

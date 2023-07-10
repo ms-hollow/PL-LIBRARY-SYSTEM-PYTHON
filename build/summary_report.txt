@@ -1,0 +1,15 @@
+
+Summary Report
+TUP Reads
+
+==============================================
+Most Borrowed Book Title: Meditations
+Total: 2
+
+Most Borrowed Book Genre: Art
+Total: 10
+
+Most Borrowed Book Author: Marcus Aurelius
+Total: 2
+
+==============================================

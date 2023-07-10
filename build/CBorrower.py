@@ -282,12 +282,12 @@ def saveBorrower():
         # Write each borrower's data row
         for borrower in borrowerList:
             # ENCRYPTED - encrypts every variable, then write it in the file
-            '''
+            """
             writer.writerow(
-                [encrypt(str(borrower.name)), encrypt(str(borrower.TUP_ID)), encrypt(str(borrower.password)),
-                 encrypt(str(borrower.yearSection)),
-                 encrypt(str(borrower.contactNum)), encrypt(str(borrower.email)), encrypt(str(borrower.noOfBorrowed))])
-            '''
+                [encrypt((borrower.name)), encrypt((borrower.TUP_ID)), encrypt((borrower.password)),
+                 encrypt((borrower.yearSection)),
+                 encrypt((borrower.contactNum)), encrypt((borrower.email)), encrypt(str(borrower.noOfBorrowed))])
+            """
             # NOT ENCRYPTED
             writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
                         borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
@@ -310,10 +310,10 @@ def retrieveBorrower():
             # borrowedborrowers [0] = row[6]
 
             # create an object of the retrieved borrower
-            # DECRYPTYED
-            #borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection),
-                               #  decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))  # borrowedBook
-            # NOT DECRYPTED
+            #DECRYPTYED
+            borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection),
+               decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))  # borrowedBook
+            #NOT DECRYPTED
             borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
 
             # add borrower in the borrowerList
@@ -357,17 +357,26 @@ def checkBorrowerFieldsAdmin(name, TUP_ID, yearSection, contactNum, email):
         return True
 
 def encrypt(text):
-    encrypted = ""  # Initialize an empty string to store the encrypted text
-    for char in text:  # Iterate through each character in the input text
-        encrypted += chr(ord(char) + 29)  # Encrypt the character by adding 29 to its ASCII value
-    return encrypted  # Return the encrypted text
-
+    key =29
+    encrypted = ""
+    for char in text:
+        if char.isalpha():  # Encrypt only alphabetical characters
+            encrypted += chr((ord(char) - 32 + key) % 95 + 32)
+        else:  # Keep non-alphabetical characters unchanged
+            encrypted += char
+    return encrypted
 
 def decrypt(text):
-    decrypted = ""  # Initialize an empty string to store the decrypted text
-    for char in text:  # Iterate through each character in the input text
-        decrypted += chr(ord(char) - 29)  # Decrypt the character by subtracting 29 from its ASCII value
-    return decrypted  # Return the decrypted text
+    key=29
+    decrypted = ""
+    for char in text:
+        if char.isalpha():  # Decrypt only alphabetical characters
+            decrypted += chr((ord(char) - 32 - key) % 95 + 32)
+        else:  # Keep non-alphabetical characters unchanged
+            decrypted += char
+    return decrypted
+
+
 
 
 def displayBorrowedBook(TUP_ID):

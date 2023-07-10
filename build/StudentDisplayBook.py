@@ -137,6 +137,7 @@ class DisplayTable:
         dropdownmenu.post(categoryBtn.winfo_rootx(), categoryBtn.winfo_rooty() + categoryBtn.winfo_height())
 
     def recommendedBooks(self):
+
         recommendation = CTransaction.recom()
         first.insert(0, recommendation[0])
         second.insert(0, recommendation[1])
