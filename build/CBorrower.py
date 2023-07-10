@@ -282,15 +282,15 @@ def saveBorrower():
         # Write each borrower's data row
         for borrower in borrowerList:
             # ENCRYPTED - encrypts every variable, then write it in the file
-            """
+
             writer.writerow(
                 [encrypt((borrower.name)), encrypt((borrower.TUP_ID)), encrypt((borrower.password)),
                  encrypt((borrower.yearSection)),
                  encrypt((borrower.contactNum)), encrypt((borrower.email)), encrypt(str(borrower.noOfBorrowed))])
-            """
+
             # NOT ENCRYPTED
-            writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
-                        borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
+            #writer.writerow([borrower.name, borrower.TUP_ID, borrower.password, borrower.yearSection,
+            #            borrower.contactNum, borrower.email, str(borrower.noOfBorrowed)])
 
 
 def retrieveBorrower():
@@ -314,7 +314,7 @@ def retrieveBorrower():
             borrower = CBorrower(decrypt(name), decrypt(TUP_ID), decrypt(password), decrypt(yearSection),
                decrypt(contactNum), decrypt(email), decrypt(noOfBorrowed))  # borrowedBook
             #NOT DECRYPTED
-            borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
+            #borrower = CBorrower(name, TUP_ID, password, yearSection, contactNum, email, noOfBorrowed)# borrowedBook
 
             # add borrower in the borrowerList
             addBorrower(borrower)
@@ -356,26 +356,24 @@ def checkBorrowerFieldsAdmin(name, TUP_ID, yearSection, contactNum, email):
     else:
         return True
 
-def encrypt(text):
-    key =29
-    encrypted = ""
-    for char in text:
-        if char.isalpha():  # Encrypt only alphabetical characters
-            encrypted += chr((ord(char) - 32 + key) % 95 + 32)
-        else:  # Keep non-alphabetical characters unchanged
-            encrypted += char
-    return encrypted
+import codecs
 
-def decrypt(text):
-    key=29
-    decrypted = ""
-    for char in text:
-        if char.isalpha():  # Decrypt only alphabetical characters
-            decrypted += chr((ord(char) - 32 - key) % 95 + 32)
-        else:  # Keep non-alphabetical characters unchanged
-            decrypted += char
-    return decrypted
+def encrypt(message):
+    key = 29
+    encrypted_message = ""
+    for char in message:
+        encrypted_char = chr(ord(char) ^ key)
+        encrypted_message += encrypted_char
+    return encrypted_message
 
+
+def decrypt(encrypted_message):
+    key = 29
+    decrypted_message = ""
+    for char in encrypted_message:
+        decrypted_char = chr(ord(char) ^ key)
+        decrypted_message += decrypted_char
+    return decrypted_message
 
 
 

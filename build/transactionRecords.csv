@@ -1,11 +1,3 @@
 Title,ISBN,TUP ID,dateBorrowed,dateToReturn,Status,Reference No.,Borrower,Author,Librarian,Fine
-Meditations,43210187,123450,7/10/23,7/10/23,TO APPROVE,257370,Diego Garcia,Marcus Aurelius,MS. LAICA YGOT,0
-Becoming,10987654,123450,7/10/23,7/10/23,TO APPROVE,518965,Diego Garcia,Michelle Obama,MS. LAICA YGOT,0
-Quiet: The Power of Introverts in a World That Can't Stop Talking,45678901,123450,7/10/23,7/10/23,TO APPROVE,921255,Diego Garcia,Susan Cain,MS. LAICA YGOT,0
-Atomic Habits,49876543,211705,7/10/23,7/13/23,TO APPROVE,981524,Abby Leonen,James Clear,MS. LAICA YGOT,0
-The Great Gatsby,76543217,901234,7/9/23,7/9/23,TO APPROVE,949757,Miguel Torres,F. Scott Fitzgerald,MS. LAICA YGOT,0
-Sapiens: A Brief History of Humankind,54361098,901234,7/9/23,7/9/23,TO APPROVE,348081,Miguel Torres,Yuval Noah Harari,MS. LAICA YGOT,0
-A Brief History of Time,19876543,901234,7/9/23,7/11/23,TO RETURN,924665,Miguel Torres,Stephen Hawking,MS. LAICA YGOT,0
-The Prince,87684321,890123,7/9/23,7/10/23,RETURNED,884498,Luisa Dela Cruz,Niccol� Machiavelli,MS. LAICA YGOT,0
-Meditations,43210187,890123,7/9/23,7/9/23,TO APPROVE,727171,Luisa Dela Cruz,Marcus Aurelius,MS. LAICA YGOT,0
-The Great Gatsby,76543217,345672,7/9/23,7/10/23,TO APPROVE,825927,Alejandro Hernandez,F. Scott Fitzgerald,MS. LAICA YGOT,0
+Beyond Good and Evil,210987654,123450,7/10/23,7/14/23,TO APPROVE,495452,Diego Garcia,Friedrich Nietzsche,MS. LAICA YGOT,0
+A Streetcar Named Desire,567890123,123450,7/10/23,7/12/23,RETURNED,353656,Diego Garcia,Tennessee Williams,MS. LAICA YGOT,0
